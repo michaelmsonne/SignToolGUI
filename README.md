@@ -44,17 +44,15 @@ Outline the file contents of the repository. It helps users navigate the codebas
 # Introduction
 This tool is a user-friendly Graphical User Interface (GUI) tool that simplifies and streamlines the process of digitally signing files using Microsoft's signtool.exe. This tool is designed to provide a straightforward interface, enabling users to apply digital signatures to software executables, drivers, DLLs, and other file types effortlessly.
 
-
 ![Main GUI](/docs/pictures/mainform.png)
 
-
 ## Features
-- Intuitive User Interface: SignToolGUI offers an intuitive and user-friendly interface, eliminating the need for complex command-line inputs associated with signtool.exe. Users can easily navigate through the signing process.
+- Intuitive user interface: **SignToolGUI** offers an intuitive and user-friendly interface, eliminating the need for complex command-line inputs associated with signtool.exe. Users can easily navigate through the signing process.
     - Supports .pfx certificates, Windows Certificate Store certificates (with private keys) and Microsoft Trusted Signing (more can be added over time...)
-- File Selection and Management: Users can select single or multiple files for signing through a simple file explorer interface. Drag-and-drop functionality allows for convenient file selection.
-- Certificate Management: SignToolGUI facilitates easy management of digital certificates required for signing. Users can import or select certificates directly within the tool.
-- Logging and Error Handling: SignToolGUI provides detailed logging of the signing process, making it easy to track and troubleshoot any issues that may arise during signing.
-- Batch Signing Support: Users can efficiently sign multiple files in a batch, reducing the time and effort required for signing large projects or collections of files.
+- **File selection and management**: Users can select single or multiple files for signing through a simple file explorer interface. Drag-and-drop functionality allows for convenient file selection.
+- **Certificate Management**: SignToolGUI facilitates easy management of digital certificates required for signing. Users can import or select certificates directly within the tool.
+- **Logging and error handling**: SignToolGUI provides detailed logging of the signing process, making it easy to track and troubleshoot any issues that may arise during signing.
+- **Batch signing support**: Users can efficiently sign multiple files in a batch, reducing the time and effort required for signing large projects or collections of files.
 
 ## To do list
 - [ ] Soon... Verification and Validation: After signing, SignToolGUI allows users to verify and validate the digital signatures to ensure the integrity and authenticity of the signed files.
@@ -76,12 +74,10 @@ This tool is a user-friendly Graphical User Interface (GUI) tool that simplifies
   ![dotnet-desktop-develoment.png](docs/pictures/dotnet-desktop-develoment.png)
 - Build the solution in Visual Studio
 
-
 ### Installation
-You can either clone this repository and build the project yourself.
+You can either clone this repository and build the project yourself or via provided installer (soon...).
 
 ## Usage
-
 
 # Final thoughts
 SignTool GUI empowers users with a convenient and efficient means to apply digital signatures using Microsoft's signtool.exe, enhancing file security and trustworthiness within software development workflows.
