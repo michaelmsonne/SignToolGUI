@@ -44,7 +44,17 @@ Outline the file contents of the repository. It helps users navigate the codebas
 # Introduction
 This tool is a user-friendly Graphical User Interface (GUI) tool that simplifies and streamlines the process of digitally signing files using Microsoft's signtool.exe. This tool is designed to provide a straightforward interface, enabling users to apply digital signatures to software executables, drivers, DLLs, and other file types effortlessly.
 
+Main tool GUI
+
 ![Main GUI](/docs/pictures/mainform.png)
+
+<details>
+  <summary>About the tool GUI</summary>
+  
+  ![Main GUI](/docs/pictures/mainform-about.png)
+  
+</details>
+
 
 ## Features
 - Intuitive user interface: **SignToolGUI** offers an intuitive and user-friendly interface, eliminating the need for complex command-line inputs associated with signtool.exe. Users can easily navigate through the signing process.
