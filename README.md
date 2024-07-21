@@ -50,7 +50,7 @@ This tool is a user-friendly Graphical User Interface (GUI) tool that simplifies
 - Intuitive user interface: **SignToolGUI** offers an intuitive and user-friendly interface, eliminating the need for complex command-line inputs associated with signtool.exe. Users can easily navigate through the signing process.
     - Supports .pfx certificates, Windows Certificate Store certificates (with private keys) and Microsoft Trusted Signing (more can be added over time...)
 - **File selection and management**: Users can select single or multiple files for signing through a simple file explorer interface. Drag-and-drop functionality allows for convenient file selection.
-- **Certificate Management**: SignToolGUI facilitates easy management of digital certificates required for signing. Users can import or select certificates directly within the tool.
+- **Certificate Management**: SignToolGUI facilitates easy management of digital certificates required for signing. Users can import (.pfx) or select certificates directly within the tool.
 - **Logging and error handling**: SignToolGUI provides detailed logging of the signing process, making it easy to track and troubleshoot any issues that may arise during signing.
 - **Batch signing support**: Users can efficiently sign multiple files in a batch, reducing the time and effort required for signing large projects or collections of files.
 
