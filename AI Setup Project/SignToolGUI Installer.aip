@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT Type="Advanced Installer" CreateVersion="21.9" version="21.9" Modules="simple" RootPath="." Language="en" Id="{C91F2B90-326D-4B52-99AE-6996B4FA77F1}">
+<DOCUMENT Type="Advanced Installer" CreateVersion="21.9" version="21.9" PreviousModules="simple" Modules="professional" RootPath="." Language="en" Id="{C91F2B90-326D-4B52-99AE-6996B4FA77F1}">
+  <COMPONENT cid="caphyon.advinst.msicomp.ProjectOptionsComponent">
+    <ROW Name="HiddenItems" Value="ActSyncAppComponent;CPLAppletComponent;AutorunComponent;GameUxComponent;SilverlightSlnComponent;SharePointSlnComponent"/>
+  </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
     <ROW Property="AI_BITMAP_DISPLAY_MODE" Value="0"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
@@ -107,12 +110,12 @@
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_vcruntime140_1.dll" Value="vcruntime140_1.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_vcruntime140_threads.dll" Value="vcruntime140_threads.dll"/>
     <ROW Property="ALLUSERS" Value="1"/>
-    <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
-    <ROW Property="Manufacturer" Value="Your Company"/>
-    <ROW Property="ProductCode" Value="1033:{93801F8C-2AAC-45D9-9CC3-5F1C893B4D24} " Type="16"/>
+    <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName] v. [|ProductVersion]" ValueLocId="*"/>
+    <ROW Property="Manufacturer" Value="Michael Morten Sonne"/>
+    <ROW Property="ProductCode" Value="1033:{A10A6963-84C3-4F8B-8613-555A8C2409C1} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
-    <ROW Property="ProductName" Value="Your Application"/>
-    <ROW Property="ProductVersion" Value="1.0.0" Options="32"/>
+    <ROW Property="ProductName" Value="SignToolGUI"/>
+    <ROW Property="ProductVersion" Value="1.3.0.0" Options="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{6F8F60D8-0325-4FA9-B18A-9EE2702C1232}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -139,7 +142,7 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="APPDIR" ComponentId="{DC1B874D-F479-4017-9913-AADA8EB9284A}" Directory_="APPDIR" Attributes="0"/>
-    <ROW Component="ProductInformation" ComponentId="{DC5ED17B-3307-429D-A3F3-94F2300D45EB}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
+    <ROW Component="ProductInformation" ComponentId="{DC5ED17B-3307-429D-A3F3-94F2300D45EB}" Directory_="APPDIR" Attributes="260" KeyPath="Version"/>
     <ROW Component="SHORTCUTDIR" ComponentId="{CD379557-CE5C-4A9C-BBEF-BCFE0EC87902}" Directory_="SHORTCUTDIR" Attributes="0"/>
     <ROW Component="SignToolGUI_ContentOutput_Tools" ComponentId="{094A9CA1-9F10-4A0A-A4FB-C9FBE68DA3D6}" Directory_="Tools_Dir" Attributes="256" KeyPath="vcruntime140_threads.dll"/>
     <ROW Component="SignToolGUI_PrimaryOutput" ComponentId="{9A7D8C94-F13A-4CE2-B743-209FB470F474}" Directory_="SignToolGUI_Dir" Attributes="0" KeyPath="SignToolGUI.exe"/>
@@ -258,11 +261,17 @@
     <ROW Name="AI_APPPATH_PERBUILD_vcruntime140_threads.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_vcruntime140_threads.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_vcruntime140_threads.dll]" Type="2" Content="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
-    <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" Languages="en" InstallationType="4" UseLargeSchema="true"/>
+    <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" Languages="en" InstallationType="4" SummInfoMetadata="Page Count:450" UseLargeSchema="true" MsiPackageType="x64"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.DictionaryComponent">
     <ROW Path="&lt;AI_DICTS&gt;ui.ail"/>
     <ROW Path="&lt;AI_DICTS&gt;ui_en.ail"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.DigCertStoreComponent">
+    <ROW TimeStampUrl="http://timestamp.digicert.com" SignerDescription="[|ProductName]" SignOptions="7" SignTool="0" UseSha256="1" Thumbprint="D6A630B8F65C473C19F8B694491130073FCCDB32 Subject: Michael Morten Sonne&#10;Issuer: Sectigo Public Code Signing CA R36&#10;Valid from 02/19/2023 to 05/19/2026" Subject="CN=Michael Morten Sonne, O=Michael Morten Sonne, S=Hovedstaden, C=DK" Store="User\MY"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.DynamicPropertyComponent">
+    <ROW Property="ProductVersion" Type="2" SourcePath="SignToolGUI.exe"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.FragmentComponent">
     <ROW Fragment="CommonUI.aip" Path="&lt;AI_FRAGS&gt;CommonUI.aip"/>
@@ -321,7 +330,7 @@
     <ROW Action="AI_ResolveKnownFolders" Type="1" Source="aicustact.dll" Target="AI_ResolveKnownFolders"/>
     <ROW Action="AI_SHOW_LOG" Type="65" Source="aicustact.dll" Target="LaunchLogFile" WithoutSeq="true"/>
     <ROW Action="AI_STORE_LOCATION" Type="51" Source="ARPINSTALLLOCATION" Target="[APPDIR]"/>
-    <ROW Action="SET_APPDIR" Type="307" Source="APPDIR" Target="[ProgramFilesFolder][Manufacturer]\[ProductName]"/>
+    <ROW Action="SET_APPDIR" Type="307" Source="APPDIR" Target="[ProgramFilesFolder][Manufacturer]\[ProductName]" MultiBuildTarget="DefaultBuild:[ProgramFiles64Folder][Manufacturer]\[ProductName]"/>
     <ROW Action="SET_SHORTCUTDIR" Type="307" Source="SHORTCUTDIR" Target="[ProgramMenuFolder][ProductName]"/>
     <ROW Action="SET_TARGETDIR_TO_APPDIR" Type="51" Source="TARGETDIR" Target="[APPDIR]"/>
   </COMPONENT>

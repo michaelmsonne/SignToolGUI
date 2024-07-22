@@ -11,14 +11,14 @@
     <WorkingDirectory>.</WorkingDirectory>
     <IsWindowsApplication>True</IsWindowsApplication>
     <AssemblyName>AI Setup Project</AssemblyName>
-    <Name>AI Setup Project</Name>
+    <Name>SignToolGUI Installer</Name>
     <RootNamespace>AI Setup Project</RootNamespace>
     <LoadFromTemplate>
     </LoadFromTemplate>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'DefaultBuild' " />
   <ItemGroup>
-    <Compile Include="AI Setup Project.aip">
+    <Compile Include="SignToolGUI Installer.aip">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
