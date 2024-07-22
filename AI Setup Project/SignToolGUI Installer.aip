@@ -131,6 +131,7 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
     <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
+    <ROW Directory="SHORTCUTDIR" Directory_Parent="TARGETDIR" DefaultDir="SHORTC~1|SHORTCUTDIR" IsPseudoRoot="1"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
     <ROW Directory="Tools_Dir" Directory_Parent="APPDIR" DefaultDir="Tools"/>
   </COMPONENT>
@@ -140,10 +141,12 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" ComponentId="{0F239AE3-D698-44BF-9ED3-0C77112BBD49}" Directory_="APPDIR" Attributes="0" KeyPath="Microsoft.Bcl.AsyncInterfaces.dll_1" Type="0"/>
+    <ROW Component="AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe" ComponentId="{FB9518E0-ED7D-47FD-8932-449CD22518CE}" Directory_="APPDIR" Attributes="0" KeyPath="SignToolGUI.exe"/>
     <ROW Component="AI_PROPPATH_FILENAME_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll" ComponentId="{518A7322-3AE1-4039-90E5-C7353B66932C}" Directory_="APPDIR" Attributes="0" KeyPath="System.Runtime.CompilerServices.Unsafe.dll"/>
     <ROW Component="AI_PROPPATH_FILENAME_PERBUILD_System.Text.Json.dll" ComponentId="{E6A60E95-416C-48E4-BB88-1FD2190BE823}" Directory_="APPDIR" Attributes="0" KeyPath="System.Text.Json.dll"/>
     <ROW Component="APPDIR" ComponentId="{DC1B874D-F479-4017-9913-AADA8EB9284A}" Directory_="APPDIR" Attributes="0"/>
     <ROW Component="ProductInformation" ComponentId="{DC5ED17B-3307-429D-A3F3-94F2300D45EB}" Directory_="APPDIR" Attributes="260" KeyPath="Version"/>
+    <ROW Component="SHORTCUTDIR" ComponentId="{D0A607D2-3F40-4357-B4E1-EB0C4099C039}" Directory_="SHORTCUTDIR" Attributes="0"/>
     <ROW Component="SignToolGUI_ContentOutput_Tools" ComponentId="{094A9CA1-9F10-4A0A-A4FB-C9FBE68DA3D6}" Directory_="Tools_Dir" Attributes="256" KeyPath="vcruntime140_threads.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
@@ -151,7 +154,7 @@
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
-    <ROW File="SignToolGUI.exe" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SIGNTO~1.EXE|[|AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_SignToolGUI.exe&gt;" SelfReg="false"/>
+    <ROW File="SignToolGUI.exe" Component_="AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe" FileName="SIGNTO~1.EXE|[|AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_SignToolGUI.exe&gt;" SelfReg="false"/>
     <ROW File="signtool.exe" Component_="SignToolGUI_ContentOutput_Tools" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_signtool.exe]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_signtool.exe&gt;" SelfReg="false"/>
     <ROW File="Azure.CodeSigning.Dlib.Core.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="AZUREC~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Azure.CodeSigning.Dlib.Core.dll&gt;" SelfReg="false"/>
     <ROW File="Azure.CodeSigning.Dlib.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="AZUREC~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Azure.CodeSigning.Dlib.dll&gt;" SelfReg="false"/>
@@ -315,6 +318,7 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCreateFolderComponent">
     <ROW Directory_="APPDIR" Component_="APPDIR" ManualDelete="true"/>
+    <ROW Directory_="SHORTCUTDIR" Component_="SHORTCUTDIR" ManualDelete="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCustActComponent">
     <ROW Action="AI_DOWNGRADE" Type="19" Target="4010"/>
@@ -338,6 +342,8 @@
     <ROW Feature_="MainFeature" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1"/>
     <ROW Feature_="MainFeature" Component_="AI_PROPPATH_FILENAME_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll"/>
     <ROW Feature_="MainFeature" Component_="AI_PROPPATH_FILENAME_PERBUILD_System.Text.Json.dll"/>
+    <ROW Feature_="MainFeature" Component_="AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe"/>
+    <ROW Feature_="MainFeature" Component_="SHORTCUTDIR"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
     <ROW Action="AI_DOWNGRADE" Condition="AI_NEWERPRODUCTFOUND AND (UILevel &lt;&gt; 5)" Sequence="210"/>
@@ -367,6 +373,9 @@
     <ROW Registry="ProductName" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="\"/>
     <ROW Registry="Software" Root="-1" Key="Software" Name="\"/>
     <ROW Registry="Version" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
+    <ROW Shortcut="AI_PROPPATH_FILENAME_PERBUILD_SignT" Directory_="SHORTCUTDIR" Name="SIGNTO~1.EXE|[|AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe]" Component_="AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe" Target="[#SignToolGUI.exe]" Hotkey="0" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">
     <ATTRIBUTE name="UsedTheme" value="classic"/>
