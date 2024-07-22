@@ -360,3 +360,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/AI Setup Project/AI Setup Project-cache
+/AI Setup Project/AI Setup Project-SetupFiles
