@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SECURITY.md = SECURITY.md
 	EndProjectSection
 EndProject
-Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "AI Setup Project", "AI Setup Project\AI Setup Project.aiproj", "{EED69928-407C-4C65-89A8-56244E46764D}"
+Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "SignToolGUI Installer", "AI Setup Project\SignToolGUI Installer.aiproj", "{EED69928-407C-4C65-89A8-56244E46764D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
