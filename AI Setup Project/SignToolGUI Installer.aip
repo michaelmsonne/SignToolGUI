@@ -375,7 +375,7 @@
     <ROW Registry="Version" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
-    <ROW Shortcut="AI_PROPPATH_FILENAME_PERBUILD_SignT" Directory_="SHORTCUTDIR" Name="SIGNTO~1.EXE|[|AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe]" Component_="AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe" Target="[#SignToolGUI.exe]" Hotkey="0" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
+    <ROW Shortcut="SignToolGUI" Directory_="SHORTCUTDIR" Name="SIGNTO~1|SignToolGUI" Component_="AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe" Target="[#SignToolGUI.exe]" Hotkey="0" IconIndex="0" ShowCmd="1"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">
     <ATTRIBUTE name="UsedTheme" value="classic"/>
@@ -385,7 +385,7 @@
     <ROW UpgradeCode="[|UpgradeCode]" VersionMin="[|ProductVersion]" Attributes="2" ActionProperty="AI_NEWERPRODUCTFOUND"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.VsProjectComponent">
-    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="PrimaryOutput" OutputFile="SignToolGUI.exe"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="PrimaryOutput" OutputFile="SignToolGUI.exe" OutputFileShortcut="SignToolGUI"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="signtool.exe"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Azure.CodeSigning.Dlib.Core.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Azure.CodeSigning.Dlib.dll"/>
