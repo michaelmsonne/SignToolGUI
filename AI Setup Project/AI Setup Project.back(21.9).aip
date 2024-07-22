@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DOCUMENT Type="Advanced Installer" CreateVersion="21.9" version="21.9" Modules="simple" RootPath="." Language="en" Id="{C91F2B90-326D-4B52-99AE-6996B4FA77F1}">
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
+    <ROW Property="AI_BITMAP_DISPLAY_MODE" Value="0"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.Dlib.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.Dlib.runtimeconfig.json" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Azure.Core.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Azure.Identity.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Ijwhost.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.IdentityModel.Abstractions.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_SignToolGUI.exe" Value="..\SignToolGUI\bin\Release"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_SplitButton.dll" Value="..\SignToolGUI\lib"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Buffers.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.ClientModel.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Memory.Data.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Memory.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Numerics.Vectors.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Security.Cryptography.ProtectedData.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Text.Encodings.Web.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Text.Json.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Threading.Tasks.Extensions.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.ValueTuple.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_concrt140.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140chs.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140cht.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140deu.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140enu.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140esn.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140fra.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140ita.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140jpn.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140kor.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140rus.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140u.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfcm140.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfcm140u.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_msvcp140.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_msvcp140_1.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_msvcp140_2.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_msvcp140_atomic_wait.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_msvcp140_codecvt_ids.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_signtool.exe" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_vcamp140.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_vccorlib140.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_vcomp140.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_vcruntime140.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_vcruntime140_1.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_vcruntime140_threads.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" Value="Azure.CodeSigning.Dlib.Core.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.dll" Value="Azure.CodeSigning.Dlib.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.runtimeconfig.json" Value="Azure.CodeSigning.Dlib.runtimeconfig.json"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.dll" Value="Azure.CodeSigning.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Azure.Core.dll" Value="Azure.Core.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Azure.Identity.dll" Value="Azure.Identity.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Ijwhost.dll" Value="Ijwhost.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll" Value="Microsoft.Bcl.AsyncInterfaces.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" Value="Microsoft.Bcl.AsyncInterfaces.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll" Value="Microsoft.Identity.Client.Extensions.Msal.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.dll" Value="Microsoft.Identity.Client.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.IdentityModel.Abstractions.dll" Value="Microsoft.IdentityModel.Abstractions.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe" Value="SignToolGUI.exe"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_SplitButton.dll" Value="SplitButton.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Buffers.dll" Value="System.Buffers.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.ClientModel.dll" Value="System.ClientModel.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Memory.Data.dll" Value="System.Memory.Data.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Memory.dll" Value="System.Memory.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Numerics.Vectors.dll" Value="System.Numerics.Vectors.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll" Value="System.Runtime.CompilerServices.Unsafe.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Security.Cryptography.ProtectedData.dll" Value="System.Security.Cryptography.ProtectedData.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Text.Encodings.Web.dll" Value="System.Text.Encodings.Web.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Text.Json.dll" Value="System.Text.Json.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Threading.Tasks.Extensions.dll" Value="System.Threading.Tasks.Extensions.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.ValueTuple.dll" Value="System.ValueTuple.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_concrt140.dll" Value="concrt140.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140.dll" Value="mfc140.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140chs.dll" Value="mfc140chs.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140cht.dll" Value="mfc140cht.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140deu.dll" Value="mfc140deu.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140enu.dll" Value="mfc140enu.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140esn.dll" Value="mfc140esn.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140fra.dll" Value="mfc140fra.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140ita.dll" Value="mfc140ita.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140jpn.dll" Value="mfc140jpn.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140kor.dll" Value="mfc140kor.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140rus.dll" Value="mfc140rus.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140u.dll" Value="mfc140u.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfcm140.dll" Value="mfcm140.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfcm140u.dll" Value="mfcm140u.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_msvcp140.dll" Value="msvcp140.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_msvcp140_1.dll" Value="msvcp140_1.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_msvcp140_2.dll" Value="msvcp140_2.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_msvcp140_atomic_wait.dll" Value="msvcp140_atomic_wait.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_msvcp140_codecvt_ids.dll" Value="msvcp140_codecvt_ids.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_signtool.exe" Value="signtool.exe"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_vcamp140.dll" Value="vcamp140.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_vccorlib140.dll" Value="vccorlib140.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_vcomp140.dll" Value="vcomp140.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_vcruntime140.dll" Value="vcruntime140.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_vcruntime140_1.dll" Value="vcruntime140_1.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_vcruntime140_threads.dll" Value="vcruntime140_threads.dll"/>
+    <ROW Property="ALLUSERS" Value="1"/>
+    <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName] v. [|ProductVersion]" ValueLocId="*"/>
+    <ROW Property="Manufacturer" Value="Michael Morten Sonne"/>
+    <ROW Property="ProductCode" Value="1033:{93801F8C-2AAC-45D9-9CC3-5F1C893B4D24} " Type="16"/>
+    <ROW Property="ProductLanguage" Value="1033"/>
+    <ROW Property="ProductName" Value="SignToolGUI"/>
+    <ROW Property="ProductVersion" Value="1.0.0" Options="32"/>
+    <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
+    <ROW Property="UpgradeCode" Value="{6F8F60D8-0325-4FA9-B18A-9EE2702C1232}"/>
+    <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
+    <ROW Property="WindowsType9XDisplay" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT40" MultiBuildValue="DefaultBuild:Windows NT 4.0" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT40Display" MultiBuildValue="DefaultBuild:Windows NT 4.0" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT50" MultiBuildValue="DefaultBuild:Windows 2000" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT50Display" MultiBuildValue="DefaultBuild:Windows 2000" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT5X" MultiBuildValue="DefaultBuild:Windows XP/2003" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT5XDisplay" MultiBuildValue="DefaultBuild:Windows XP/2003" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT60" MultiBuildValue="DefaultBuild:Windows Vista/Server 2008" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT60Display" MultiBuildValue="DefaultBuild:Windows Vista/Server 2008" ValueLocId="-"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
+    <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
+    <ROW Directory="SHORTCUTDIR" Directory_Parent="TARGETDIR" DefaultDir="SHORTC~1|SHORTCUTDIR" IsPseudoRoot="1"/>
+    <ROW Directory="SignToolGUI_Dir" Directory_Parent="APPDIR" DefaultDir="SIGNTO~1|SignToolGUI"/>
+    <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
+    <ROW Directory="Tools_Dir" Directory_Parent="SignToolGUI_Dir" DefaultDir="Tools"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.SideBySideGuidComponent">
+    <ROW Component="APPDIR" Value="{DC1B874D-F479-4017-9913-AADA8EB9284A}"/>
+    <ROW Component="ProductInformation" Value="{DC5ED17B-3307-429D-A3F3-94F2300D45EB}"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
+    <ROW Component="APPDIR" ComponentId="{DC1B874D-F479-4017-9913-AADA8EB9284A}" Directory_="APPDIR" Attributes="0"/>
+    <ROW Component="ProductInformation" ComponentId="{DC5ED17B-3307-429D-A3F3-94F2300D45EB}" Directory_="APPDIR" Attributes="260" KeyPath="Version"/>
+    <ROW Component="SHORTCUTDIR" ComponentId="{CD379557-CE5C-4A9C-BBEF-BCFE0EC87902}" Directory_="SHORTCUTDIR" Attributes="0"/>
+    <ROW Component="SignToolGUI_ContentOutput_Tools" ComponentId="{094A9CA1-9F10-4A0A-A4FB-C9FBE68DA3D6}" Directory_="Tools_Dir" Attributes="256" KeyPath="vcruntime140_threads.dll"/>
+    <ROW Component="SignToolGUI_PrimaryOutput" ComponentId="{9A7D8C94-F13A-4CE2-B743-209FB470F474}" Directory_="SignToolGUI_Dir" Attributes="0" KeyPath="SignToolGUI.exe"/>
+    <ROW Component="SignToolGUI_References" ComponentId="{E063D5FF-5AF3-4DF3-A70B-DDC71104E403}" Directory_="SignToolGUI_Dir" Attributes="0" KeyPath="System.Runtime.CompilerServices.Unsafe.dll"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
+    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0"/>
+    <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
+    <ROW File="SignToolGUI.exe" Component_="SignToolGUI_PrimaryOutput" FileName="SIGNTO~2.EXE|[|AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_SignToolGUI.exe&gt;" SelfReg="false"/>
+    <ROW File="signtool.exe" Component_="SignToolGUI_ContentOutput_Tools" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_signtool.exe]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_signtool.exe&gt;" SelfReg="false"/>
+    <ROW File="Azure.CodeSigning.Dlib.Core.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="AZUREC~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Azure.CodeSigning.Dlib.Core.dll&gt;" SelfReg="false"/>
+    <ROW File="Azure.CodeSigning.Dlib.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="AZUREC~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Azure.CodeSigning.Dlib.dll&gt;" SelfReg="false"/>
+    <ROW File="Azure.CodeSigning.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="AZUREC~4.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Azure.CodeSigning.dll&gt;" SelfReg="false"/>
+    <ROW File="Azure.Core.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="AZUREC~5.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Azure.Core.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Azure.Core.dll&gt;" SelfReg="false"/>
+    <ROW File="Azure.Identity.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="AZUREI~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Azure.Identity.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Azure.Identity.dll&gt;" SelfReg="false"/>
+    <ROW File="concrt140.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="CONCRT~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_concrt140.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_concrt140.dll&gt;" SelfReg="false"/>
+    <ROW File="Ijwhost.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_Ijwhost.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Ijwhost.dll&gt;" SelfReg="false"/>
+    <ROW File="mfc140.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_mfc140.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140.dll&gt;" SelfReg="false"/>
+    <ROW File="mfc140chs.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MFC140~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_mfc140chs.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140chs.dll&gt;" SelfReg="false"/>
+    <ROW File="mfc140cht.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MFC140~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_mfc140cht.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140cht.dll&gt;" SelfReg="false"/>
+    <ROW File="mfc140deu.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MFC140~4.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_mfc140deu.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140deu.dll&gt;" SelfReg="false"/>
+    <ROW File="mfc140enu.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MFC140~5.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_mfc140enu.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140enu.dll&gt;" SelfReg="false"/>
+    <ROW File="mfc140esn.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MFC140~6.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_mfc140esn.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140esn.dll&gt;" SelfReg="false"/>
+    <ROW File="mfc140fra.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MFC140~7.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_mfc140fra.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140fra.dll&gt;" SelfReg="false"/>
+    <ROW File="mfc140ita.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MFC140~8.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_mfc140ita.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140ita.dll&gt;" SelfReg="false"/>
+    <ROW File="mfc140jpn.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MFC140~9.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_mfc140jpn.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140jpn.dll&gt;" SelfReg="false"/>
+    <ROW File="mfc140kor.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MFC14~10.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_mfc140kor.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140kor.dll&gt;" SelfReg="false"/>
+    <ROW File="mfc140rus.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MFC14~11.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_mfc140rus.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140rus.dll&gt;" SelfReg="false"/>
+    <ROW File="mfc140u.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_mfc140u.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140u.dll&gt;" SelfReg="false"/>
+    <ROW File="mfcm140.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_mfcm140.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfcm140.dll&gt;" SelfReg="false"/>
+    <ROW File="mfcm140u.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_mfcm140u.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfcm140u.dll&gt;" SelfReg="false"/>
+    <ROW File="Microsoft.Bcl.AsyncInterfaces.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MICROS~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll&gt;" SelfReg="false"/>
+    <ROW File="Microsoft.Identity.Client.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MICROS~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Microsoft.Identity.Client.dll&gt;" SelfReg="false"/>
+    <ROW File="Microsoft.Identity.Client.Extensions.Msal.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MICROS~4.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll&gt;" SelfReg="false"/>
+    <ROW File="Microsoft.IdentityModel.Abstractions.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MICROS~5.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.IdentityModel.Abstractions.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Microsoft.IdentityModel.Abstractions.dll&gt;" SelfReg="false"/>
+    <ROW File="msvcp140.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_msvcp140.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_msvcp140.dll&gt;" SelfReg="false"/>
+    <ROW File="msvcp140_1.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MSVCP1~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_msvcp140_1.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_msvcp140_1.dll&gt;" SelfReg="false"/>
+    <ROW File="msvcp140_2.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MSVCP1~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_msvcp140_2.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_msvcp140_2.dll&gt;" SelfReg="false"/>
+    <ROW File="msvcp140_atomic_wait.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MSVCP1~4.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_msvcp140_atomic_wait.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_msvcp140_atomic_wait.dll&gt;" SelfReg="false"/>
+    <ROW File="msvcp140_codecvt_ids.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="MSVCP1~5.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_msvcp140_codecvt_ids.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_msvcp140_codecvt_ids.dll&gt;" SelfReg="false"/>
+    <ROW File="System.ClientModel.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="SYSTEM~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.ClientModel.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.ClientModel.dll&gt;" SelfReg="false"/>
+    <ROW File="System.Memory.Data.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="SYSTEM~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Memory.Data.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Memory.Data.dll&gt;" SelfReg="false"/>
+    <ROW File="System.Security.Cryptography.ProtectedData.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="SYSTEM~4.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Security.Cryptography.ProtectedData.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Security.Cryptography.ProtectedData.dll&gt;" SelfReg="false"/>
+    <ROW File="vcamp140.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_vcamp140.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_vcamp140.dll&gt;" SelfReg="false"/>
+    <ROW File="vccorlib140.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="VCCORL~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_vccorlib140.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_vccorlib140.dll&gt;" SelfReg="false"/>
+    <ROW File="vcomp140.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_vcomp140.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_vcomp140.dll&gt;" SelfReg="false"/>
+    <ROW File="vcruntime140.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="VCRUNT~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_vcruntime140.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_vcruntime140.dll&gt;" SelfReg="false"/>
+    <ROW File="vcruntime140_1.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="VCRUNT~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_vcruntime140_1.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_vcruntime140_1.dll&gt;" SelfReg="false"/>
+    <ROW File="vcruntime140_threads.dll" Component_="SignToolGUI_ContentOutput_Tools" FileName="VCRUNT~4.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_vcruntime140_threads.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_vcruntime140_threads.dll&gt;" SelfReg="false"/>
+    <ROW File="Azure.CodeSigning.Dlib.runtimeconfig.json" Component_="SignToolGUI_ContentOutput_Tools" FileName="AZUREC~2.JSO|[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.runtimeconfig.json]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Azure.CodeSigning.Dlib.runtimeconfig.json&gt;" SelfReg="false"/>
+    <ROW File="SplitButton.dll" Component_="SignToolGUI_References" FileName="SPLITB~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_SplitButton.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_SplitButton.dll&gt;" SelfReg="false"/>
+    <ROW File="System.Text.Json.dll" Component_="SignToolGUI_References" FileName="SYSTEM~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Text.Json.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Text.Json.dll&gt;" SelfReg="false"/>
+    <ROW File="System.Memory.dll" Component_="SignToolGUI_References" FileName="SYSTEM~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Memory.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Memory.dll&gt;" SelfReg="false"/>
+    <ROW File="System.ValueTuple.dll" Component_="SignToolGUI_References" FileName="SYSTEM~4.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.ValueTuple.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.ValueTuple.dll&gt;" SelfReg="false"/>
+    <ROW File="System.Text.Encodings.Web.dll" Component_="SignToolGUI_References" FileName="SYSTEM~5.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Text.Encodings.Web.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Text.Encodings.Web.dll&gt;" SelfReg="false"/>
+    <ROW File="System.Numerics.Vectors.dll" Component_="SignToolGUI_References" FileName="SYSTEM~6.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Numerics.Vectors.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Numerics.Vectors.dll&gt;" SelfReg="false"/>
+    <ROW File="System.Threading.Tasks.Extensions.dll" Component_="SignToolGUI_References" FileName="SYSTEM~7.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Threading.Tasks.Extensions.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Threading.Tasks.Extensions.dll&gt;" SelfReg="false"/>
+    <ROW File="Microsoft.Bcl.AsyncInterfaces.dll_1" Component_="SignToolGUI_References" FileName="MICROS~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1&gt;" SelfReg="false"/>
+    <ROW File="System.Buffers.dll" Component_="SignToolGUI_References" FileName="SYSTEM~8.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Buffers.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Buffers.dll&gt;" SelfReg="false"/>
+    <ROW File="System.Runtime.CompilerServices.Unsafe.dll" Component_="SignToolGUI_References" FileName="SYSTEM~9.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll&gt;" SelfReg="false"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.AppPathsComponent">
+    <ROW Name="AI_APPPATH_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.Dlib.Core.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Azure.CodeSigning.Dlib.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.Dlib.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Azure.CodeSigning.Dlib.runtimeconfig.json" Path="[|AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.Dlib.runtimeconfig.json]\[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.runtimeconfig.json]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Azure.CodeSigning.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Azure.Core.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Azure.Core.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Azure.Core.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Azure.Identity.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Azure.Identity.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Azure.Identity.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Ijwhost.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Ijwhost.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Ijwhost.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Microsoft.Identity.Client.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Microsoft.IdentityModel.Abstractions.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Microsoft.IdentityModel.Abstractions.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.IdentityModel.Abstractions.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_SignToolGUI.exe" Path="[|AI_PROPPATH_DIR_PERBUILD_SignToolGUI.exe]\[|AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_SplitButton.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_SplitButton.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_SplitButton.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_System.Buffers.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Buffers.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Buffers.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_System.ClientModel.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.ClientModel.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.ClientModel.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_System.Memory.Data.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Memory.Data.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Memory.Data.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_System.Memory.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Memory.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Memory.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_System.Numerics.Vectors.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Numerics.Vectors.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Numerics.Vectors.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_System.Security.Cryptography.ProtectedData.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Security.Cryptography.ProtectedData.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Security.Cryptography.ProtectedData.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_System.Text.Encodings.Web.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Text.Encodings.Web.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Text.Encodings.Web.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_System.Text.Json.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Text.Json.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Text.Json.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_System.Threading.Tasks.Extensions.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Threading.Tasks.Extensions.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Threading.Tasks.Extensions.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_System.ValueTuple.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.ValueTuple.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.ValueTuple.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_concrt140.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_concrt140.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_concrt140.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfc140.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfc140chs.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140chs.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140chs.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfc140cht.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140cht.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140cht.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfc140deu.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140deu.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140deu.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfc140enu.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140enu.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140enu.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfc140esn.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140esn.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140esn.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfc140fra.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140fra.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140fra.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfc140ita.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140ita.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140ita.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfc140jpn.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140jpn.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140jpn.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfc140kor.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140kor.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140kor.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfc140rus.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140rus.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140rus.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfc140u.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140u.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140u.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfcm140.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfcm140.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfcm140.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_mfcm140u.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfcm140u.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfcm140u.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_msvcp140.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_msvcp140.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_msvcp140.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_msvcp140_1.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_msvcp140_1.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_msvcp140_1.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_msvcp140_2.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_msvcp140_2.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_msvcp140_2.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_msvcp140_atomic_wait.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_msvcp140_atomic_wait.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_msvcp140_atomic_wait.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_msvcp140_codecvt_ids.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_msvcp140_codecvt_ids.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_msvcp140_codecvt_ids.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_signtool.exe" Path="[|AI_PROPPATH_DIR_PERBUILD_signtool.exe]\[|AI_PROPPATH_FILENAME_PERBUILD_signtool.exe]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_vcamp140.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_vcamp140.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_vcamp140.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_vccorlib140.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_vccorlib140.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_vccorlib140.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_vcomp140.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_vcomp140.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_vcomp140.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_vcruntime140.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_vcruntime140.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_vcruntime140.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_vcruntime140_1.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_vcruntime140_1.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_vcruntime140_1.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_vcruntime140_threads.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_vcruntime140_threads.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_vcruntime140_threads.dll]" Type="2" Content="0"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
+    <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" Languages="en" InstallationType="4" SummInfoMetadata="Page Count:450" UseLargeSchema="true" MsiPackageType="x64"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.DictionaryComponent">
+    <ROW Path="&lt;AI_DICTS&gt;ui.ail"/>
+    <ROW Path="&lt;AI_DICTS&gt;ui_en.ail"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.FragmentComponent">
+    <ROW Fragment="CommonUI.aip" Path="&lt;AI_FRAGS&gt;CommonUI.aip"/>
+    <ROW Fragment="FolderDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\FolderDlg.aip"/>
+    <ROW Fragment="MaintenanceTypeDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\MaintenanceTypeDlg.aip"/>
+    <ROW Fragment="MaintenanceWelcomeDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\MaintenanceWelcomeDlg.aip"/>
+    <ROW Fragment="SequenceDialogs.aip" Path="&lt;AI_THEMES&gt;classic\fragments\SequenceDialogs.aip"/>
+    <ROW Fragment="Sequences.aip" Path="&lt;AI_FRAGS&gt;Sequences.aip"/>
+    <ROW Fragment="StaticUIStrings.aip" Path="&lt;AI_FRAGS&gt;StaticUIStrings.aip"/>
+    <ROW Fragment="Themes.aip" Path="&lt;AI_FRAGS&gt;Themes.aip"/>
+    <ROW Fragment="UI.aip" Path="&lt;AI_THEMES&gt;classic\fragments\UI.aip"/>
+    <ROW Fragment="Validation.aip" Path="&lt;AI_FRAGS&gt;Validation.aip"/>
+    <ROW Fragment="VerifyRemoveDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\VerifyRemoveDlg.aip"/>
+    <ROW Fragment="VerifyRepairDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\VerifyRepairDlg.aip"/>
+    <ROW Fragment="WelcomeDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\WelcomeDlg.aip"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiBinaryComponent">
+    <ROW Name="aicustact.dll" SourcePath="&lt;AI_CUSTACTS&gt;aicustact.dll"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiControlEventComponent">
+    <ROW Dialog_="WelcomeDlg" Control_="Next" Event="NewDialog" Argument="FolderDlg" Condition="AI_INSTALL" Ordering="1"/>
+    <ROW Dialog_="FolderDlg" Control_="Next" Event="NewDialog" Argument="VerifyReadyDlg" Condition="AI_INSTALL" Ordering="201"/>
+    <ROW Dialog_="FolderDlg" Control_="Back" Event="NewDialog" Argument="WelcomeDlg" Condition="AI_INSTALL" Ordering="1"/>
+    <ROW Dialog_="MaintenanceWelcomeDlg" Control_="Next" Event="NewDialog" Argument="MaintenanceTypeDlg" Condition="AI_MAINT" Ordering="99"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Install" Event="EndDialog" Argument="Return" Condition="AI_MAINT" Ordering="198"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Back" Event="NewDialog" Argument="CustomizeDlg" Condition="AI_MAINT" Ordering="202"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Install" Event="EndDialog" Argument="Return" Condition="AI_INSTALL" Ordering="197"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Back" Event="NewDialog" Argument="FolderDlg" Condition="AI_INSTALL" Ordering="201"/>
+    <ROW Dialog_="CustomizeDlg" Control_="Next" Event="NewDialog" Argument="VerifyReadyDlg" Condition="AI_MAINT" Ordering="101"/>
+    <ROW Dialog_="CustomizeDlg" Control_="Back" Event="NewDialog" Argument="MaintenanceTypeDlg" Condition="AI_MAINT" Ordering="1"/>
+    <ROW Dialog_="MaintenanceTypeDlg" Control_="ChangeButton" Event="NewDialog" Argument="CustomizeDlg" Condition="AI_MAINT" Ordering="501"/>
+    <ROW Dialog_="MaintenanceTypeDlg" Control_="Back" Event="NewDialog" Argument="MaintenanceWelcomeDlg" Condition="AI_MAINT" Ordering="1"/>
+    <ROW Dialog_="MaintenanceTypeDlg" Control_="RemoveButton" Event="NewDialog" Argument="VerifyRemoveDlg" Condition="AI_MAINT AND InstallMode=&quot;Remove&quot;" Ordering="601"/>
+    <ROW Dialog_="VerifyRemoveDlg" Control_="Back" Event="NewDialog" Argument="MaintenanceTypeDlg" Condition="AI_MAINT AND InstallMode=&quot;Remove&quot;" Ordering="1"/>
+    <ROW Dialog_="MaintenanceTypeDlg" Control_="RepairButton" Event="NewDialog" Argument="VerifyRepairDlg" Condition="AI_MAINT AND InstallMode=&quot;Repair&quot;" Ordering="601"/>
+    <ROW Dialog_="VerifyRepairDlg" Control_="Back" Event="NewDialog" Argument="MaintenanceTypeDlg" Condition="AI_MAINT AND InstallMode=&quot;Repair&quot;" Ordering="1"/>
+    <ROW Dialog_="VerifyRepairDlg" Control_="Repair" Event="EndDialog" Argument="Return" Condition="AI_MAINT AND InstallMode=&quot;Repair&quot;" Ordering="399" Options="1"/>
+    <ROW Dialog_="VerifyRemoveDlg" Control_="Remove" Event="EndDialog" Argument="Return" Condition="AI_MAINT AND InstallMode=&quot;Remove&quot;" Ordering="299" Options="1"/>
+    <ROW Dialog_="PatchWelcomeDlg" Control_="Next" Event="NewDialog" Argument="VerifyReadyDlg" Condition="AI_PATCH" Ordering="201"/>
+    <ROW Dialog_="ResumeDlg" Control_="Install" Event="EndDialog" Argument="Return" Condition="AI_RESUME" Ordering="299"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Install" Event="EndDialog" Argument="Return" Condition="AI_PATCH" Ordering="199"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Back" Event="NewDialog" Argument="PatchWelcomeDlg" Condition="AI_PATCH" Ordering="203"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiCreateFolderComponent">
+    <ROW Directory_="APPDIR" Component_="APPDIR" ManualDelete="true"/>
+    <ROW Directory_="SHORTCUTDIR" Component_="SHORTCUTDIR" ManualDelete="false"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiCustActComponent">
+    <ROW Action="AI_DOWNGRADE" Type="19" Target="4010"/>
+    <ROW Action="AI_DpiContentScale" Type="1" Source="aicustact.dll" Target="DpiContentScale"/>
+    <ROW Action="AI_EnableDebugLog" Type="321" Source="aicustact.dll" Target="EnableDebugLog"/>
+    <ROW Action="AI_InstallModeCheck" Type="1" Source="aicustact.dll" Target="UpdateInstallMode" WithoutSeq="true"/>
+    <ROW Action="AI_PREPARE_UPGRADE" Type="65" Source="aicustact.dll" Target="PrepareUpgrade"/>
+    <ROW Action="AI_PRESERVE_INSTALL_TYPE" Type="65" Source="aicustact.dll" Target="PreserveInstallType"/>
+    <ROW Action="AI_RESTORE_LOCATION" Type="65" Source="aicustact.dll" Target="RestoreLocation"/>
+    <ROW Action="AI_ResolveKnownFolders" Type="1" Source="aicustact.dll" Target="AI_ResolveKnownFolders"/>
+    <ROW Action="AI_SHOW_LOG" Type="65" Source="aicustact.dll" Target="LaunchLogFile" WithoutSeq="true"/>
+    <ROW Action="AI_STORE_LOCATION" Type="51" Source="ARPINSTALLLOCATION" Target="[APPDIR]"/>
+    <ROW Action="SET_APPDIR" Type="307" Source="APPDIR" Target="[ProgramFilesFolder][Manufacturer]\[ProductName]" MultiBuildTarget="DefaultBuild:[ProgramFiles64Folder][Manufacturer]\[ProductName]"/>
+    <ROW Action="SET_SHORTCUTDIR" Type="307" Source="SHORTCUTDIR" Target="[ProgramMenuFolder][ProductName]"/>
+    <ROW Action="SET_TARGETDIR_TO_APPDIR" Type="51" Source="TARGETDIR" Target="[APPDIR]"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatCompsComponent">
+    <ROW Feature_="MainFeature" Component_="APPDIR"/>
+    <ROW Feature_="MainFeature" Component_="ProductInformation"/>
+    <ROW Feature_="MainFeature" Component_="SignToolGUI_PrimaryOutput"/>
+    <ROW Feature_="MainFeature" Component_="SHORTCUTDIR"/>
+    <ROW Feature_="MainFeature" Component_="SignToolGUI_ContentOutput_Tools"/>
+    <ROW Feature_="MainFeature" Component_="SignToolGUI_References"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
+    <ROW Action="AI_DOWNGRADE" Condition="AI_NEWERPRODUCTFOUND AND (UILevel &lt;&gt; 5)" Sequence="210"/>
+    <ROW Action="AI_RESTORE_LOCATION" Condition="APPDIR=&quot;&quot;" Sequence="749"/>
+    <ROW Action="AI_STORE_LOCATION" Condition="(Not Installed) OR REINSTALL" Sequence="1501"/>
+    <ROW Action="AI_PREPARE_UPGRADE" Condition="AI_UPGRADE=&quot;No&quot; AND (Not Installed)" Sequence="1399"/>
+    <ROW Action="AI_ResolveKnownFolders" Sequence="52"/>
+    <ROW Action="AI_EnableDebugLog" Sequence="51"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiInstallUISequenceComponent">
+    <ROW Action="AI_PRESERVE_INSTALL_TYPE" Sequence="199"/>
+    <ROW Action="AI_RESTORE_LOCATION" Condition="APPDIR=&quot;&quot;" Sequence="749"/>
+    <ROW Action="AI_ResolveKnownFolders" Sequence="53"/>
+    <ROW Action="AI_DpiContentScale" Sequence="52"/>
+    <ROW Action="AI_EnableDebugLog" Sequence="51"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiLaunchConditionsComponent">
+    <ROW Condition="((VersionNT &lt;&gt; 501) AND (VersionNT &lt;&gt; 502))" Description="[ProductName] cannot be installed on [WindowsTypeNT5XDisplay]." DescriptionLocId="AI.LaunchCondition.NoNT5X" IsPredefined="true" Builds="DefaultBuild"/>
+    <ROW Condition="(VersionNT &lt;&gt; 400)" Description="[ProductName] cannot be installed on [WindowsTypeNT40Display]." DescriptionLocId="AI.LaunchCondition.NoNT40" IsPredefined="true" Builds="DefaultBuild"/>
+    <ROW Condition="(VersionNT &lt;&gt; 500)" Description="[ProductName] cannot be installed on [WindowsTypeNT50Display]." DescriptionLocId="AI.LaunchCondition.NoNT50" IsPredefined="true" Builds="DefaultBuild"/>
+    <ROW Condition="(VersionNT &lt;&gt; 600)" Description="[ProductName] cannot be installed on [WindowsTypeNT60Display]." DescriptionLocId="AI.LaunchCondition.NoNT60" IsPredefined="true" Builds="DefaultBuild"/>
+    <ROW Condition="VersionNT" Description="[ProductName] cannot be installed on [WindowsType9XDisplay]." DescriptionLocId="AI.LaunchCondition.No9X" IsPredefined="true" Builds="DefaultBuild"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiRegsComponent">
+    <ROW Registry="Manufacturer" Root="-1" Key="Software\[Manufacturer]" Name="\"/>
+    <ROW Registry="Path" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Path" Value="[APPDIR]" Component_="ProductInformation"/>
+    <ROW Registry="ProductName" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="\"/>
+    <ROW Registry="Software" Root="-1" Key="Software" Name="\"/>
+    <ROW Registry="Version" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
+    <ROW Shortcut="SignToolGUI" Directory_="SHORTCUTDIR" Name="SIGNTO~1|SignToolGUI" Component_="SignToolGUI_PrimaryOutput" Target="[#SignToolGUI.exe]" Hotkey="0" IconIndex="0" ShowCmd="1"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">
+    <ATTRIBUTE name="UsedTheme" value="classic"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiUpgradeComponent">
+    <ROW UpgradeCode="[|UpgradeCode]" VersionMin="0.0.1" VersionMax="[|ProductVersion]" Attributes="257" ActionProperty="OLDPRODUCTS"/>
+    <ROW UpgradeCode="[|UpgradeCode]" VersionMin="[|ProductVersion]" Attributes="2" ActionProperty="AI_NEWERPRODUCTFOUND"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.VsProjectComponent">
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="PrimaryOutput" OutputFile="SignToolGUI.exe" OutputFileShortcut="SignToolGUI"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="signtool.exe"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Azure.CodeSigning.Dlib.Core.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Azure.CodeSigning.Dlib.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Azure.CodeSigning.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Azure.Core.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Azure.Identity.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="concrt140.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Ijwhost.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140chs.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140cht.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140deu.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140enu.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140esn.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140fra.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140ita.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140jpn.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140kor.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140rus.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140u.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfcm140.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfcm140u.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Microsoft.Bcl.AsyncInterfaces.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Microsoft.Identity.Client.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Microsoft.Identity.Client.Extensions.Msal.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Microsoft.IdentityModel.Abstractions.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="msvcp140.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="msvcp140_1.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="msvcp140_2.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="msvcp140_atomic_wait.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="msvcp140_codecvt_ids.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="System.ClientModel.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="System.Memory.Data.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="System.Security.Cryptography.ProtectedData.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="vcamp140.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="vccorlib140.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="vcomp140.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="vcruntime140.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="vcruntime140_1.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="vcruntime140_threads.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Azure.CodeSigning.Dlib.runtimeconfig.json"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="SplitButton.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Text.Json.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Memory.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.ValueTuple.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Text.Encodings.Web.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Numerics.Vectors.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Threading.Tasks.Extensions.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="Microsoft.Bcl.AsyncInterfaces.dll_1"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Buffers.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Runtime.CompilerServices.Unsafe.dll"/>
+  </COMPONENT>
+</DOCUMENT>
