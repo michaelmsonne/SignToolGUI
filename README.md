@@ -86,7 +86,7 @@ Main tool GUI
 - Build the solution in Visual Studio
 
 ### Installation
-You can either clone this repository and build the project yourself or via provided installer (soon...).
+You can either clone this repository and build the project yourself or via provided installer.
 
 ## Usage
 
