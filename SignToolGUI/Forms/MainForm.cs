@@ -1720,6 +1720,11 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                     ? GetCertificatesFromStore(StoreLocation.LocalMachine)
                     : GetCertificatesFromStore(StoreLocation.CurrentUser);
 
+                // Filter certificates to only include those with a private key and for code signing.
+                _signingCerts = new X509Certificate2Collection(_signingCerts.Cast<X509Certificate2>()
+                    .Where(cert => cert.HasPrivateKey && cert.Extensions.OfType<X509EnhancedKeyUsageExtension>()
+                    .Any(ext => ext.EnhancedKeyUsages.Cast<Oid>().Any(oid => oid.Value == "1.3.6.1.5.5.7.3.3"))).ToArray());
+
                 // Remember the previously selected certificate, if any.
                 string previousSelection = comboBoxCertificatesInStore.SelectedIndex > 0
                     ? comboBoxCertificatesInStore.SelectedItem.ToString()

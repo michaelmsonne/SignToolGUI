@@ -512,7 +512,7 @@
             this.groupBoxWindowsCertificateStore.Size = new System.Drawing.Size(379, 81);
             this.groupBoxWindowsCertificateStore.TabIndex = 11;
             this.groupBoxWindowsCertificateStore.TabStop = false;
-            this.groupBoxWindowsCertificateStore.Text = "Certificates Available in Windows Certificate Store";
+            this.groupBoxWindowsCertificateStore.Text = "Code Sign certificates available in Windows Certificate Store";
             // 
             // statusBar
             // 
