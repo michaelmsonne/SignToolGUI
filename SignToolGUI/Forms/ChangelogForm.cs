@@ -19,7 +19,9 @@ namespace SignToolGUI.Forms
         private void PopulateChangelog()
         {
             // Changelog content
-            var changelogContent = "Version 1.3 (18-07-2024):\n" +
+            var changelogContent = "Version 1.3.1\n" +
+                                   "- Changed so only Code Sign certificated with a private key is showed in the tool to select.\n\n" +
+                                   "Version 1.3 (18-07-2024):\n" +
                                    "- Add support for Microsoft Trusted Signing\n" +
                                    "- Add check for if tool is code signed (via Windows API, valid or valid with my Code Signing Certificate via Thumbprint hosted on GitHub)\n" +
                                    "- Add multiple timestamp servers" +
