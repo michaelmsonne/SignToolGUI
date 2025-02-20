@@ -21,7 +21,6 @@ namespace SignToolGUI.Forms
         public static string ConfigIniPath = Files.ConfigIniPath;
         private X509Certificate2Collection _signingCerts = new X509Certificate2Collection();
         public string ThumbprintFromCertToSign;
-        public new string Text;
         private string _previousSignToolPath; // Class-level variable to store the previous textBoxSignToolPath value
         private int _totalJob; //total files in job
         private int _totalSigned; //number of files signed total
@@ -506,6 +505,8 @@ namespace SignToolGUI.Forms
         {
             // Set the status label's Text property to the application's name and version
             statusLabel.Text = @"[INFO] Welcome to " + Application.ProductName + @" v." + Application.ProductVersion;
+
+            this.Text = Application.ProductName + @" v." + Application.ProductVersion;
 
             // Perform an interface check to ensure the application is in a correct state.
             InterfaceCheck();
