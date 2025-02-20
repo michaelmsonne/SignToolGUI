@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.buttonBrowseSignTool = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -88,6 +89,8 @@
             this.textBoxCodeSigningAccountName = new System.Windows.Forms.TextBox();
             this.radioButtonTrustedSigning = new System.Windows.Forms.RadioButton();
             this.labelSignedBuildState = new System.Windows.Forms.Label();
+            this.linkLabelOpenTrustedSigningPortal = new System.Windows.Forms.LinkLabel();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBoxFiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxCertificateInformation.SuspendLayout();
@@ -333,7 +336,7 @@
             // 
             this.labelCertificateInformation.Location = new System.Drawing.Point(8, 17);
             this.labelCertificateInformation.Name = "labelCertificateInformation";
-            this.labelCertificateInformation.Size = new System.Drawing.Size(262, 215);
+            this.labelCertificateInformation.Size = new System.Drawing.Size(273, 215);
             this.labelCertificateInformation.TabIndex = 0;
             this.labelCertificateInformation.Text = "Information...";
             // 
@@ -376,14 +379,14 @@
             this.comboBoxCertificatesInStore.FormattingEnabled = true;
             this.comboBoxCertificatesInStore.Location = new System.Drawing.Point(9, 52);
             this.comboBoxCertificatesInStore.Name = "comboBoxCertificatesInStore";
-            this.comboBoxCertificatesInStore.Size = new System.Drawing.Size(293, 21);
+            this.comboBoxCertificatesInStore.Size = new System.Drawing.Size(291, 21);
             this.comboBoxCertificatesInStore.TabIndex = 3;
             this.comboBoxCertificatesInStore.SelectedIndexChanged += new System.EventHandler(this.ComboBoxCertificates_SelectedIndexChanged);
             // 
             // buttonShowSigninigCertificateStore
             // 
             this.buttonShowSigninigCertificateStore.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonShowSigninigCertificateStore.Location = new System.Drawing.Point(308, 50);
+            this.buttonShowSigninigCertificateStore.Location = new System.Drawing.Point(302, 50);
             this.buttonShowSigninigCertificateStore.Name = "buttonShowSigninigCertificateStore";
             this.buttonShowSigninigCertificateStore.Size = new System.Drawing.Size(65, 23);
             this.buttonShowSigninigCertificateStore.TabIndex = 4;
@@ -394,9 +397,9 @@
             // groupBoxCertificateInformation
             // 
             this.groupBoxCertificateInformation.Controls.Add(this.labelCertificateInformation);
-            this.groupBoxCertificateInformation.Location = new System.Drawing.Point(398, 55);
+            this.groupBoxCertificateInformation.Location = new System.Drawing.Point(392, 55);
             this.groupBoxCertificateInformation.Name = "groupBoxCertificateInformation";
-            this.groupBoxCertificateInformation.Size = new System.Drawing.Size(276, 235);
+            this.groupBoxCertificateInformation.Size = new System.Drawing.Size(282, 235);
             this.groupBoxCertificateInformation.TabIndex = 14;
             this.groupBoxCertificateInformation.TabStop = false;
             this.groupBoxCertificateInformation.Text = "Certificate Information";
@@ -444,7 +447,7 @@
             this.textBoxPFXFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxPFXFile.Location = new System.Drawing.Point(46, 22);
             this.textBoxPFXFile.Name = "textBoxPFXFile";
-            this.textBoxPFXFile.Size = new System.Drawing.Size(327, 20);
+            this.textBoxPFXFile.Size = new System.Drawing.Size(321, 20);
             this.textBoxPFXFile.TabIndex = 1;
             this.textBoxPFXFile.TextChanged += new System.EventHandler(this.textBoxPFXFile_TextChanged);
             // 
@@ -484,7 +487,7 @@
             this.groupBoxPFXCertificate.Enabled = false;
             this.groupBoxPFXCertificate.Location = new System.Drawing.Point(13, 55);
             this.groupBoxPFXCertificate.Name = "groupBoxPFXCertificate";
-            this.groupBoxPFXCertificate.Size = new System.Drawing.Size(379, 87);
+            this.groupBoxPFXCertificate.Size = new System.Drawing.Size(373, 87);
             this.groupBoxPFXCertificate.TabIndex = 13;
             this.groupBoxPFXCertificate.TabStop = false;
             this.groupBoxPFXCertificate.Text = "Certificate File";
@@ -492,7 +495,7 @@
             // buttonShowSigninigCertificatePFX
             // 
             this.buttonShowSigninigCertificatePFX.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonShowSigninigCertificatePFX.Location = new System.Drawing.Point(247, 51);
+            this.buttonShowSigninigCertificatePFX.Location = new System.Drawing.Point(241, 50);
             this.buttonShowSigninigCertificatePFX.Name = "buttonShowSigninigCertificatePFX";
             this.buttonShowSigninigCertificatePFX.Size = new System.Drawing.Size(126, 23);
             this.buttonShowSigninigCertificatePFX.TabIndex = 4;
@@ -509,7 +512,7 @@
             this.groupBoxWindowsCertificateStore.Controls.Add(this.buttonShowSigninigCertificateStore);
             this.groupBoxWindowsCertificateStore.Location = new System.Drawing.Point(13, 173);
             this.groupBoxWindowsCertificateStore.Name = "groupBoxWindowsCertificateStore";
-            this.groupBoxWindowsCertificateStore.Size = new System.Drawing.Size(379, 81);
+            this.groupBoxWindowsCertificateStore.Size = new System.Drawing.Size(373, 81);
             this.groupBoxWindowsCertificateStore.TabIndex = 11;
             this.groupBoxWindowsCertificateStore.TabStop = false;
             this.groupBoxWindowsCertificateStore.Text = "Code Sign certificates available in Windows Certificate Store";
@@ -566,9 +569,9 @@
             this.groupBoxTimestamp.Controls.Add(this.labelTimestampProvider);
             this.groupBoxTimestamp.Controls.Add(this.comboBoxTimestampProviders);
             this.groupBoxTimestamp.Controls.Add(this.labelTimeStampServer);
-            this.groupBoxTimestamp.Location = new System.Drawing.Point(398, 349);
+            this.groupBoxTimestamp.Location = new System.Drawing.Point(392, 349);
             this.groupBoxTimestamp.Name = "groupBoxTimestamp";
-            this.groupBoxTimestamp.Size = new System.Drawing.Size(276, 75);
+            this.groupBoxTimestamp.Size = new System.Drawing.Size(282, 75);
             this.groupBoxTimestamp.TabIndex = 19;
             this.groupBoxTimestamp.TabStop = false;
             this.groupBoxTimestamp.Text = "Timestamp";
@@ -611,9 +614,9 @@
             // 
             this.groupBoxSignTool.Controls.Add(this.buttonBrowseSignTool);
             this.groupBoxSignTool.Controls.Add(this.textBoxSignToolPath);
-            this.groupBoxSignTool.Location = new System.Drawing.Point(398, 296);
+            this.groupBoxSignTool.Location = new System.Drawing.Point(392, 296);
             this.groupBoxSignTool.Name = "groupBoxSignTool";
-            this.groupBoxSignTool.Size = new System.Drawing.Size(276, 47);
+            this.groupBoxSignTool.Size = new System.Drawing.Size(282, 47);
             this.groupBoxSignTool.TabIndex = 20;
             this.groupBoxSignTool.TabStop = false;
             this.groupBoxSignTool.Text = "Signtool";
@@ -629,7 +632,7 @@
             this.groupBoxTrustedSigningMetadata.Enabled = false;
             this.groupBoxTrustedSigningMetadata.Location = new System.Drawing.Point(13, 286);
             this.groupBoxTrustedSigningMetadata.Name = "groupBoxTrustedSigningMetadata";
-            this.groupBoxTrustedSigningMetadata.Size = new System.Drawing.Size(379, 106);
+            this.groupBoxTrustedSigningMetadata.Size = new System.Drawing.Size(373, 106);
             this.groupBoxTrustedSigningMetadata.TabIndex = 23;
             this.groupBoxTrustedSigningMetadata.TabStop = false;
             this.groupBoxTrustedSigningMetadata.Text = "Trusted Signing account";
@@ -665,22 +668,26 @@
             // 
             this.textBoxCorrelationId.Location = new System.Drawing.Point(127, 69);
             this.textBoxCorrelationId.Name = "textBoxCorrelationId";
-            this.textBoxCorrelationId.Size = new System.Drawing.Size(246, 20);
+            this.textBoxCorrelationId.Size = new System.Drawing.Size(240, 20);
             this.textBoxCorrelationId.TabIndex = 2;
+            this.toolTip.SetToolTip(this.textBoxCorrelationId, "(Optional) Enter a unique identifier to track and link related requests");
             // 
             // textBoxCertificateProfileName
             // 
             this.textBoxCertificateProfileName.Location = new System.Drawing.Point(127, 43);
             this.textBoxCertificateProfileName.Name = "textBoxCertificateProfileName";
-            this.textBoxCertificateProfileName.Size = new System.Drawing.Size(246, 20);
+            this.textBoxCertificateProfileName.Size = new System.Drawing.Size(240, 20);
             this.textBoxCertificateProfileName.TabIndex = 1;
+            this.toolTip.SetToolTip(this.textBoxCertificateProfileName, "The name of the Certificate Profile in the Trusted Signing Account to be used (re" +
+        "quires the Trusted Signing Certificate Profile Signer role)");
             // 
             // textBoxCodeSigningAccountName
             // 
             this.textBoxCodeSigningAccountName.Location = new System.Drawing.Point(127, 17);
             this.textBoxCodeSigningAccountName.Name = "textBoxCodeSigningAccountName";
-            this.textBoxCodeSigningAccountName.Size = new System.Drawing.Size(246, 20);
+            this.textBoxCodeSigningAccountName.Size = new System.Drawing.Size(240, 20);
             this.textBoxCodeSigningAccountName.TabIndex = 0;
+            this.toolTip.SetToolTip(this.textBoxCodeSigningAccountName, "The name of the Trusted Signing Account that will be used for signing");
             // 
             // radioButtonTrustedSigning
             // 
@@ -703,12 +710,27 @@
             this.labelSignedBuildState.TabIndex = 25;
             this.labelSignedBuildState.Text = "SignedBuild";
             // 
+            // linkLabelOpenTrustedSigningPortal
+            // 
+            this.linkLabelOpenTrustedSigningPortal.AutoSize = true;
+            this.linkLabelOpenTrustedSigningPortal.Enabled = false;
+            this.linkLabelOpenTrustedSigningPortal.Location = new System.Drawing.Point(137, 264);
+            this.linkLabelOpenTrustedSigningPortal.Name = "linkLabelOpenTrustedSigningPortal";
+            this.linkLabelOpenTrustedSigningPortal.Size = new System.Drawing.Size(176, 13);
+            this.linkLabelOpenTrustedSigningPortal.TabIndex = 27;
+            this.linkLabelOpenTrustedSigningPortal.TabStop = true;
+            this.linkLabelOpenTrustedSigningPortal.Text = "Open Azure Portal (Trusted Signing)";
+            this.toolTip.SetToolTip(this.linkLabelOpenTrustedSigningPortal, "Click here to open the Azure Portal, where you can see the diffrent Trusted Signi" +
+        "ng accounts in your tenant you have.");
+            this.linkLabelOpenTrustedSigningPortal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelOpenTrustedSigningPortal_LinkClicked);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(680, 859);
+            this.Controls.Add(this.linkLabelOpenTrustedSigningPortal);
             this.Controls.Add(this.labelSignedBuildState);
             this.Controls.Add(this.radioButtonTrustedSigning);
             this.Controls.Add(this.radioButtonPFXCertificate);
@@ -818,6 +840,8 @@
         private System.Windows.Forms.Label labelCertificateProfileName;
         private System.Windows.Forms.RadioButton radioButtonTrustedSigning;
         private System.Windows.Forms.Label labelSignedBuildState;
+        private System.Windows.Forms.LinkLabel linkLabelOpenTrustedSigningPortal;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
 

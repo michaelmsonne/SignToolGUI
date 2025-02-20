@@ -20,7 +20,10 @@ namespace SignToolGUI.Forms
         {
             // Changelog content
             var changelogContent = "Version 1.3.1\n" +
-                                   "- Changed so only Code Sign certificated with a private key is showed in the tool to select.\n\n" +
+                                   "- Changed so only Code Sign certificates with a private key is showed in the tool to select.\n" +
+                                   "- Added a link to the Azure Portal to find your Trusted Signing accounts\n" +
+                                   "- Added some more error handling\n" +
+                                   "- Some small minor UI changes.\n\n" +
                                    "Version 1.3 (18-07-2024):\n" +
                                    "- Add support for Microsoft Trusted Signing\n" +
                                    "- Add check for if tool is code signed (via Windows API, valid or valid with my Code Signing Certificate via Thumbprint hosted on GitHub)\n" +

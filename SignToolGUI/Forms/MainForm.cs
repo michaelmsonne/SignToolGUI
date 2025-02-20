@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -275,6 +276,10 @@ namespace SignToolGUI.Forms
             {
                 comboBoxTimestampProviders.SelectedIndex = 0;
             }
+            else
+            {
+                // Handle the case where there are no items in the combo box
+            }
         }
 
         private void DisableForm(bool disable)
@@ -351,12 +356,16 @@ namespace SignToolGUI.Forms
                 // Set the SignToolExe to the local signtool.exe path
                 SignToolExe = localSignToolPath;
                 textBoxSignToolPath.Text = localSignToolPath;
+
+                linkLabelOpenTrustedSigningPortal.Enabled = true;
             }
             else
             {
                 // Restore the previous user-defined path if radioButtonTrustedSigning is unchecked
                 SignToolExe = _previousSignToolPath;
                 textBoxSignToolPath.Text = _previousSignToolPath;
+
+                linkLabelOpenTrustedSigningPortal.Enabled = false;
             }
 
             // Check if the the rest checkboxes are enabled and set handling correctly for signing type
@@ -1343,6 +1352,11 @@ Use the ... button above and select the code signing certificate to use!", @"No 
             return true; // Indicate success
         }
 
+        private void linkLabelOpenTrustedSigningPortal_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://portal.azure.com/#browse/Microsoft.CodeSigning%2Fcodesigningaccounts");
+        }
+
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutForm f2 = new AboutForm();
@@ -1401,7 +1415,7 @@ Use the ... button above and select the code signing certificate to use!", @"No 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 // count files before add selected files
-                var currentFiles = checkedListBoxFiles.Items.Count;
+                var currentFiles = checkedListBoxFiles?.Items.Count ?? 0;
                 int totalFiles;
 
                 // Loop through all files
@@ -1423,7 +1437,7 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                 }
 
                 // calc added files
-                var addedFiles = currentFiles - totalFiles;
+                var addedFiles = totalFiles - currentFiles;
 
                 // show status
                 statusLabel.Text = @"[INFO] " + addedFiles + @" file(s) imported to File List";
@@ -1635,6 +1649,11 @@ Use the ... button above and select the code signing certificate to use!", @"No 
 
         private string GetCertificateInfo(X509Certificate2 cert)
         {
+            if (cert == null)
+            {
+                return Globals.DigitalCertificates.CertificateInfoIsNotAvailable;
+            }
+
             try
             {
                 // Get the Certificate Service Provider (CSP) name
@@ -1768,8 +1787,8 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                 MessageBox.Show(ex.Message, Globals.MsgBox.Error, MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
         }
-        
-        #endregion Certificate info
 
+        #endregion Certificate info
+        
     }
 }

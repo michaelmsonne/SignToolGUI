@@ -52,6 +52,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ChangelogForm";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Changelog";
             this.Load += new System.EventHandler(this.ChangelogForm_Load);
