@@ -1067,6 +1067,7 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                     var dlibPath = @".\Tools\Azure.CodeSigning.Dlib.dll";
                     var codeSigningAccountName = textBoxCodeSigningAccountName.Text;
                     var certificateProfileName = textBoxCertificateProfileName.Text;
+                    var CorrelationIdData = textBoxCorrelationId.Text;
 
                     // Disable the form's controls while signing the files
                     ToggleDisabledForm(true);
@@ -1075,7 +1076,7 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                     textBoxOutput.Clear();
 
                     // Create a new instance of the SignerTrustedSigning class
-                    SignerTrustedSigning signer = new SignerTrustedSigning(signToolExe, timeStampServer, dlibPath, codeSigningAccountName, certificateProfileName, endpointServer)
+                    SignerTrustedSigning signer = new SignerTrustedSigning(signToolExe, timeStampServer, dlibPath, codeSigningAccountName, certificateProfileName, CorrelationIdData, endpointServer)
                     {
                         Verbose = menuItemSignVerbose.Checked,
                         Debug = menuItemSignDebug.Checked

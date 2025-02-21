@@ -19,6 +19,7 @@ namespace SignToolGUI.Class
         private readonly string _timestampServer;
         private readonly string _codeSigningAccountName;
         private readonly string _certificateProfileName;
+        private readonly string _CorrelationIdData;
         private readonly string _endpointServer;
 
         private bool VerifyFileExists()
@@ -26,13 +27,14 @@ namespace SignToolGUI.Class
             return File.Exists(SignToolExe);
         }
 
-        public SignerTrustedSigning(string executable, string timestampServer, string dlibPath, string codeSigningAccountName, string certificateProfileName, string endpointServer)
+        public SignerTrustedSigning(string executable, string timestampServer, string dlibPath, string codeSigningAccountName, string certificateProfileName, string CorrelationIdData, string endpointServer)
         {
             SignToolExe = executable;
             _timestampServer = timestampServer;
             DlibPath = dlibPath;
             _codeSigningAccountName = codeSigningAccountName;
             _certificateProfileName = certificateProfileName;
+            _CorrelationIdData = CorrelationIdData;
             _endpointServer = endpointServer;
             DmdfPath = CreateTempJsonFile();
         }
@@ -44,7 +46,8 @@ namespace SignToolGUI.Class
             {
                 Endpoint = _endpointServer,
                 CodeSigningAccountName = _codeSigningAccountName,
-                CertificateProfileName = _certificateProfileName
+                CertificateProfileName = _certificateProfileName,
+                CorrelationIdData = _CorrelationIdData
                 // You can add "CorrelationId" here if needed
             };
 
