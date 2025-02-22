@@ -272,7 +272,7 @@ namespace SignToolGUI.Forms
             }
 
             // Optionally, set a default selected item
-            if (comboBoxTimestampProviders.Items.Count > 0)
+            if (comboBoxTimestampProviders.Items.Count >= 0)
             {
                 comboBoxTimestampProviders.SelectedIndex = 0;
             }
