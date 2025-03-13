@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT Type="Advanced Installer" CreateVersion="21.9" version="21.9" PreviousModules="simple" Modules="professional" RootPath="." Language="en" Id="{C91F2B90-326D-4B52-99AE-6996B4FA77F1}">
+<DOCUMENT Type="Advanced Installer" CreateVersion="21.9" version="22.5" PreviousModules="simple" Modules="professional" RootPath="." Language="en" Id="{C91F2B90-326D-4B52-99AE-6996B4FA77F1}">
   <COMPONENT cid="caphyon.advinst.msicomp.ProjectOptionsComponent">
     <ROW Name="HiddenItems" Value="ActSyncAppComponent;CPLAppletComponent;AutorunComponent;GameUxComponent;SilverlightSlnComponent;SharePointSlnComponent"/>
   </COMPONENT>
@@ -13,23 +13,23 @@
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Azure.Identity.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Ijwhost.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" Value="..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.IdentityModel.Abstractions.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_SignToolGUI.exe" Value="..\SignToolGUI\bin\Release"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_SplitButton.dll" Value="..\SignToolGUI\lib"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Buffers.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Buffers.dll" Value="..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.ClientModel.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Memory.Data.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Memory.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Numerics.Vectors.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Memory.dll" Value="..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Numerics.Vectors.dll" Value="..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll" Value="..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Security.Cryptography.ProtectedData.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Text.Encodings.Web.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Text.Json.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Threading.Tasks.Extensions.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.ValueTuple.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Text.Encodings.Web.dll" Value="..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Text.Json.dll" Value="..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Threading.Tasks.Extensions.dll" Value="..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.ValueTuple.dll" Value="..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_concrt140.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140chs.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
@@ -115,7 +115,7 @@
     <ROW Property="ProductCode" Value="1033:{A10A6963-84C3-4F8B-8613-555A8C2409C1} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="SignToolGUI"/>
-    <ROW Property="ProductVersion" Value="1.3.0.0" Options="32"/>
+    <ROW Property="ProductVersion" Value="1.4.0.0" Options="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{6F8F60D8-0325-4FA9-B18A-9EE2702C1232}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
