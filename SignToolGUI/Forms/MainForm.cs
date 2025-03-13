@@ -1525,6 +1525,10 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                     if (comboBoxCertificatesInStore.SelectedIndex == 0)
                     {
                         MessageBox.Show(@"Select a digital certificate from Windows Certificate Store.", @"Select a Certificate", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        // Log the error message for no certificate selected
+                        Message("No digital certificate selected from Windows Certificate Store", EventType.Error, 1055);
+
                         return false; // Indicate failure
                     }
                     if (!_signingCerts[comboBoxCertificatesInStore.SelectedIndex - 1].HasPrivateKey)
@@ -1535,6 +1539,10 @@ The certificate cannot be used for digital signature operations.
 
 Select another digital certificate.",
                             Globals.MsgBox.Error, MessageBoxButtons.OK, MessageBoxIcon.Hand);
+
+                        // Log the error message for no private key found in the selected certificate
+                        Message("No private key found in the selected certificate from Windows Certificate Store", EventType.Error, 1056);
+
                         return false; // Indicate failure
                     }
                 }
@@ -1542,6 +1550,10 @@ Select another digital certificate.",
                 if (string.IsNullOrEmpty(txtTimestampProviderURL.Text))
                 {
                     MessageBox.Show(@"Please enter the URL of the timestamp provider.", @"SignTool GUI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    // Log the error message for no timestamp provider URL entered
+                    Message("No timestamp provider URL entered", EventType.Error, 1057);
+
                     return false; // Indicate failure
                 }
 
@@ -1552,18 +1564,30 @@ Select another digital certificate.",
                         MessageBox.Show(@"No .pfx/.p12 file selected.
 Please provide a valid file to use for signing!
 Use the ... button above and select the code signing certificate to use!", @"No .pfx/.p12 file selected", MessageBoxButtons.OK, MessageBoxIcon.Question);
+
+                        // Log the error message for no .pfx/.p12 file selected
+                        Message("No .pfx/.p12 file selected", EventType.Error, 1058);
+
                         return false; // Indicate failure
                     }
 
                     if (!File.Exists(textBoxPFXFile.Text))
                     {
                         MessageBox.Show(@"The specified .pfx/.p12 file does not exist or access to it failed.", @"Selected file or path does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        // Log the error message for the .pfx/.p12 file not found or access failed
+                        Message("The specified .pfx/.p12 file does not exist or access to it failed", EventType.Error, 1059);
+
                         return false; // Indicate failure
                     }
 
                     if (string.IsNullOrEmpty(textBoxPFXPassword.Text))
                     {
                         MessageBox.Show(@".pfx/.p12 password cannot be empty.", @"Missing password", MessageBoxButtons.OK, MessageBoxIcon.Question);
+
+                        // Log the error message for the .pfx/.p12 password being empty
+                        Message(".pfx/.p12 password cannot be empty", EventType.Error, 1060);
+
                         return false; // Indicate failure
                     }
 
@@ -1572,13 +1596,23 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                         if (!new X509Certificate2(File.ReadAllBytes(textBoxPFXFile.Text), textBoxPFXPassword.Text).HasPrivateKey)
                         {
                             MessageBox.Show(@"Error obtaining the private key from the .pfx/.p12 file. The certificate cannot be used to create digital signatures.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            // Log the error message for the private key not found in the .pfx/.p12 file
+                            Message("Error obtaining the private key from the .pfx/.p12 file. The certificate cannot be used to create digital signatures.", EventType.Error, 1061);
+
                             return false; // Indicate failure
                         }
                     }
                     catch
                     {
                         MessageBox.Show(@"Error obtaining the certificate from the .pfx/.p12 file. Probably .pfx/.p12 password is not correct or the .pfx/.p12 file is invalid.", "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+
+                        // Log the error message for the certificate not found in the .pfx/.p12 file or the password being incorrect
+                        Message("Error obtaining the certificate from the .pfx/.p12 file. Probably .pfx/.p12 password is not correct or the .pfx/.p12 file is invalid.", EventType.Error, 1062);
+
+                        // Clear the certificate data and show an error message
                         labelCertificateInformation.Text = Globals.DigitalCertificates.CertificateInfoIsNotAvailable;
+
                         return false; // Indicate failure
                     }
                 }
@@ -1587,6 +1621,10 @@ Use the ... button above and select the code signing certificate to use!", @"No 
             {
                 // Show an error message
                 MessageBox.Show(exception.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                // Log the error message
+                Message("Error verifying the configuration: " + exception.Message, EventType.Error, 1063);
+
                 return false; // Indicate failure
             }
 
@@ -1614,17 +1652,25 @@ Use the ... button above and select the code signing certificate to use!", @"No 
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Log the user's action to open the About form
+            Message("User clicked the 'About' menu item to open the About form", EventType.Information, 1056);
+
+            // Open the About form
             AboutForm f2 = new AboutForm();
             f2.ShowDialog();
         }
 
         private void changelogToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Log the user's action to open the Changelog form
+            Message("User clicked the 'Changelog' menu item to open the Changelog form", EventType.Information, 1057);
+
+            // Open the Changelog form
             ChangelogForm f2 = new ChangelogForm();
             f2.ShowDialog();
         }
         
-#endregion Form actions
+        #endregion Form actions
         
         #region Sign options - GUI
 
