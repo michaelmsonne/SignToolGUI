@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using SignToolGUI.Class;
+using static SignToolGUI.Class.FileLogger;
 using Application = System.Windows.Forms.Application;
 
 // ReSharper disable UnusedVariable
@@ -36,6 +37,9 @@ namespace SignToolGUI.Forms
         {
             InitializeComponent();
 
+            // Log the application's name and version to the log file
+            Message(@"Started " + Application.ProductName + @" v." + Application.ProductVersion, EventType.Information, 1000);
+
             // Initialize the certificate check asynchronously and update GUI accordingly
             InitializeAsyncCertificateCheck();
         }
@@ -44,6 +48,9 @@ namespace SignToolGUI.Forms
         {
             // TODO MOVE TO CLASS
             // Check the result and update UI accordingly based on the certificate thumbprint fetched from GitHub or the hardcoded one (if offline)
+
+            // Log the certificate check message
+            Message(@"Checking if the current build is code signed...", EventType.Information, 1001);
 
             // Get the path of the current executable
             string filePath = Assembly.GetExecutingAssembly().Location;
@@ -83,6 +90,9 @@ namespace SignToolGUI.Forms
             // Check the result
             if (result == 0)
             {
+                // Log the certificate check success message
+                Message("The current build is code signed.", EventType.Information, 1002);
+
                 try
                 {
                     X509Certificate2 certificate = new X509Certificate2(X509Certificate.CreateFromSignedFile(filePath));
@@ -95,6 +105,9 @@ namespace SignToolGUI.Forms
                         {
                             labelSignedBuildState.Text = Globals.ToolStates.CodeSignedBuildMichael;
                             labelSignedBuildState.ForeColor = Color.Green;
+
+                            // Log the certificate thumbprint check success message
+                            Message("The certificate thumbprint matches the current one from Michael Morten Sonne.", EventType.Information, 1004);
                         });
                     }
                     else
@@ -103,16 +116,25 @@ namespace SignToolGUI.Forms
                         {
                             labelSignedBuildState.Text = Globals.ToolStates.CodeSignedBuild;
                             labelSignedBuildState.ForeColor = Color.Green;
+
+                            // Log the certificate thumbprint check success message
+                            Message("The certificate thumbprint does not match the current one from Michael Morten Sonne - custom Code Sign Certificate", EventType.Information, 1005);
                         });
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(@"An error occurred: " + ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    // Log the certificate thumbprint check failure message
+                    Message("An error occurred while checking the certificate thumbprint. Error: " + ex.Message, EventType.Error, 1006);
                 }
             }
             else
             {
+                // Log the certificate check failure message
+                Message("The current build is not code signed.", EventType.Information, 1003);
+
                 // Check if the handle for labelSignedBuildState has been created
                 if (labelSignedBuildState.IsHandleCreated)
                 {
@@ -120,6 +142,9 @@ namespace SignToolGUI.Forms
                     {
                         labelSignedBuildState.Text = Globals.ToolStates.NotCodeSignedBuild;
                         labelSignedBuildState.ForeColor = Color.Red;
+
+                        // Log the certificate check failure message
+                        Message("The current build is not code signed.", EventType.Warning, 1007);
                     });
                 }
                 else
@@ -130,6 +155,9 @@ namespace SignToolGUI.Forms
                     {
                         labelSignedBuildState.Text = Globals.ToolStates.NotCodeSignedBuild;
                         labelSignedBuildState.ForeColor = Color.Red;
+
+                        // Log the certificate check failure message
+                        Message("The current build is not code signed.", EventType.Warning, 1007);
                     };
                 }
             }
@@ -138,10 +166,16 @@ namespace SignToolGUI.Forms
             Marshal.FreeCoTaskMem(fileInfo.pcwszFilePath);
             Marshal.FreeCoTaskMem(winTrustData.pFile);
             Marshal.FreeCoTaskMem(pWinTrustData);
+
+            // Log the certificate check completion message
+            Message("Certificate check completed.", EventType.Information, 1008);
         }
 
         private bool FindSignToolExe()
         {
+            // Log the search for signtool.exe message
+            Message("Searching for signtool.exe...", EventType.Information, 1009);
+
             // Check if SignToolExe path is already defined; if yes, verify its existence
             if (!string.IsNullOrEmpty(SignToolExe))
                 return File.Exists(SignToolExe);
@@ -216,6 +250,9 @@ namespace SignToolGUI.Forms
             // Find the first existing SignToolExe path from the array
             //SignToolExe = signToolExeArray.FirstOrDefault(File.Exists);
 
+            // Log the search for signtool.exe completion message
+            Message("Search for signtool.exe completed - located: '" + SignToolExe + "'", EventType.Information, 1010);
+
             // Return true if SignToolExe path is not empty and exists
             return !string.IsNullOrEmpty(SignToolExe) && File.Exists(SignToolExe);
         }
@@ -241,10 +278,14 @@ namespace SignToolGUI.Forms
         // Method to populate the ComboBox with items
         private void PopulateComboBox()
         {
+            // Log the population of the ComboBox message
+            Message("Populating the ComboBox for timestamp providers...", EventType.Information, 1011);
+
             // Store the current selected index and item
             int selectedIndex = comboBoxTimestampProviders.SelectedIndex;
             var selectedItem = comboBoxTimestampProviders.SelectedItem;
 
+            // Clear current the ComboBox items
             comboBoxTimestampProviders.Items.Clear();
 
             if (radioButtonTrustedSigning.Checked)
@@ -290,6 +331,9 @@ namespace SignToolGUI.Forms
             {
                 comboBoxTimestampProviders.SelectedIndex = 0;
             }
+
+            // Log the population of the ComboBox completion message
+            Message("Populating the ComboBox for timestamp providers completed", EventType.Information, 1012);
         }
 
         private void AddTimestampProvider(string displayName, string url)
@@ -306,6 +350,9 @@ namespace SignToolGUI.Forms
             groupBoxFiles.Enabled = !disable;
             splitButtonSign.Enabled = !disable;
             menuToolStripMenuItem.Enabled = !disable;
+
+            // Log the form disable message
+            Message("Form is " + (disable ? "disabled" : "enabled"), EventType.Information, 1013);
         }
 
         private void ToggleDisabledForm(bool disable)
@@ -313,6 +360,9 @@ namespace SignToolGUI.Forms
             //groupBoxDetails.Enabled = !disable;
             groupBoxFiles.Enabled = !disable;
             splitButtonSign.Enabled = !disable;
+
+            // Log the form toggle disable message
+            Message("Form is " + (disable ? "disabled" : "enabled"), EventType.Information, 1014);
         }
 
         private void SetInitialValues()
@@ -321,6 +371,9 @@ namespace SignToolGUI.Forms
             {
                 // Set the default selected index for the comboBoxCertificateStore
                 comboBoxCertificateStore.SelectedIndex = 0;
+
+                // Log the setting of the initial values message
+                Message("Setting the initial values completed", EventType.Information, 1015);
             }
             catch
             {
@@ -333,43 +386,66 @@ namespace SignToolGUI.Forms
             // Check for UI changes and apply them
             PopulateComboBox();
 
+            // Log the interface start message
+            Message("Interface check for set certificate type started...", EventType.Information, 1016);
+
             try
             {
                 if (radioButtonWindowsCertificateStore.Checked)
                 {
                     radioButtonPFXCertificate.Checked = false;
                     radioButtonTrustedSigning.Checked = false;
+
+                    // Log set type of certificate
+                    Message("Set certificate type to Windows Certificate Store", EventType.Information, 1017);
                 }
                 else if (radioButtonPFXCertificate.Checked)
                 {
                     radioButtonWindowsCertificateStore.Checked = false;
                     radioButtonTrustedSigning.Checked = false;
+
+                    // Log set type of certificate
+                    Message("Set certificate type to PFX Certificate", EventType.Information, 1018);
                 }
                 else if (radioButtonTrustedSigning.Checked)
                 {
                     radioButtonWindowsCertificateStore.Checked = false;
                     radioButtonPFXCertificate.Checked = false;
+
+                    // Log set type of certificate
+                    Message("Set certificate type to Trusted Signing", EventType.Information, 1019);
                 }
 
                 groupBoxWindowsCertificateStore.Enabled = radioButtonWindowsCertificateStore.Checked;
                 groupBoxPFXCertificate.Enabled = radioButtonPFXCertificate.Checked;
                 groupBoxTrustedSigningMetadata.Enabled = radioButtonTrustedSigning.Checked;
             }
-            catch
+            catch (Exception ex)
             {
                 // ignored
+                // Log the interface check message if error details
+                Message("Interface check for set certificate type failed: " + ex.Message, EventType.Error, 1017);
             }
+
+            // Log the interface check message
+            Message("Interface check for set certificate type completed", EventType.Information, 1016);
         }
 
         private void RadioButtonSelectCertificateLocation_CheckedChanged(object sender, EventArgs e)
         {
             if (radioButtonTrustedSigning.Checked)
             {
+                // Log the Trusted Signing radio button check message
+                Message("Trusted Signing certificate type selected", EventType.Information, 1018);
+
                 // Store the current textBoxSignToolPath value before changing
                 _previousSignToolPath = textBoxSignToolPath.Text;
 
                 // Update SignToolExe and textBoxSignToolPath to the local signtool.exe path
                 string localSignToolPath = Path.Combine(Application.StartupPath, "Tools", "signtool.exe");
+
+                // Log the local signtool.exe path for Trusted Signing
+                Message("Local signtool.exe path set for Trusted Signing: '" + localSignToolPath + "'", EventType.Information, 1019);
 
                 // Set the SignToolExe to the local signtool.exe path
                 SignToolExe = localSignToolPath;
@@ -389,9 +465,15 @@ namespace SignToolGUI.Forms
             }
             else
             {
+                // Log the Trusted Signing radio button uncheck message
+                Message("Trusted Signing certificate type unselected", EventType.Information, 1019);
+
                 // Restore the previous user-defined path if radioButtonTrustedSigning is unchecked
                 SignToolExe = _previousSignToolPath;
                 textBoxSignToolPath.Text = _previousSignToolPath;
+
+                // Log the previous signtool.exe path restoration message
+                Message("Previous signtool.exe path restored as Trusted Signing is unselected: '" + _previousSignToolPath + "'", EventType.Information, 1020);
 
                 // Set the Trusted Signing Portal link label to disabled
                 linkLabelOpenTrustedSigningPortal.Enabled = false;
@@ -550,6 +632,13 @@ namespace SignToolGUI.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Set Global Logfile properties for log
+            DateFormat = "dd-MM-yyyy";
+            DateTimeFormat = "dd-MM-yyyy HH:mm:ss";
+            WriteOnlyErrorsToEventLog = false;
+            WriteToEventLog = false;
+            WriteToFile = true;
+
             // Set the status label's Text property to the application's name and version
             statusLabel.Text = @"[INFO] Welcome to " + Application.ProductName + @" v." + Application.ProductVersion;
 
@@ -573,21 +662,32 @@ namespace SignToolGUI.Forms
             // Check folder for configuration file and create it if it does not exist
             if (!Directory.Exists(Files.ProgramDataFilePath))
             {
+                // Log the creation of the ProgramData folder message
+                Message("Creating the application data folder as it´s missing...", EventType.Information, 1021);
                 try
                 {
                     // Create the directory
                     Directory.CreateDirectory(Files.ProgramDataFilePath);
+
+                    // Log the creation of the ProgramData folder completion message
+                    Message("Application data folder created successfully: '" + Files.ProgramDataFilePath + "'", EventType.Information, 1022);
                 }
                 catch (Exception exception)
                 {
                     // Show an error message if the directory could not be created
                     MessageBox.Show(exception.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    // Log the creation of the ProgramData folder error message
+                    Message("Error creating the application data folder: " + exception.Message, EventType.Error, 1023);
                 }
             }
 
             // Get data for signtool.exe and timestamp provider from configuration file
             try
             {
+                // Log trying to read configuration file message
+                Message("Trying to read configuration file...", EventType.Information, 1024);
+
                 // Get data from configuration file and set the values to the form's controls
                 var iniFile = new IniFile(ConfigIniPath);
                 var settingBoxSignToolPath = iniFile.GetString("Program", "SignToolPath", "");
@@ -600,6 +700,9 @@ namespace SignToolGUI.Forms
                         @"Could not find SignTool.exe installed on this computer - will use information from configuration file.",
                         @"SignTool.exe not found", MessageBoxButtons.OK, MessageBoxIcon.Hand);
 
+                    // Log the signtool.exe not found message
+                    Message("SignTool.exe not found on this computer - using information from configuration file", EventType.Warning, 1025);
+
                     // Check if the path to signtool.exe is set in the configuration file
                     if (settingBoxSignToolPath != "")
                     {
@@ -611,11 +714,17 @@ namespace SignToolGUI.Forms
                         // Set the path to signtool.exe from the configuration file or a default path if it does not exist (default path) with the application install path
                         textBoxSignToolPath.Text = @"Tools\signtool.exe";
                     }
+
+                    // Log the signtool.exe path set message
+                    Message("SignTool.exe path set to: '" + textBoxSignToolPath.Text + "'", EventType.Information, 1026);
                 }
                 else
                 {
                     // Set the path to signtool.exe from the configuration file or a default path if it does not exist (default path) with the application install path
                     textBoxSignToolPath.Text = SignToolExe;
+
+                    // Log the signtool.exe path set message
+                    Message("SignTool.exe path set to: '" + textBoxSignToolPath.Text + "'", EventType.Information, 1027);
                 }
 
                 // If comboBoxTimestampProviders is not 5, read from config file
@@ -709,6 +818,9 @@ namespace SignToolGUI.Forms
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Log the form closing message
+            Message("Application is closing...", EventType.Information, 1027);
+
             // Save the configuration to the configuration file when the form is closing
             var iniFile = new IniFile(ConfigIniPath);
 
@@ -720,9 +832,15 @@ namespace SignToolGUI.Forms
                     MessageBox.Show(@"Do you want to save the .PFX password for the next time you use this program?",
                         @"Be careful not to store highly confidential information.", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
+                // Log the save message box
+                Message("Save certificate (.pfx) password message box shown to user", EventType.Information, 1028);
+
                 switch (msgresult)
                 {
                     case DialogResult.Yes:
+                        // Log the user's choice to save the certificate password to the configuration file
+                        Message("User chose to save the certificate (.pfx) password to the configuration file", EventType.Information, 1029);
+
                         // Save the certificate password to the configuration file if the user clicks Yes
                         try
                         {
@@ -761,9 +879,16 @@ namespace SignToolGUI.Forms
                         {
                             MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
+
+                        // Log the application closing message and saved configuration
+                        Message("Application is closing - .pfx certificate password saved", EventType.Information, 1030);
+
                         Application.ExitThread();
                         break;
                     case DialogResult.No:
+                        // Log the user's choice not to save the certificate password to the configuration file
+                        Message("User chose not to save the certificate (.pfx) password to the configuration file", EventType.Information, 1031);
+
                         // Do not save the certificate password to the configuration file if the user clicks No
                         iniFile.WriteValue("Program", "SignToolPath", textBoxSignToolPath.Text);
                         iniFile.WriteValue("Program", "TimestampURL", txtTimestampProviderURL.Text);
@@ -795,6 +920,13 @@ namespace SignToolGUI.Forms
                                 throw;
                             }
                         }
+
+                        // Log the application closing message and not saved configuration
+                        Message("Application is closing - .pfx certificate password and information not saved", EventType.Information, 1032);
+
+                        // Log configuration file save completion message
+                        Message("Configuration file saved successfully", EventType.Information, 1033);
+
                         // Close the application if the user clicks No
                         Application.ExitThread();
                         break;
@@ -843,11 +975,20 @@ namespace SignToolGUI.Forms
 
                 // Save the certificate password as null to the configuration file if the file exists
                 iniFile.WriteValue("Program", "CertificatePassword", "");
+
+                // Log the application closing message and not saved configuration
+                Message("Application is closing - .pfx certificate password and information not saved", EventType.Information, 1033);
+
+                // Log configuration file save completion message
+                Message("Configuration file saved successfully", EventType.Information, 1034);
             }
         }
 
         private void buttonBrowseSignTool_Click(object sender, EventArgs e)
         {
+            // Log the browse for SignTool.exe message
+            Message("User is browsing for SignTool.exe...", EventType.Information, 1035);
+
             // Show the dialog and get result for SignTool.exe path
             openFileDialog.Multiselect = false;
             openFileDialog.Filter = @"Executables|*.exe";
@@ -857,6 +998,9 @@ namespace SignToolGUI.Forms
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 textBoxSignToolPath.Text = openFileDialog.FileName;
+
+                // Log the SignTool.exe path set message
+                Message("User have set SignTool.exe path to: '" + textBoxSignToolPath.Text + "'", EventType.Information, 1036);
             }
         }
 
@@ -870,6 +1014,9 @@ namespace SignToolGUI.Forms
 
             // Set the status label's Text property to a message indicating that the list of files to sign has been cleared
             statusLabel.Text = $@"[INFO] {filesDeletedCount} file(s) deleted from the list. Ready to Sign, Add a folder or file(s) to the list";
+
+            // Log the clearing of the list of files to sign message
+            Message("User have cleared the list of files to sign", EventType.Information, 1037);
         }
 
         private void SplitButtonSign_Click(object sender, EventArgs e)
@@ -1784,6 +1931,9 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                     ? GetCertificatesFromStore(StoreLocation.LocalMachine)
                     : GetCertificatesFromStore(StoreLocation.CurrentUser);
 
+                // Log trying to load certificates from the specified store.
+                Message("Trying to load certificates from the " + loadStore + " store...", EventType.Information, 1035);
+
                 // Filter certificates to only include those with a private key and for code signing.
                 _signingCerts = new X509Certificate2Collection(_signingCerts.Cast<X509Certificate2>()
                     .Where(cert => cert.HasPrivateKey && cert.Extensions.OfType<X509EnhancedKeyUsageExtension>()
@@ -1805,6 +1955,9 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                 {
                     comboBoxCertificatesInStore.Items.Add(signingCert.GetNameInfo(X509NameType.SimpleName, false) ??
                                                            throw new InvalidOperationException());
+
+                    // Log the name of the certificate that was found.
+                    Message("Certificate found: '" + signingCert.GetNameInfo(X509NameType.SimpleName, false) + "'", EventType.Information, 1036);
                 }
 
                 // Attempt to restore the previous selection if it exists and is valid.
@@ -1812,23 +1965,35 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                 {
                     int newIndex = comboBoxCertificatesInStore.Items.IndexOf(previousSelection);
                     comboBoxCertificatesInStore.SelectedIndex = newIndex >= 0 ? newIndex : 0;
+
+                    // Log that the previous selection was restored and the name of the certificate.
+                    //Message("The previous selection was restored: '" + previousSelection + "'", EventType.Information, 1036);
                 }
                 else if (_signingCerts.Count > 0)
                 {
                     // If there was no previous selection, select the first valid certificate by default.
                     comboBoxCertificatesInStore.SelectedIndex = 1;
+
+                    // Log that the first certificate was selected by default and the name of the certificate.
+                    Message("The first certificate was selected by default: '" + _signingCerts[0].GetNameInfo(X509NameType.SimpleName, false) + "'", EventType.Information, 1037);
                 }
                 else
                 {
                     // If no certificates were found, keep the default "<No certificate selected>" selected.
                     comboBoxCertificatesInStore.SelectedIndex = 0;
                     labelCertificateInformation.Text = $@"No certificates were found in the {comboBoxCertificateStore.Text} certificate store.";
+
+                    // Log that no certificates were found in the specified store.
+                    Message("No certificates were found in the " + loadStore + " store.", EventType.Warning, 1036);
                 }
             }
             catch (Exception ex)
             {
                 // Display an error message box if an exception occurs.
                 MessageBox.Show(ex.Message, Globals.MsgBox.Error, MessageBoxButtons.OK, MessageBoxIcon.Hand);
+
+                // Log error message
+                Message("Error loading certificates from the " + loadStore + " store: " + ex.Message, EventType.Error, 1038);
             }
         }
 

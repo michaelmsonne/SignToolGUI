@@ -22,5 +22,15 @@ namespace SignToolGUI.Class
                 return programDataFilePathvar;
             }
         }
+
+        public static string LogFilePath
+        {
+            get
+            {
+                // Root folder for log files
+                var logfilePathvar = ProgramDataFilePath + @"\Log";
+                return logfilePathvar;
+            }
+        }
     }
 }
