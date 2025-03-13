@@ -241,16 +241,20 @@ namespace SignToolGUI.Forms
         // Method to populate the ComboBox with items
         private void PopulateComboBox()
         {
+            // Store the current selected index and item
+            int selectedIndex = comboBoxTimestampProviders.SelectedIndex;
+            var selectedItem = comboBoxTimestampProviders.SelectedItem;
+
             comboBoxTimestampProviders.Items.Clear();
 
             if (radioButtonTrustedSigning.Checked)
             {
                 // Add items for the checked state
-                comboBoxTimestampProviders.Items.Add(new TimestampProvider("West Europe", "https://weu.codesigning.azure.net"));
-                comboBoxTimestampProviders.Items.Add(new TimestampProvider("North Europe", "https://neu.codesigning.azure.net"));
-                comboBoxTimestampProviders.Items.Add(new TimestampProvider("West US 2", "https://wus2.codesigning.azure.net"));
-                comboBoxTimestampProviders.Items.Add(new TimestampProvider("West Central US", "https://wcus.codesigning.azure.net"));
-                comboBoxTimestampProviders.Items.Add(new TimestampProvider("East US", "https://eus.codesigning.azure.net"));
+                AddTimestampProvider("West Europe", "https://weu.codesigning.azure.net");
+                AddTimestampProvider("North Europe", "https://neu.codesigning.azure.net");
+                AddTimestampProvider("West US 2", "https://wus2.codesigning.azure.net");
+                AddTimestampProvider("West Central US", "https://wcus.codesigning.azure.net");
+                AddTimestampProvider("East US", "https://eus.codesigning.azure.net");
 
                 groupBoxTimestamp.Text = @"Trusted Signing Endpoint";
                 labelTimestampProvider.Text = @"Endpoint region:";
@@ -260,12 +264,12 @@ namespace SignToolGUI.Forms
             else
             {
                 // Add items for the unchecked state
-                comboBoxTimestampProviders.Items.Add(new TimestampProvider("Sectigo (Comodo)", "http://timestamp.sectigo.com"));
-                comboBoxTimestampProviders.Items.Add(new TimestampProvider("DigiCert", "http://timestamp.digicert.com"));
-                comboBoxTimestampProviders.Items.Add(new TimestampProvider("GlobalSign (1)", "http://timestamp.globalsign.com/tsa/r6advanced1"));
-                comboBoxTimestampProviders.Items.Add(new TimestampProvider("GlobalSign (2)", "http://timestamp.globalsign.com/?signature=sha2"));
-                comboBoxTimestampProviders.Items.Add(new TimestampProvider("Certum", "http://time.certum.pl"));
-                comboBoxTimestampProviders.Items.Add(new TimestampProvider("Custom Provider", "N/A"));
+                AddTimestampProvider("Sectigo (Comodo)", "http://timestamp.sectigo.com");
+                AddTimestampProvider("DigiCert", "http://timestamp.digicert.com");
+                AddTimestampProvider("GlobalSign (1)", "http://timestamp.globalsign.com/tsa/r6advanced1");
+                AddTimestampProvider("GlobalSign (2)", "http://timestamp.globalsign.com/?signature=sha2");
+                AddTimestampProvider("Certum", "http://time.certum.pl");
+                AddTimestampProvider("Custom Provider", "N/A");
 
                 groupBoxTimestamp.Text = @"Timestamp";
                 labelTimestampProvider.Text = @"Provider:";
@@ -273,14 +277,26 @@ namespace SignToolGUI.Forms
                 labelTimeStampServer.Text = @"Timestamp URL:";
             }
 
-            // Optionally, set a default selected item
-            if (comboBoxTimestampProviders.Items.Count >= 0)
+            // Restore the previous selected index and item if they exist
+            if (selectedIndex >= 0 && selectedIndex < comboBoxTimestampProviders.Items.Count)
+            {
+                comboBoxTimestampProviders.SelectedIndex = selectedIndex;
+            }
+            else if (selectedItem != null && comboBoxTimestampProviders.Items.Contains(selectedItem))
+            {
+                comboBoxTimestampProviders.SelectedItem = selectedItem;
+            }
+            else if (comboBoxTimestampProviders.Items.Count > 0)
             {
                 comboBoxTimestampProviders.SelectedIndex = 0;
             }
-            else
+        }
+
+        private void AddTimestampProvider(string displayName, string url)
+        {
+            if (!comboBoxTimestampProviders.Items.Cast<TimestampProvider>().Any(item => item.DisplayName == displayName))
             {
-                // Handle the case where there are no items in the combo box
+                comboBoxTimestampProviders.Items.Add(new TimestampProvider(displayName, url));
             }
         }
 
@@ -365,6 +381,11 @@ namespace SignToolGUI.Forms
                 // Disable the timestamp checkbox and set it to checked
                 checkBoxTimestamp.Checked = true;
                 checkBoxTimestamp.Enabled = false;
+
+                groupBoxTimestamp.Text = @"Trusted Signing Endpoint";
+                labelTimeStampServer.Text = @"Endpoint URL:";
+
+                toolTip.SetToolTip(checkBoxTimestamp, "Trusted Signing requires a timestamp. This option is disabled for Trusted Signing.");
             }
             else
             {
@@ -377,9 +398,15 @@ namespace SignToolGUI.Forms
 
                 // Enable the timestamp checkbox
                 checkBoxTimestamp.Enabled = true;
+
+                groupBoxTimestamp.Text = @"Timestamp URL:";
+                labelTimeStampServer.Text = @"Timestamp";
+
+                // Reset the tooltip for the timestamp checkbox
+                toolTip.SetToolTip(checkBoxTimestamp, "Check this box to timestamp the signed file(s).");
             }
 
-            // Check if the the rest checkboxes are enabled and set handling correctly for signing type
+            // Check if the rest checkboxes are enabled and set handling correctly for signing type
             try
             {
                 // Perform an interface check to ensure the application is in a correct state.
@@ -526,7 +553,9 @@ namespace SignToolGUI.Forms
             // Set the status label's Text property to the application's name and version
             statusLabel.Text = @"[INFO] Welcome to " + Application.ProductName + @" v." + Application.ProductVersion;
 
-            this.Text = Application.ProductName + @" v." + Application.ProductVersion;
+            Text = Application.ProductName + @" v." + Application.ProductVersion;
+
+            toolTip.SetToolTip(checkBoxTimestamp, "Check this box to timestamp the signed file(s).");
 
             // Perform an interface check to ensure the application is in a correct state.
             InterfaceCheck();
