@@ -11,6 +11,7 @@ namespace SignToolGUI.Class
         public string ThumbprintFromCertToSign { get; set; }
         public bool Verbose { get; set; }
         public bool Debug { get; set; }
+        public bool Timestamp { get; set; }
 
         public delegate void StatusReport(string message);
         public event StatusReport OnSignToolOutput;
@@ -46,12 +47,21 @@ namespace SignToolGUI.Class
                 return;
             }
 
+            // Construct the arguments for the signing process
+            var arguments = $@"sign {GlobalOptionSwitches()} /fd sha256 /sha1 ""{ThumbprintFromCertToSign}"" ""{targetAssembly}""";
+
+            if (Timestamp)
+            {
+                // Include timestamp server argument if Timestamp is true
+                arguments = $@"sign {GlobalOptionSwitches()} /tr ""{TimeStampServer}"" /td sha256 /fd sha256 /sha1 ""{ThumbprintFromCertToSign}"" ""{targetAssembly}""";
+            }
+
             // Parse data needed to sign the target assembly
             var processSha256 = new Process
             {
                 StartInfo = new ProcessStartInfo(SignToolExe)
                 {
-                    Arguments = $@"sign {GlobalOptionSwitches()} /tr ""{TimeStampServer}"" /td sha256 /fd sha256 /sha1 ""{ThumbprintFromCertToSign}"" ""{targetAssembly}""",
+                    Arguments = arguments,
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden,

@@ -884,7 +884,8 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                     SignerThumbprint signer = new SignerThumbprint(textBoxSignToolPath.Text, ThumbprintFromCertToSign, txtTimestampProviderURL.Text)
                     {
                         Verbose = menuItemSignVerbose.Checked,
-                        Debug = menuItemSignDebug.Checked
+                        Debug = menuItemSignDebug.Checked,
+                        Timestamp = checkBoxTimestamp.Checked
                     };
 
                     // Add an event handler to the OnSignToolOutput event
@@ -976,7 +977,8 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                         txtTimestampProviderURL.Text)
                     {
                         Verbose = menuItemSignVerbose.Checked,
-                        Debug = menuItemSignDebug.Checked
+                        Debug = menuItemSignDebug.Checked,
+                        Timestamp = checkBoxTimestamp.Checked
                     };
 
                     signer.OnSignToolOutput += message =>
@@ -1079,7 +1081,8 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                     SignerTrustedSigning signer = new SignerTrustedSigning(signToolExe, timeStampServer, dlibPath, codeSigningAccountName, certificateProfileName, CorrelationIdData, endpointServer)
                     {
                         Verbose = menuItemSignVerbose.Checked,
-                        Debug = menuItemSignDebug.Checked
+                        Debug = menuItemSignDebug.Checked,
+                        Timestamp = checkBoxTimestamp.Checked
                     };
 
                     signer.OnSignToolOutput += message =>

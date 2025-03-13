@@ -12,6 +12,7 @@ namespace SignToolGUI.Class
         public string DmdfPath { get; set; }
         public bool Verbose { get; set; }
         public bool Debug { get; set; }
+        public bool Timestamp { get; set; }
 
         public delegate void StatusReport(string message);
         public event StatusReport OnSignToolOutput;

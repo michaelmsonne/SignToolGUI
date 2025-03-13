@@ -91,6 +91,8 @@
             this.labelSignedBuildState = new System.Windows.Forms.Label();
             this.linkLabelOpenTrustedSigningPortal = new System.Windows.Forms.LinkLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.checkBoxTimestamp = new System.Windows.Forms.CheckBox();
             this.groupBoxFiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxCertificateInformation.SuspendLayout();
@@ -104,7 +106,7 @@
             // 
             // buttonBrowseSignTool
             // 
-            this.buttonBrowseSignTool.Location = new System.Drawing.Point(218, 18);
+            this.buttonBrowseSignTool.Location = new System.Drawing.Point(315, 17);
             this.buttonBrowseSignTool.Name = "buttonBrowseSignTool";
             this.buttonBrowseSignTool.Size = new System.Drawing.Size(52, 22);
             this.buttonBrowseSignTool.TabIndex = 2;
@@ -137,7 +139,7 @@
             this.groupBoxFiles.Controls.Add(this.buttonAddDirectory);
             this.groupBoxFiles.Controls.Add(this.buttonAddFiles);
             this.groupBoxFiles.Controls.Add(this.checkedListBoxFiles);
-            this.groupBoxFiles.Location = new System.Drawing.Point(7, 433);
+            this.groupBoxFiles.Location = new System.Drawing.Point(7, 441);
             this.groupBoxFiles.Name = "groupBoxFiles";
             this.groupBoxFiles.Size = new System.Drawing.Size(667, 212);
             this.groupBoxFiles.TabIndex = 1;
@@ -242,12 +244,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxOutput.BackColor = System.Drawing.Color.White;
-            this.textBoxOutput.Location = new System.Drawing.Point(7, 650);
+            this.textBoxOutput.Location = new System.Drawing.Point(7, 658);
             this.textBoxOutput.Multiline = true;
             this.textBoxOutput.Name = "textBoxOutput";
             this.textBoxOutput.ReadOnly = true;
             this.textBoxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxOutput.Size = new System.Drawing.Size(666, 177);
+            this.textBoxOutput.Size = new System.Drawing.Size(667, 168);
             this.textBoxOutput.TabIndex = 2;
             // 
             // folderBrowserDialog
@@ -291,9 +293,9 @@
             // 
             // textBoxSignToolPath
             // 
-            this.textBoxSignToolPath.Location = new System.Drawing.Point(6, 19);
+            this.textBoxSignToolPath.Location = new System.Drawing.Point(120, 18);
             this.textBoxSignToolPath.Name = "textBoxSignToolPath";
-            this.textBoxSignToolPath.Size = new System.Drawing.Size(206, 20);
+            this.textBoxSignToolPath.Size = new System.Drawing.Size(189, 20);
             this.textBoxSignToolPath.TabIndex = 5;
             // 
             // menuStrip
@@ -334,7 +336,7 @@
             // 
             // labelCertificateInformation
             // 
-            this.labelCertificateInformation.Location = new System.Drawing.Point(8, 17);
+            this.labelCertificateInformation.Location = new System.Drawing.Point(4, 17);
             this.labelCertificateInformation.Name = "labelCertificateInformation";
             this.labelCertificateInformation.Size = new System.Drawing.Size(273, 215);
             this.labelCertificateInformation.TabIndex = 0;
@@ -397,9 +399,9 @@
             // groupBoxCertificateInformation
             // 
             this.groupBoxCertificateInformation.Controls.Add(this.labelCertificateInformation);
-            this.groupBoxCertificateInformation.Location = new System.Drawing.Point(392, 55);
+            this.groupBoxCertificateInformation.Location = new System.Drawing.Point(386, 55);
             this.groupBoxCertificateInformation.Name = "groupBoxCertificateInformation";
-            this.groupBoxCertificateInformation.Size = new System.Drawing.Size(282, 235);
+            this.groupBoxCertificateInformation.Size = new System.Drawing.Size(288, 235);
             this.groupBoxCertificateInformation.TabIndex = 14;
             this.groupBoxCertificateInformation.TabStop = false;
             this.groupBoxCertificateInformation.Text = "Certificate Information";
@@ -416,7 +418,7 @@
             // PFXFilePassword
             // 
             this.PFXFilePassword.AutoSize = true;
-            this.PFXFilePassword.Location = new System.Drawing.Point(8, 56);
+            this.PFXFilePassword.Location = new System.Drawing.Point(6, 56);
             this.PFXFilePassword.Name = "PFXFilePassword";
             this.PFXFilePassword.Size = new System.Drawing.Size(56, 13);
             this.PFXFilePassword.TabIndex = 2;
@@ -455,7 +457,7 @@
             // 
             this.radioButtonPFXCertificate.AutoSize = true;
             this.radioButtonPFXCertificate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonPFXCertificate.Location = new System.Drawing.Point(21, 30);
+            this.radioButtonPFXCertificate.Location = new System.Drawing.Point(19, 30);
             this.radioButtonPFXCertificate.Name = "radioButtonPFXCertificate";
             this.radioButtonPFXCertificate.Size = new System.Drawing.Size(176, 17);
             this.radioButtonPFXCertificate.TabIndex = 12;
@@ -468,7 +470,7 @@
             this.radioButtonWindowsCertificateStore.AutoSize = true;
             this.radioButtonWindowsCertificateStore.Checked = true;
             this.radioButtonWindowsCertificateStore.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonWindowsCertificateStore.Location = new System.Drawing.Point(21, 148);
+            this.radioButtonWindowsCertificateStore.Location = new System.Drawing.Point(15, 148);
             this.radioButtonWindowsCertificateStore.Name = "radioButtonWindowsCertificateStore";
             this.radioButtonWindowsCertificateStore.Size = new System.Drawing.Size(172, 17);
             this.radioButtonWindowsCertificateStore.TabIndex = 10;
@@ -485,7 +487,7 @@
             this.groupBoxPFXCertificate.Controls.Add(this.textBoxPFXFile);
             this.groupBoxPFXCertificate.Controls.Add(this.buttonShowSigninigCertificatePFX);
             this.groupBoxPFXCertificate.Enabled = false;
-            this.groupBoxPFXCertificate.Location = new System.Drawing.Point(13, 55);
+            this.groupBoxPFXCertificate.Location = new System.Drawing.Point(7, 55);
             this.groupBoxPFXCertificate.Name = "groupBoxPFXCertificate";
             this.groupBoxPFXCertificate.Size = new System.Drawing.Size(373, 87);
             this.groupBoxPFXCertificate.TabIndex = 13;
@@ -510,7 +512,7 @@
             this.groupBoxWindowsCertificateStore.Controls.Add(this.checkBoxShowExpiredCertificates);
             this.groupBoxWindowsCertificateStore.Controls.Add(this.comboBoxCertificatesInStore);
             this.groupBoxWindowsCertificateStore.Controls.Add(this.buttonShowSigninigCertificateStore);
-            this.groupBoxWindowsCertificateStore.Location = new System.Drawing.Point(13, 173);
+            this.groupBoxWindowsCertificateStore.Location = new System.Drawing.Point(7, 173);
             this.groupBoxWindowsCertificateStore.Name = "groupBoxWindowsCertificateStore";
             this.groupBoxWindowsCertificateStore.Size = new System.Drawing.Size(373, 81);
             this.groupBoxWindowsCertificateStore.TabIndex = 11;
@@ -565,13 +567,14 @@
             // 
             // groupBoxTimestamp
             // 
+            this.groupBoxTimestamp.Controls.Add(this.checkBoxTimestamp);
             this.groupBoxTimestamp.Controls.Add(this.txtTimestampProviderURL);
             this.groupBoxTimestamp.Controls.Add(this.labelTimestampProvider);
             this.groupBoxTimestamp.Controls.Add(this.comboBoxTimestampProviders);
             this.groupBoxTimestamp.Controls.Add(this.labelTimeStampServer);
-            this.groupBoxTimestamp.Location = new System.Drawing.Point(392, 349);
+            this.groupBoxTimestamp.Location = new System.Drawing.Point(386, 296);
             this.groupBoxTimestamp.Name = "groupBoxTimestamp";
-            this.groupBoxTimestamp.Size = new System.Drawing.Size(282, 75);
+            this.groupBoxTimestamp.Size = new System.Drawing.Size(288, 96);
             this.groupBoxTimestamp.TabIndex = 19;
             this.groupBoxTimestamp.TabStop = false;
             this.groupBoxTimestamp.Text = "Timestamp";
@@ -612,11 +615,12 @@
             // 
             // groupBoxSignTool
             // 
+            this.groupBoxSignTool.Controls.Add(this.label1);
             this.groupBoxSignTool.Controls.Add(this.buttonBrowseSignTool);
             this.groupBoxSignTool.Controls.Add(this.textBoxSignToolPath);
-            this.groupBoxSignTool.Location = new System.Drawing.Point(392, 296);
+            this.groupBoxSignTool.Location = new System.Drawing.Point(7, 394);
             this.groupBoxSignTool.Name = "groupBoxSignTool";
-            this.groupBoxSignTool.Size = new System.Drawing.Size(282, 47);
+            this.groupBoxSignTool.Size = new System.Drawing.Size(373, 47);
             this.groupBoxSignTool.TabIndex = 20;
             this.groupBoxSignTool.TabStop = false;
             this.groupBoxSignTool.Text = "Signtool";
@@ -630,7 +634,7 @@
             this.groupBoxTrustedSigningMetadata.Controls.Add(this.textBoxCertificateProfileName);
             this.groupBoxTrustedSigningMetadata.Controls.Add(this.textBoxCodeSigningAccountName);
             this.groupBoxTrustedSigningMetadata.Enabled = false;
-            this.groupBoxTrustedSigningMetadata.Location = new System.Drawing.Point(13, 286);
+            this.groupBoxTrustedSigningMetadata.Location = new System.Drawing.Point(7, 286);
             this.groupBoxTrustedSigningMetadata.Name = "groupBoxTrustedSigningMetadata";
             this.groupBoxTrustedSigningMetadata.Size = new System.Drawing.Size(373, 106);
             this.groupBoxTrustedSigningMetadata.TabIndex = 23;
@@ -693,7 +697,7 @@
             // 
             this.radioButtonTrustedSigning.AutoSize = true;
             this.radioButtonTrustedSigning.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonTrustedSigning.Location = new System.Drawing.Point(21, 260);
+            this.radioButtonTrustedSigning.Location = new System.Drawing.Point(15, 260);
             this.radioButtonTrustedSigning.Name = "radioButtonTrustedSigning";
             this.radioButtonTrustedSigning.Size = new System.Drawing.Size(114, 17);
             this.radioButtonTrustedSigning.TabIndex = 24;
@@ -714,7 +718,7 @@
             // 
             this.linkLabelOpenTrustedSigningPortal.AutoSize = true;
             this.linkLabelOpenTrustedSigningPortal.Enabled = false;
-            this.linkLabelOpenTrustedSigningPortal.Location = new System.Drawing.Point(137, 264);
+            this.linkLabelOpenTrustedSigningPortal.Location = new System.Drawing.Point(135, 264);
             this.linkLabelOpenTrustedSigningPortal.Name = "linkLabelOpenTrustedSigningPortal";
             this.linkLabelOpenTrustedSigningPortal.Size = new System.Drawing.Size(176, 13);
             this.linkLabelOpenTrustedSigningPortal.TabIndex = 27;
@@ -723,6 +727,27 @@
             this.toolTip.SetToolTip(this.linkLabelOpenTrustedSigningPortal, "Click here to open the Azure Portal, where you can see the diffrent Trusted Signi" +
         "ng accounts in your tenant you have.");
             this.linkLabelOpenTrustedSigningPortal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelOpenTrustedSigningPortal_LinkClicked);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(108, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Signtool.exe location:";
+            // 
+            // checkBoxTimestamp
+            // 
+            this.checkBoxTimestamp.AutoSize = true;
+            this.checkBoxTimestamp.Checked = true;
+            this.checkBoxTimestamp.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxTimestamp.Location = new System.Drawing.Point(8, 73);
+            this.checkBoxTimestamp.Name = "checkBoxTimestamp";
+            this.checkBoxTimestamp.Size = new System.Drawing.Size(142, 17);
+            this.checkBoxTimestamp.TabIndex = 22;
+            this.checkBoxTimestamp.Text = "Timestamp when signing";
+            this.checkBoxTimestamp.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -842,6 +867,8 @@
         private System.Windows.Forms.Label labelSignedBuildState;
         private System.Windows.Forms.LinkLabel linkLabelOpenTrustedSigningPortal;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkBoxTimestamp;
     }
 }
 
