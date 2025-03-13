@@ -830,7 +830,8 @@ namespace SignToolGUI.Forms
                 // Ask the user if they want to save the certificate password to the configuration file
                 var msgresult =
                     MessageBox.Show(@"Do you want to save the .PFX password for the next time you use this program?",
-                        @"Be careful not to store highly confidential information.", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                        @"Be careful not to store highly confidential information.", MessageBoxButtons.YesNoCancel,
+                        MessageBoxIcon.Warning);
 
                 // Log the save message box
                 Message("Save certificate (.pfx) password message box shown to user", EventType.Information, 1028);
@@ -839,7 +840,8 @@ namespace SignToolGUI.Forms
                 {
                     case DialogResult.Yes:
                         // Log the user's choice to save the certificate password to the configuration file
-                        Message("User chose to save the certificate (.pfx) password to the configuration file", EventType.Information, 1029);
+                        Message("User chose to save the certificate (.pfx) password to the configuration file",
+                            EventType.Information, 1029);
 
                         // Save the certificate password to the configuration file if the user clicks Yes
                         try
@@ -848,8 +850,9 @@ namespace SignToolGUI.Forms
                             iniFile.WriteValue("Program", "SignToolPath", textBoxSignToolPath.Text);
 
                             // Save timestamp provider to the configuration file
-                            iniFile.WriteValue("Program", "TimestampProvider", comboBoxTimestampProviders.SelectedIndex);
-                            
+                            iniFile.WriteValue("Program", "TimestampProvider",
+                                comboBoxTimestampProviders.SelectedIndex);
+
                             // Save the timestamp URL to the configuration file
                             iniFile.WriteValue("Program", "TimestampURL", txtTimestampProviderURL.Text);
 
@@ -870,7 +873,8 @@ namespace SignToolGUI.Forms
                             }
 
                             // Encrypt the certificate password and save it to the configuration file
-                            var encryptedstring = StringCipher.Encrypt(textBoxPFXPassword.Text, "pMmInS?m24Caae#?2EySvsFUgDsUG06Qzz8R0X8F8WUNn04#g%mP02*36datrZka?cQh/Q2E/Oc4/21%");
+                            var encryptedstring = StringCipher.Encrypt(textBoxPFXPassword.Text,
+                                "pMmInS?m24Caae#?2EySvsFUgDsUG06Qzz8R0X8F8WUNn04#g%mP02*36datrZka?cQh/Q2E/Oc4/21%");
 
                             // Save the encrypted certificate password to the configuration file
                             iniFile.WriteValue("Program", "CertificatePassword", encryptedstring);
@@ -881,13 +885,15 @@ namespace SignToolGUI.Forms
                         }
 
                         // Log the application closing message and saved configuration
-                        Message("Application is closing - .pfx certificate password saved", EventType.Information, 1030);
+                        Message("Application is closing - .pfx certificate password saved", EventType.Information,
+                            1030);
 
                         Application.ExitThread();
                         break;
                     case DialogResult.No:
                         // Log the user's choice not to save the certificate password to the configuration file
-                        Message("User chose not to save the certificate (.pfx) password to the configuration file", EventType.Information, 1031);
+                        Message("User chose not to save the certificate (.pfx) password to the configuration file",
+                            EventType.Information, 1031);
 
                         // Do not save the certificate password to the configuration file if the user clicks No
                         iniFile.WriteValue("Program", "SignToolPath", textBoxSignToolPath.Text);
@@ -922,7 +928,8 @@ namespace SignToolGUI.Forms
                         }
 
                         // Log the application closing message and not saved configuration
-                        Message("Application is closing - .pfx certificate password and information not saved", EventType.Information, 1032);
+                        Message("Application is closing - .pfx certificate password and information not saved",
+                            EventType.Information, 1032);
 
                         // Log configuration file save completion message
                         Message("Configuration file saved successfully", EventType.Information, 1033);
@@ -977,11 +984,16 @@ namespace SignToolGUI.Forms
                 iniFile.WriteValue("Program", "CertificatePassword", "");
 
                 // Log the application closing message and not saved configuration
-                Message("Application is closing - .pfx certificate password and information not saved", EventType.Information, 1033);
+                Message("Application is closing - .pfx certificate password and information not saved",
+                    EventType.Information, 1033);
 
                 // Log configuration file save completion message
                 Message("Configuration file saved successfully", EventType.Information, 1034);
             }
+
+            // Log application closed message
+            Message("Application " + Application.ProductName + @" v." + Application.ProductVersion + " is closed",
+                EventType.Information, 1057);
         }
 
         private void buttonBrowseSignTool_Click(object sender, EventArgs e)
