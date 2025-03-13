@@ -232,6 +232,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.checkedListBoxFiles.FormattingEnabled = true;
+            this.checkedListBoxFiles.HorizontalScrollbar = true;
             this.checkedListBoxFiles.Location = new System.Drawing.Point(6, 19);
             this.checkedListBoxFiles.Name = "checkedListBoxFiles";
             this.checkedListBoxFiles.Size = new System.Drawing.Size(655, 154);

@@ -294,7 +294,7 @@ namespace SignToolGUI.Forms
 
         private void AddTimestampProvider(string displayName, string url)
         {
-            if (!comboBoxTimestampProviders.Items.Cast<TimestampProvider>().Any(item => item.DisplayName == displayName))
+            if (comboBoxTimestampProviders.Items.Cast<TimestampProvider>().All(item => item.DisplayName != displayName))
             {
                 comboBoxTimestampProviders.Items.Add(new TimestampProvider(displayName, url));
             }
@@ -1499,7 +1499,7 @@ Use the ... button above and select the code signing certificate to use!", @"No 
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 // count files before add selected files
-                var currentFiles = checkedListBoxFiles.Items.Count;
+                var currentFiles = checkedListBoxFiles?.Items.Count ?? 0;
                 try
                 {
                     var searchOption = SearchOption.TopDirectoryOnly;
@@ -1515,15 +1515,15 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                     // loop in all files
                     foreach (var file in files)
                     {
-                        checkedListBoxFiles.Items.Add(file);
+                        checkedListBoxFiles?.Items.Add(file);
                     }
 
                     // calc added files
-                    var totalFiles = checkedListBoxFiles.Items.Count;
-                    var addedFiles = currentFiles - totalFiles;
+                    var totalFiles = checkedListBoxFiles?.Items.Count ?? 0;
+                    var addedFiles = totalFiles - currentFiles;
 
                     // show status
-                    statusLabel.Text = @"[INFO] " + addedFiles + @" file(s) imported to File List from folder";
+                    statusLabel.Text = @"[INFO] " + addedFiles + @" file(s) imported to File List from selected folder";
                 }
                 catch
                 {
