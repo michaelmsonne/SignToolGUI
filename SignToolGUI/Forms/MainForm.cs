@@ -1042,6 +1042,9 @@ namespace SignToolGUI.Forms
             // Show the output textbox the job has started
             textBoxOutput.AppendText("[JOB] Initiating Job of " + _totalJob + " Files" + Environment.NewLine);
 
+            // Log the signing process started message
+            Message("Signing process started...", EventType.Information, 1045);
+
             // Sign the files from the list selected - if 0 files are selected, show a message box and return
             if (checkedListBoxFiles.CheckedItems.Count == 0)
             {
@@ -1050,6 +1053,11 @@ namespace SignToolGUI.Forms
 Please select one or more binaries into the list above to proceed!", @"No files to sign selected",
                     MessageBoxButtons.OK, MessageBoxIcon.Question);
                 DisableForm(false);
+
+                // Log the signing process cancelled message
+                Message("Signing process cancelled - no files selected", EventType.Information, 1046);
+
+                // Return from the method if no files are selected
                 return;
             }
 
@@ -1061,6 +1069,9 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             {
                 try
                 {
+                    // Log signing process started message for Windows Certificate Store
+                    Message("Signing process started for Windows Certificate Store...", EventType.Information, 1047);
+
                     // Disables the form's controls while signing the files
                     ToggleDisabledForm(true);
 
@@ -1132,6 +1143,9 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                         var filename = Path.GetFileName(file.ToString());
                         textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
 
+                        // Log the signing process started message for file
+                        Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
+
                         // Sign file with SignerThumbprint
                         signer.Sign(file.ToString());
 
@@ -1147,6 +1161,9 @@ Please select one or more binaries into the list above to proceed!", @"No files 
 
                     // Enable the form's controls after signing the files again and show the output in the textbox
                     ToggleDisabledForm(false);
+
+                    // Log the signing process completed message
+                    Message("Signing process completed for Windows Certificate Store", EventType.Information, 1048);
                 }
                 catch (Exception exception)
                 {
@@ -1158,6 +1175,9 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             {
                 try
                 {
+                    // Log signing process started message for PFX Certificate
+                    Message("Signing process started for PFX Certificate...", EventType.Information, 1048);
+
                     ToggleDisabledForm(true);
                     textBoxOutput.Clear();
                     SignerPfx signer = new SignerPfx(textBoxSignToolPath.Text, textBoxPFXFile.Text, textBoxPFXPassword.Text,
@@ -1224,6 +1244,9 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                         var filename = Path.GetFileName(file.ToString());
                         textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
 
+                        // Log the signing process started message for file
+                        Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
+
                         // Sign file with SignerPfx class
                         signer.Sign(file.ToString());
 
@@ -1237,7 +1260,11 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                         //statusLabel.Text = @"[JOB] Signed " + jobSigned + @" of " + totalJob + @" File(s)";
                     }
 
+                    // Enable the form's controls after signing the files again and show the output in the textbox
                     ToggleDisabledForm(false);
+
+                    // Log the signing process completed message
+                    Message("Signing process completed for PFX Certificate", EventType.Information, 1049);
                 }
                 catch (Exception exception)
                 {
@@ -1249,6 +1276,9 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             {
                 try
                 {
+                    // Log signing process started message for Trusted Signing Certificate
+                    Message("Signing process started for Trusted Signing Certificate...", EventType.Information, 1049);
+
                     // Get the values from the form's controls for the SignerTrustedSigning class
                     var signToolExe = textBoxSignToolPath.Text;
                     var timeStampServer = "http://timestamp.acs.microsoft.com";
@@ -1331,6 +1361,9 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                         var filename = Path.GetFileName(file.ToString());
                         textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
 
+                        // Log the signing process started message for file
+                        Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
+
                         // Sign file with SignerTrustedSigning class
                         signer.Sign(file.ToString());
 
@@ -1344,7 +1377,11 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                         //statusLabel.Text = @"[JOB] Signed " + jobSigned + @" of " + totalJob + @" File(s)";
                     }
 
+                    // Enable the form's controls after signing the files again and show the output in the textbox
                     ToggleDisabledForm(false);
+
+                    // Log the signing process completed message
+                    Message("Signing process completed for Trusted Signing Certificate", EventType.Information, 1050);
                 }
                 catch (Exception exception)
                 {
@@ -1391,6 +1428,9 @@ Please select one or more binaries into the list above to proceed!", @"No files 
 
             // Enable the form's controls after signing the files again and show the output in the textbox
             DisableForm(false);
+
+            // Log the signing process completed message
+            Message("Signing process completed", EventType.Information, 1051);
         }
 
         private void buttonShowAllCertDataPopup_Click(object sender, EventArgs e)
