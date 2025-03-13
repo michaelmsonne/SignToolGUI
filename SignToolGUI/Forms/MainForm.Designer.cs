@@ -144,7 +144,7 @@
             this.groupBoxFiles.Size = new System.Drawing.Size(667, 212);
             this.groupBoxFiles.TabIndex = 1;
             this.groupBoxFiles.TabStop = false;
-            this.groupBoxFiles.Text = "Files to digital signing";
+            this.groupBoxFiles.Text = "File(s) to digital signing";
             // 
             // ResetJob
             // 
@@ -173,11 +173,11 @@
             this.checkBoxAll.AutoSize = true;
             this.checkBoxAll.Checked = true;
             this.checkBoxAll.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAll.Location = new System.Drawing.Point(82, 246);
+            this.checkBoxAll.Location = new System.Drawing.Point(187, 186);
             this.checkBoxAll.Name = "checkBoxAll";
-            this.checkBoxAll.Size = new System.Drawing.Size(58, 17);
+            this.checkBoxAll.Size = new System.Drawing.Size(69, 17);
             this.checkBoxAll.TabIndex = 5;
-            this.checkBoxAll.Text = "All files";
+            this.checkBoxAll.Text = "Select all";
             this.checkBoxAll.UseVisualStyleBackColor = true;
             this.checkBoxAll.CheckedChanged += new System.EventHandler(this.CheckBoxAll_CheckedChanged);
             // 
@@ -323,7 +323,7 @@
             // 
             this.changelogToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
-            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.changelogToolStripMenuItem.Text = "Changelog";
             this.changelogToolStripMenuItem.Click += new System.EventHandler(this.changelogToolStripMenuItem_Click);
             // 
@@ -331,7 +331,7 @@
             // 
             this.aboutToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 

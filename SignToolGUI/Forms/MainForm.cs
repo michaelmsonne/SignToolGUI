@@ -1398,6 +1398,9 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             // Retrieving the text from the label
             var certificateInfo = labelCertificateInformation.Text;
 
+            // Log the certificate information popup message
+            Message("User view the certificate information popup for certificate '" + comboBoxCertificatesInStore.Text + "'", EventType.Information, 1042);
+
             // Displaying the data in a MessageBox
             MessageBox.Show(certificateInfo, @"Certificate Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -1418,11 +1421,18 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                 {
                     // Write the output to the file
                     File.WriteAllText(sfd.FileName, textBoxOutput.Text);
+
+                    // Log the saving of the output to the file message
+                    Message("Output saved to file: '" + sfd.FileName + "'", EventType.Information, 1038);
                 }
                 catch (Exception exception)
                 {
                     // Show an error message if the file could not be saved
                     MessageBox.Show(exception.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    // Log the error message
+                    Message("Error saving output to file: " + exception.Message, EventType.Error, 1044);
+
                     throw;
                 }
             }
@@ -1545,7 +1555,21 @@ Use the ... button above and select the code signing certificate to use!", @"No 
 
         private void linkLabelOpenTrustedSigningPortal_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://portal.azure.com/#browse/Microsoft.CodeSigning%2Fcodesigningaccounts");
+            try
+            {
+                Process.Start("https://portal.azure.com/#browse/Microsoft.CodeSigning%2Fcodesigningaccounts");
+
+                // Log the opening of the URL message
+                Message("User clicked the 'Open Trusted Signing Portal' link to open the URL: 'https://portal.azure.com/#browse/Microsoft.CodeSigning%2Fcodesigningaccounts'", EventType.Information, 1040);
+            }
+            catch (Exception ex)
+            {
+                // Show an error message if the URL could not be opened
+                MessageBox.Show(@"Failed to open the URL. Error: " + ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                // Log the error message
+                Message("Failed to open the URL: " + ex.Message, EventType.Error, 1041);
+            }
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1566,7 +1590,9 @@ Use the ... button above and select the code signing certificate to use!", @"No 
 
         private void CheckedListBoxFiles_KeyDown(object sender, KeyEventArgs e)
         {
+            // Initialize the deleted files counter
             int deletedFilesCount = 0;
+
             // Check if the Delete key on the keyboard is pressed
             if (e.KeyCode != Keys.Delete)
                 return; // If not, do nothing and exit the method
@@ -1592,11 +1618,17 @@ Use the ... button above and select the code signing certificate to use!", @"No 
 
                 // Update the status label with the count of deleted files
                 statusLabel.Text = $@"[INFO] {deletedFilesCount} file(s) deleted from the file list";
+
+                // Log the deletion of the file from the list message and the number of files deleted
+                Message($"User have deleted {deletedFilesCount} file(s) from the list of files to sign", EventType.Information, 1042);
             }
         }
 
         private void ButtonAddFiles_Click(object sender, EventArgs e)
         {
+            // Log the add files button click message
+            Message("User clicked the 'Add Files' button to add files to the list of files to sign", EventType.Information, 1041);
+
             // Show the OpenFileDialog and add the selected files to the list
             openFileDialog.Multiselect = true;
             openFileDialog.Filter = @"Executables and scripts (*.exe;*.dll;*.sys;*.ocx;*.ps1;*.msi;*.cat;*.cab;*.appx;*.appxbundle;*.msix;*.msixbundle)|*.exe;*.dll;*.sys;*.ocx;*.ps1;*.msi;*.cat;*.cab;*.appx;*.appxbundle;*.msix;*.msixbundle|All Files (*.*)|*.*";
@@ -1627,6 +1659,9 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                     totalFiles = 0; // Or handle it according to your application's needs
                 }
 
+                // Log the number of files selected and user action
+                Message("User have selected " + openFileDialog.FileNames.Length + " file(s) to add to the list of files to sign", EventType.Information, 1039);
+
                 // calc added files
                 var addedFiles = totalFiles - currentFiles;
 
@@ -1656,8 +1691,14 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                         searchOption = SearchOption.AllDirectories;
                     }
 
+                    // Log the search for files message
+                    Message("Searching for files in the source folder selected to be added to the list of files to sign...", EventType.Information, 1039);
+
                     // Set filter for file extension and add all files from selected folder
                     var files = GetFiles(folderBrowserDialog.SelectedPath, "*.exe;*.dll;*.sys;*.ocx;*.ps1", searchOption);
+                    
+                    // Log the search for files completion message
+                    Message("Files found in the source folder selected to be added to the list of files", EventType.Information, 1040);
 
                     // loop in all files
                     foreach (var file in files)
@@ -1668,6 +1709,9 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                     // calc added files
                     var totalFiles = checkedListBoxFiles?.Items.Count ?? 0;
                     var addedFiles = totalFiles - currentFiles;
+
+                    // Log the number of files added to the list and completion message
+                    Message("User have added " + addedFiles + " file(s) to the list of files to sign", EventType.Information, 1041);
 
                     // show status
                     statusLabel.Text = @"[INFO] " + addedFiles + @" file(s) imported to File List from selected folder";
@@ -1700,6 +1744,9 @@ Use the ... button above and select the code signing certificate to use!", @"No 
             // Open the OpenFileDialog to select a PFX file for signing
             try
             {
+                // Log the browse for PFX file message
+                Message("User is browsing for a PFX file for signing...", EventType.Information, 1040);
+
                 // Create a new instance of the OpenFileDialog class.
                 var fileDialog = new OpenFileDialog
                 {
@@ -1710,10 +1757,16 @@ Use the ... button above and select the code signing certificate to use!", @"No 
 
                 // Check if the dialog result is OK and set the selected file to the text box.
                 if (fileDialog.ShowDialog() == DialogResult.OK) textBoxPFXFile.Text = fileDialog.FileName;
+
+                // Log the PFX file selected message
+                Message("User have selected the PFX file: '" + textBoxPFXFile.Text + "'", EventType.Information, 1042);
             }
             catch (Exception ex)
             {
                 int num = (int)MessageBox.Show(ex.Message, Globals.MsgBox.Error, MessageBoxButtons.OK, MessageBoxIcon.Hand);
+
+                // Log the error message when selecting the PFX file
+                Message("Error selecting the PFX file: " + ex.Message, EventType.Error, 1043);
             }
         }
 
@@ -1721,6 +1774,9 @@ Use the ... button above and select the code signing certificate to use!", @"No 
         {
             try
             {
+                // Log the display of the signing certificate message
+                Message("User is displaying the signing certificate...", EventType.Information, 1044);
+
                 // Check if the Windows Certificate Store radio button is selected.
                 if (radioButtonWindowsCertificateStore.Checked)
                 {
@@ -1730,6 +1786,9 @@ Use the ... button above and select the code signing certificate to use!", @"No 
 
                     // Display the selected certificate from the signing certificates list.
                     X509Certificate2UI.DisplayCertificate(new X509Certificate2((X509Certificate)_signingCerts[comboBoxCertificatesInStore.SelectedIndex - 1]));
+
+                    // Log the display of the signing certificate completion message from store
+                    Message("User have displayed the signing certificate from the Windows Certificate Store", EventType.Information, 1045);
                 }
                 else
                 {
@@ -1738,6 +1797,9 @@ Use the ... button above and select the code signing certificate to use!", @"No 
 
                     // Display the certificate obtained from the PFX file.
                     X509Certificate2UI.DisplayCertificate(GetCertificateFromPfx());
+
+                    // Log the display of the signing certificate completion message from PFX file
+                    Message("User have displayed the signing certificate from the .PFX file", EventType.Information, 1046);
                 }
 
                 // Check if the PFX Certificate radio button is selected.
@@ -1746,14 +1808,20 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                     // If the label for certificate information is not null, update it with the certificate info.
                     if (labelCertificateInformation != null)
                         labelCertificateInformation.Text = GetCertificateInfo(GetCertificateFromPfx());
+
+                    // Log the display of the signing certificate completion message from PFX file to the UI
+                    Message("Displayed the signing certificate from the .PFX file to the UI", EventType.Information, 1047);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //int num = (int)MessageBox.Show(ex.Message, Txt.MsgBox.warning, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                // TODO make error massage better for the user
+                //int num = (int)MessageBox.Show(ex.Message, @"Error when showing certificate data", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                // Log the error message when displaying the signing certificate
+                Message("Error displaying the signing certificate: " + ex.Message, EventType.Error, 1047);
             }
         }
-
 
         #endregion Sign options - GUI
 
@@ -1786,6 +1854,9 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                 // Set the checked state of each item to match the state of the "Select All" checkbox.
                 checkedListBoxFiles.SetItemChecked(i, isChecked);
             }
+
+            // Log the "Select All" checkbox state change.
+            Message("User have " + (isChecked ? "checked" : "unchecked") + " the 'Select All' checkbox for file(s) to sign", EventType.Information, 1042);
         }
 
         #endregion Sign files - GUI
