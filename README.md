@@ -64,6 +64,15 @@ Main tool GUI
 - **Logging and error handling**: SignToolGUI provides detailed logging of the signing process, making it easy to track and troubleshoot any issues that may arise during signing.
 - **Batch signing support**: Users can efficiently sign multiple files in a batch, reducing the time and effort required for signing large projects or collections of files.
 - **Config settings**: Users can save and load configuration settings for signing, streamlining the process for future signing tasks.
+- **Support for signing with .pfx files, Windows Certificate Store, and Microsoft Trusted Signing**.
+- **Automatic detection and configuration of signtool.exe**.
+- **Customizable timestamp providers** with support for multiple regions and custom URLs.
+- **Detailed logging** of all operations for troubleshooting and auditing.
+- **User-friendly interface** for managing and signing multiple files.
+- **Integration with Azure Code Signing** for enhanced security.
+- Support for both 32-bit and 64-bit architectures.
+- Option to save and load configuration settings for ease of use.
+- Comprehensive error handling and user notifications.
 
 ## To do list
 - [ ] Soon... Verification and Validation: After signing, SignToolGUI allows users to verify and validate the digital signatures to ensure the integrity and authenticity of the signed files.
