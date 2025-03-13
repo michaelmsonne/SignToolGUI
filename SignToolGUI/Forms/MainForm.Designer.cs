@@ -338,7 +338,7 @@
             // 
             this.labelCertificateInformation.Location = new System.Drawing.Point(4, 17);
             this.labelCertificateInformation.Name = "labelCertificateInformation";
-            this.labelCertificateInformation.Size = new System.Drawing.Size(273, 215);
+            this.labelCertificateInformation.Size = new System.Drawing.Size(280, 205);
             this.labelCertificateInformation.TabIndex = 0;
             this.labelCertificateInformation.Text = "Information...";
             // 
@@ -401,7 +401,7 @@
             this.groupBoxCertificateInformation.Controls.Add(this.labelCertificateInformation);
             this.groupBoxCertificateInformation.Location = new System.Drawing.Point(386, 55);
             this.groupBoxCertificateInformation.Name = "groupBoxCertificateInformation";
-            this.groupBoxCertificateInformation.Size = new System.Drawing.Size(288, 235);
+            this.groupBoxCertificateInformation.Size = new System.Drawing.Size(288, 225);
             this.groupBoxCertificateInformation.TabIndex = 14;
             this.groupBoxCertificateInformation.TabStop = false;
             this.groupBoxCertificateInformation.Text = "Certificate Information";
@@ -572,7 +572,7 @@
             this.groupBoxTimestamp.Controls.Add(this.labelTimestampProvider);
             this.groupBoxTimestamp.Controls.Add(this.comboBoxTimestampProviders);
             this.groupBoxTimestamp.Controls.Add(this.labelTimeStampServer);
-            this.groupBoxTimestamp.Location = new System.Drawing.Point(386, 296);
+            this.groupBoxTimestamp.Location = new System.Drawing.Point(386, 286);
             this.groupBoxTimestamp.Name = "groupBoxTimestamp";
             this.groupBoxTimestamp.Size = new System.Drawing.Size(288, 96);
             this.groupBoxTimestamp.TabIndex = 19;

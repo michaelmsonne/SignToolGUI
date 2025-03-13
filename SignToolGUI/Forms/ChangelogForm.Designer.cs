@@ -36,6 +36,7 @@
             // 
             this.richTextBoxChangelog.Location = new System.Drawing.Point(1, 0);
             this.richTextBoxChangelog.Name = "richTextBoxChangelog";
+            this.richTextBoxChangelog.ReadOnly = true;
             this.richTextBoxChangelog.Size = new System.Drawing.Size(469, 341);
             this.richTextBoxChangelog.TabIndex = 0;
             this.richTextBoxChangelog.Text = "";

@@ -156,8 +156,10 @@ namespace SignToolGUI.Forms
 
             // Define the versions and architectures to search
             var versions = new[]
-            {
-                "10.0.22621.0", // Add other versions as needed...
+            { 
+                // Add other versions as needed...
+                "10.0.26100.0",
+                "10.0.22621.0",
                 "10.0.17134.0",
                 "10.0.16299.0",
                 "10.0.15063.0",
@@ -357,7 +359,12 @@ namespace SignToolGUI.Forms
                 SignToolExe = localSignToolPath;
                 textBoxSignToolPath.Text = localSignToolPath;
 
+                // Set the Trusted Signing Portal link label to enabled
                 linkLabelOpenTrustedSigningPortal.Enabled = true;
+
+                // Disable the timestamp checkbox and set it to checked
+                checkBoxTimestamp.Checked = true;
+                checkBoxTimestamp.Enabled = false;
             }
             else
             {
@@ -365,7 +372,11 @@ namespace SignToolGUI.Forms
                 SignToolExe = _previousSignToolPath;
                 textBoxSignToolPath.Text = _previousSignToolPath;
 
+                // Set the Trusted Signing Portal link label to disabled
                 linkLabelOpenTrustedSigningPortal.Enabled = false;
+
+                // Enable the timestamp checkbox
+                checkBoxTimestamp.Enabled = true;
             }
 
             // Check if the the rest checkboxes are enabled and set handling correctly for signing type
