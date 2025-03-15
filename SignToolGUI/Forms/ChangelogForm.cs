@@ -27,7 +27,7 @@ namespace SignToolGUI.Forms
                                    "   (supported for .pfx and Certificate Store cert´s)\n" +
                                    " - Added some more error handling and logging\n" +
                                    " - Added support for more v. of the Windows SDK\n" +
-                                   " - Added a 'Select all' option to mass select files to sign\n" +
+                                   " - Added a 'Select all' option to mass select/unselect files to sign\n" +
                                    " - Some small minor UI changes\n\n" +
                                    " Version 1.3.0.0 (18-07-2024):\n" +
                                    " - Add support for Microsoft Trusted Signing\n" +

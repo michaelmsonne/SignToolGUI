@@ -458,9 +458,15 @@ namespace SignToolGUI.Forms
                 checkBoxTimestamp.Checked = true;
                 checkBoxTimestamp.Enabled = false;
 
+                // Disable the signtool path text box and browse button
+                textBoxSignToolPath.Enabled = false;
+                buttonBrowseSignTool.Enabled = false;
+
+                // Set the timestamp group box text and label text
                 groupBoxTimestamp.Text = @"Trusted Signing Endpoint";
                 labelTimeStampServer.Text = @"Endpoint URL:";
 
+                // Set the tooltip for the timestamp checkbox
                 toolTip.SetToolTip(checkBoxTimestamp, "Trusted Signing requires a timestamp. This option is disabled for Trusted Signing.");
             }
             else
@@ -481,6 +487,11 @@ namespace SignToolGUI.Forms
                 // Enable the timestamp checkbox
                 checkBoxTimestamp.Enabled = true;
 
+                // Enable the signtool path text box and browse button
+                textBoxSignToolPath.Enabled = true;
+                buttonBrowseSignTool.Enabled = true;
+
+                // Set the timestamp group box text and label text
                 groupBoxTimestamp.Text = @"Timestamp URL:";
                 labelTimeStampServer.Text = @"Timestamp";
 
@@ -502,7 +513,7 @@ namespace SignToolGUI.Forms
                 }
                 else if (radioButtonTrustedSigning.Checked)
                 {
-                    labelCertificateInformation.Text = @"Trusted Signing Certificate - set details in Trusted Signing account";
+                    labelCertificateInformation.Text = @"Trusted Signing Certificate - set details in Trusted Signing account located in the Azure Portal";
                 }
                 else
                 {
