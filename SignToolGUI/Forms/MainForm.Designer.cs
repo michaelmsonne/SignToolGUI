@@ -51,6 +51,9 @@
             this.textBoxSignToolPath = new System.Windows.Forms.TextBox();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openTodaysLogfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openLogFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelCertificateInformation = new System.Windows.Forms.Label();
@@ -316,17 +319,44 @@
             // menuToolStripMenuItem
             // 
             this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.logsToolStripMenuItem,
             this.changelogToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.menuToolStripMenuItem.Text = "Menu";
             // 
+            // logsToolStripMenuItem
+            // 
+            this.logsToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.logsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openTodaysLogfileToolStripMenuItem,
+            this.openLogFolderToolStripMenuItem});
+            this.logsToolStripMenuItem.Name = "logsToolStripMenuItem";
+            this.logsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.logsToolStripMenuItem.Text = "Logs";
+            // 
+            // openTodaysLogfileToolStripMenuItem
+            // 
+            this.openTodaysLogfileToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.openTodaysLogfileToolStripMenuItem.Name = "openTodaysLogfileToolStripMenuItem";
+            this.openTodaysLogfileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openTodaysLogfileToolStripMenuItem.Text = "Open todays logfile";
+            this.openTodaysLogfileToolStripMenuItem.Click += new System.EventHandler(this.OpenTodaysLogfileToolStripMenuItem_Click);
+            // 
+            // openLogFolderToolStripMenuItem
+            // 
+            this.openLogFolderToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.openLogFolderToolStripMenuItem.Name = "openLogFolderToolStripMenuItem";
+            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openLogFolderToolStripMenuItem.Text = "Open log folder";
+            this.openLogFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenLogfolderToolStripMenuItem_Click);
+            // 
             // changelogToolStripMenuItem
             // 
             this.changelogToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
-            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.changelogToolStripMenuItem.Text = "Changelog";
             this.changelogToolStripMenuItem.Click += new System.EventHandler(this.changelogToolStripMenuItem_Click);
             // 
@@ -334,7 +364,7 @@
             // 
             this.aboutToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -882,6 +912,9 @@
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBoxTimestamp;
+        private System.Windows.Forms.ToolStripMenuItem logsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openTodaysLogfileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openLogFolderToolStripMenuItem;
     }
 }
 

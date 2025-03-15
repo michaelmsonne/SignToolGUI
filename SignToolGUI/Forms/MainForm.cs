@@ -1681,9 +1681,40 @@ Use the ... button above and select the code signing certificate to use!", @"No 
             ChangelogForm f2 = new ChangelogForm();
             f2.ShowDialog();
         }
-        
+
+        private void OpenTodaysLogfileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Open the log file for today
+            try
+            {
+                var logFilePath = Files.LogFilePath;
+                logFilePath = logFilePath + "\\" + Globals.ToolName.SignToolGui + " Log " + DateTime.Today.ToString("dd-MM-yyyy") + "." + "log";
+                Process.Start(logFilePath);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+        }
+
+        private void OpenLogfolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Open the log folder
+            try
+            {
+                var logFolderPath = Files.LogFilePath;
+                Process.Start("explorer.exe", logFolderPath);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+        }
+
         #endregion Form actions
-        
+
         #region Sign options - GUI
 
         private void CheckedListBoxFiles_KeyDown(object sender, KeyEventArgs e)
@@ -2167,6 +2198,5 @@ Use the ... button above and select the code signing certificate to use!", @"No 
         }
 
         #endregion Certificate info
-        
     }
 }
