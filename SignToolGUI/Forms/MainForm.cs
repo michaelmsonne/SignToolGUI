@@ -107,7 +107,7 @@ namespace SignToolGUI.Forms
                             labelSignedBuildState.ForeColor = Color.Green;
 
                             // Log the certificate thumbprint check success message
-                            Message("The certificate thumbprint matches the current one from Michael Morten Sonne.", EventType.Information, 1004);
+                            Message("The certificate thumbprint matches the current one from 'Michael Morten Sonne' online", EventType.Information, 1004);
                         });
                     }
                     else
@@ -118,7 +118,7 @@ namespace SignToolGUI.Forms
                             labelSignedBuildState.ForeColor = Color.Green;
 
                             // Log the certificate thumbprint check success message
-                            Message("The certificate thumbprint does not match the current one from Michael Morten Sonne - custom Code Sign Certificate", EventType.Information, 1005);
+                            Message("The certificate thumbprint does not match the current one from 'Michael Morten Sonne' online - custom Code Sign Certificate used for this build", EventType.Information, 1005);
                         });
                     }
                 }
