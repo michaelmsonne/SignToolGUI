@@ -20,15 +20,16 @@ namespace SignToolGUI.Forms
         {
             // Changelog content
             var changelogContent = " Version 1.4.0.0 (15-03-2025):\n" +
-                                   " - Updated Trusted Signing from 0.1.103.0 to the last v. 0.1.108.0\n" +
-                                   " - Changed so only Code Sign certificates with a private key is showed in the tool to select\n" +
-                                   " - Added a link to the Azure Portal to find your Trusted Signing accounts\n" +
-                                   " - Added a option to set if you will add a timestamp when signing or not \n" +
+                                   " - Updated Trusted Signing from v0.1.103.0 to the latest v0.1.108.0\n" +
+                                   " - The tool now only displays Code Signing certificates with a private key for selection\n" +
+                                   " - Added a direct link to the Azure Portal to help you find your Trusted Signing accounts\n" +
+                                   " - New option to enable or disable timestamping when signing (supported for .pfx and\n" +
+                                   "   Certificate Store certificates)\n" +
                                    "   (supported for .pfx and Certificate Store cert´s)\n" +
-                                   " - Added some more error handling and logging\n" +
-                                   " - Added support for more v. of the Windows SDK\n" +
-                                   " - Added a 'Select all' option to mass select/unselect files to sign\n" +
-                                   " - Some small minor UI changes\n\n" +
+                                   " - Improved error handling and logging\n" +
+                                   " - Added support for more versions of the Windows SDK\n" +
+                                   " - New \"Select All\" option for bulk selecting/unselecting files to sign\n" +
+                                   " - Minor UI improvements for a better user experience\n\n" +
                                    " Version 1.3.0.0 (18-07-2024):\n" +
                                    " - Add support for Microsoft Trusted Signing\n" +
                                    " - Add check for if tool is code signed (via Windows API, valid or valid with my Code Signing\n" +
