@@ -25,7 +25,6 @@ namespace SignToolGUI.Forms
                                    " - Added a direct link to the Azure Portal to help you find your Trusted Signing accounts\n" +
                                    " - New option to enable or disable timestamping when signing (supported for .pfx and\n" +
                                    "   Certificate Store certificates)\n" +
-                                   "   (supported for .pfx and Certificate Store cert´s)\n" +
                                    " - Improved error handling and logging\n" +
                                    " - Added support for more versions of the Windows SDK\n" +
                                    " - New \"Select All\" option for bulk selecting/unselecting files to sign\n" +
