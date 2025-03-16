@@ -48,6 +48,8 @@ Main tool GUI
 
 ![Main GUI](/docs/pictures/mainform.png)
 
+![Menu GUI](/docs/pictures/mainform-menu.png)
+
 <details>
   <summary>About the tool GUI</summary>
   
