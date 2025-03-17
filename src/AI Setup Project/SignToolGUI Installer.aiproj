@@ -1,0 +1,45 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">All</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>eed69928-407c-4c65-89a8-56244e46764d</ProjectGuid>
+    <OutputType>msi</OutputType>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>AI Setup Project.aip</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <IsWindowsApplication>True</IsWindowsApplication>
+    <AssemblyName>AI Setup Project</AssemblyName>
+    <Name>SignToolGUI Installer</Name>
+    <RootNamespace>AI Setup Project</RootNamespace>
+    <LoadFromTemplate>
+    </LoadFromTemplate>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DefaultBuild' " />
+  <ItemGroup>
+    <Compile Include="SignToolGUI Installer.aip">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SignToolGUI\SignToolGUI.csproj">
+      <Name>SignToolGUI</Name>
+      <Project>{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}</Project>
+      <Private>True</Private>
+      <OutputsToImport>PrimaryOutput;ContentOutput;References;LocalizedResourcesOutput</OutputsToImport>
+    </ProjectReference>
+  </ItemGroup>
+  <Target Name="Build">
+    <Error Text="This project requires Advanced Installer tool. Please download it from https://www.advancedinstaller.com/download.html" />
+  </Target>
+  <Target Name="Rebuild">
+    <Error Text="This project requires Advanced Installer tool. Please download it from https://www.advancedinstaller.com/download.html" />
+  </Target>
+  <Target Name="Clean">
+  </Target>
+  <Target Name="ResolveAssemblyReferences">
+  </Target>
+  <Import Condition="'$(AdvancedInstallerMSBuildTargets)' != ''" Project="$(AdvancedInstallerMSBuildTargets)\AdvInstExtTasks.Targets" />
+  <Import Condition="('$(AdvancedInstallerMSBuildTargets)' == '') And (Exists('$(MSBuildExtensionsPath32)\Caphyon\Advanced Installer\AdvInstExtTasks.Targets'))" Project="$(MSBuildExtensionsPath32)\Caphyon\Advanced Installer\AdvInstExtTasks.Targets" />
+</Project>
