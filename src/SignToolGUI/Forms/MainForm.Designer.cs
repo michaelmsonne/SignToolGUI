@@ -110,9 +110,9 @@
             // buttonBrowseSignTool
             // 
             this.buttonBrowseSignTool.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonBrowseSignTool.Location = new System.Drawing.Point(315, 16);
+            this.buttonBrowseSignTool.Location = new System.Drawing.Point(306, 16);
             this.buttonBrowseSignTool.Name = "buttonBrowseSignTool";
-            this.buttonBrowseSignTool.Size = new System.Drawing.Size(52, 22);
+            this.buttonBrowseSignTool.Size = new System.Drawing.Size(61, 22);
             this.buttonBrowseSignTool.TabIndex = 2;
             this.buttonBrowseSignTool.Text = "Browse...";
             this.buttonBrowseSignTool.UseVisualStyleBackColor = true;
@@ -302,7 +302,7 @@
             this.textBoxSignToolPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxSignToolPath.Location = new System.Drawing.Point(127, 17);
             this.textBoxSignToolPath.Name = "textBoxSignToolPath";
-            this.textBoxSignToolPath.Size = new System.Drawing.Size(182, 20);
+            this.textBoxSignToolPath.Size = new System.Drawing.Size(173, 20);
             this.textBoxSignToolPath.TabIndex = 5;
             // 
             // menuStrip
@@ -333,14 +333,14 @@
             this.openTodaysLogfileToolStripMenuItem,
             this.openLogFolderToolStripMenuItem});
             this.logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            this.logsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.logsToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.logsToolStripMenuItem.Text = "Logs";
             // 
             // openTodaysLogfileToolStripMenuItem
             // 
             this.openTodaysLogfileToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.openTodaysLogfileToolStripMenuItem.Name = "openTodaysLogfileToolStripMenuItem";
-            this.openTodaysLogfileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openTodaysLogfileToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.openTodaysLogfileToolStripMenuItem.Text = "Open todays logfile";
             this.openTodaysLogfileToolStripMenuItem.Click += new System.EventHandler(this.OpenTodaysLogfileToolStripMenuItem_Click);
             // 
@@ -348,7 +348,7 @@
             // 
             this.openLogFolderToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.openLogFolderToolStripMenuItem.Name = "openLogFolderToolStripMenuItem";
-            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.openLogFolderToolStripMenuItem.Text = "Open log folder";
             this.openLogFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenLogfolderToolStripMenuItem_Click);
             // 
@@ -356,7 +356,7 @@
             // 
             this.changelogToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
-            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.changelogToolStripMenuItem.Text = "Changelog";
             this.changelogToolStripMenuItem.Click += new System.EventHandler(this.changelogToolStripMenuItem_Click);
             // 
@@ -364,7 +364,7 @@
             // 
             this.aboutToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -423,9 +423,9 @@
             // buttonShowSigninigCertificateStore
             // 
             this.buttonShowSigninigCertificateStore.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonShowSigninigCertificateStore.Location = new System.Drawing.Point(302, 50);
+            this.buttonShowSigninigCertificateStore.Location = new System.Drawing.Point(306, 50);
             this.buttonShowSigninigCertificateStore.Name = "buttonShowSigninigCertificateStore";
-            this.buttonShowSigninigCertificateStore.Size = new System.Drawing.Size(65, 23);
+            this.buttonShowSigninigCertificateStore.Size = new System.Drawing.Size(61, 23);
             this.buttonShowSigninigCertificateStore.TabIndex = 4;
             this.buttonShowSigninigCertificateStore.Text = "Show";
             this.buttonShowSigninigCertificateStore.UseVisualStyleBackColor = true;
@@ -462,11 +462,11 @@
             // 
             // buttonSelectPFXCertificate
             // 
-            this.buttonSelectPFXCertificate.Location = new System.Drawing.Point(8, 22);
+            this.buttonSelectPFXCertificate.Location = new System.Drawing.Point(306, 22);
             this.buttonSelectPFXCertificate.Name = "buttonSelectPFXCertificate";
-            this.buttonSelectPFXCertificate.Size = new System.Drawing.Size(32, 20);
+            this.buttonSelectPFXCertificate.Size = new System.Drawing.Size(61, 22);
             this.buttonSelectPFXCertificate.TabIndex = 0;
-            this.buttonSelectPFXCertificate.Text = "...";
+            this.buttonSelectPFXCertificate.Text = "Browse...";
             this.buttonSelectPFXCertificate.UseVisualStyleBackColor = true;
             this.buttonSelectPFXCertificate.Click += new System.EventHandler(this.ButtonSelectPFXCertificate_Click);
             // 
@@ -483,9 +483,9 @@
             // textBoxPFXFile
             // 
             this.textBoxPFXFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxPFXFile.Location = new System.Drawing.Point(46, 22);
+            this.textBoxPFXFile.Location = new System.Drawing.Point(9, 22);
             this.textBoxPFXFile.Name = "textBoxPFXFile";
-            this.textBoxPFXFile.Size = new System.Drawing.Size(321, 20);
+            this.textBoxPFXFile.Size = new System.Drawing.Size(291, 20);
             this.textBoxPFXFile.TabIndex = 1;
             this.textBoxPFXFile.TextChanged += new System.EventHandler(this.textBoxPFXFile_TextChanged);
             // 
@@ -582,12 +582,12 @@
             // 
             // buttonSaveLog
             // 
-            this.buttonSaveLog.Location = new System.Drawing.Point(515, 830);
+            this.buttonSaveLog.Location = new System.Drawing.Point(487, 830);
             this.buttonSaveLog.Margin = new System.Windows.Forms.Padding(2);
             this.buttonSaveLog.Name = "buttonSaveLog";
-            this.buttonSaveLog.Size = new System.Drawing.Size(75, 23);
+            this.buttonSaveLog.Size = new System.Drawing.Size(107, 23);
             this.buttonSaveLog.TabIndex = 17;
-            this.buttonSaveLog.Text = "Save Log";
+            this.buttonSaveLog.Text = "Save console log";
             this.buttonSaveLog.UseVisualStyleBackColor = true;
             this.buttonSaveLog.Click += new System.EventHandler(this.buttonSaveLog_Click);
             // 
