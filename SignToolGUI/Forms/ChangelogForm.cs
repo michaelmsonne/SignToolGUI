@@ -19,7 +19,7 @@ namespace SignToolGUI.Forms
         private void PopulateChangelog()
         {
             // Changelog content
-            var changelogContent = " Version 1.4.0.0 (15-03-2025):\n" +
+            var changelogContent = " Version 1.4.0.0 (17-03-2025):\n" +
                                    " - Updated Trusted Signing from v0.1.103.0 to the latest v0.1.108.0\n" +
                                    " - The tool now only displays Code Signing certificates with a private key for selection\n" +
                                    " - Added a direct link to the Azure Portal to help you find your Trusted Signing accounts\n" +
