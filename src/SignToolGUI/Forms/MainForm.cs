@@ -524,19 +524,12 @@ namespace SignToolGUI.Forms
                     var certificate = GetCertificateFromPfx();
 
                     // If the label for certificate information is not null, update it with the certificate info.
-                    if (labelCertificateInformation != null)
-                    {
-                        if (certificate != null)
-                        {
-                            // If the certificate is successfully retrieved, update the label with its info.
-                            labelCertificateInformation.Text = GetCertificateInfo(certificate);
-                        }
-                        else
-                        {
-                            // If the certificate could not be retrieved, set the label to indicate this.
-                            labelCertificateInformation.Text = Globals.DigitalCertificates.CertificateInfoCouldNotBeRetrieved;
-                        }
-                    }
+                    if (labelCertificateInformation == null) return;
+
+                    // If the certificate is successfully retrieved, update the label with its info.
+                    labelCertificateInformation.Text = certificate != null ? GetCertificateInfo(certificate) :
+                        // If the certificate could not be retrieved, set the label to indicate this.
+                        Globals.DigitalCertificates.CertificateInfoCouldNotBeRetrieved;
                 }
             }
             catch (Exception ex)
