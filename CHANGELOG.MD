@@ -1,4 +1,13 @@
-Chengelog format will be never from here.
+## Version 1.4.0.0 (17-03-2025):
+
+- Updated Trusted Signing from v0.1.103.0 to the latest v0.1.108.0
+- The tool now only displays Code Signing certificates with a private key for selection
+- Added a direct link to the Azure Portal to help you find your Trusted Signing accounts
+- New option to enable or disable timestamping when signing (supported for .pfx and Certificate Store certificates)
+- Improved error handling and logging
+- Added support for more versions of the Windows SDK
+- New "Select All" option for bulk selecting/unselecting files to sign
+- Minor UI improvements for a better user experience
 
 ## Version 1.3.0.0 (18-07-2024):
 - Add support for Microsoft Trusted Signing
