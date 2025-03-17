@@ -33,13 +33,13 @@ Outline the file contents of the repository. It helps users navigate the codebas
 
 | File/folder       | Description                                 |
 |-------------------|---------------------------------------------|
-| `\SignToolGUI`    | Source code.                                |
-| `.gitignore`      | Define what to ignore at commit time.       |
-| `CHANGELOG.md`    | List of changes to the sample.              |
-| `CONTRIBUTING.md` | Guidelines for contributing to the TEMPLATE.|
-| `README.md`       | This README file.                           |
-| `SECURITY.md`     | Security file.	                          |
-| `LICENSE`         | The license for SignToolGUI.                |
+| `\src\`           | Source code                                 |
+| `.gitignore`      | Define what to ignore at commit time        |
+| `CHANGELOG.md`    | List of changes to the sample               |
+| `CONTRIBUTING.md` | Guidelines for contributing to the TEMPLATE |
+| `README.md`       | This README file                            |
+| `SECURITY.md`     | Security file 	                          |
+| `LICENSE`         | The license for SignToolGUI                 |
 
 # Introduction
 This tool is a user-friendly Graphical User Interface (GUI) tool that simplifies and streamlines the process of digitally signing files using Microsoft's signtool.exe. This tool is designed to provide a straightforward interface, enabling users to apply digital signatures to software executables, drivers, DLLs, and other file types effortlessly.
