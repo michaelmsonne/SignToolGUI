@@ -338,8 +338,10 @@ namespace SignToolGUI.Forms
 
         private void AddTimestampProvider(string displayName, string url)
         {
+            // Check if the item is not already in the ComboBox and add it if it is not
             if (comboBoxTimestampProviders.Items.Cast<TimestampProvider>().All(item => item.DisplayName != displayName))
             {
+                // Add the item to the ComboBox
                 comboBoxTimestampProviders.Items.Add(new TimestampProvider(displayName, url));
             }
         }
@@ -389,6 +391,7 @@ namespace SignToolGUI.Forms
             // Log the interface start message
             Message("Interface check for set certificate type started...", EventType.Information, 1016);
 
+            // Check the radio buttons for the certificate type
             try
             {
                 if (radioButtonWindowsCertificateStore.Checked)
@@ -416,13 +419,13 @@ namespace SignToolGUI.Forms
                     Message("Set certificate type to Trusted Signing", EventType.Information, 1019);
                 }
 
+                // Enable or disable the group boxes based on the radio button selection
                 groupBoxWindowsCertificateStore.Enabled = radioButtonWindowsCertificateStore.Checked;
                 groupBoxPFXCertificate.Enabled = radioButtonPFXCertificate.Checked;
                 groupBoxTrustedSigningMetadata.Enabled = radioButtonTrustedSigning.Checked;
             }
             catch (Exception ex)
             {
-                // ignored
                 // Log the interface check message if error details
                 Message("Interface check for set certificate type failed: " + ex.Message, EventType.Error, 1017);
             }
@@ -442,7 +445,7 @@ namespace SignToolGUI.Forms
                 _previousSignToolPath = textBoxSignToolPath.Text;
 
                 // Update SignToolExe and textBoxSignToolPath to the local signtool.exe path
-                string localSignToolPath = Path.Combine(Application.StartupPath, "Tools", "signtool.exe");
+                var localSignToolPath = Path.Combine(Application.StartupPath, "Tools", "signtool.exe");
 
                 // Log the local signtool.exe path for Trusted Signing
                 Message("Local signtool.exe path set for Trusted Signing: '" + localSignToolPath + "'", EventType.Information, 1019);
@@ -534,6 +537,10 @@ namespace SignToolGUI.Forms
             }
             catch (Exception ex)
             {
+                // Log the interface check error message
+                Message("Interface check for certificate type failed: " + ex.Message, EventType.Error, 1053);
+
+                // Show an error message if the interface check failed
                 MessageBox.Show(ex.Message, Globals.MsgBox.Error, MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
         }
