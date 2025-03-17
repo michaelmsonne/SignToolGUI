@@ -513,7 +513,10 @@ namespace SignToolGUI.Forms
                 }
                 else if (radioButtonTrustedSigning.Checked)
                 {
-                    labelCertificateInformation.Text = @"Trusted Signing Certificate - set details in Trusted Signing account located in the Azure Portal";
+                    if (labelCertificateInformation != null)
+                    {
+                        labelCertificateInformation.Text = @"Trusted Signing Certificate - set details in Trusted Signing account located in the Azure Portal";
+                    }
                 }
                 else
                 {
