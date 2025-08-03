@@ -268,7 +268,7 @@
             this.Controls.Add(this.labelInstructions);
             this.Controls.Add(this.groupBoxServers);
             this.Controls.Add(this.groupBoxActions);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
