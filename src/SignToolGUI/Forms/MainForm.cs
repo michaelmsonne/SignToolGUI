@@ -416,7 +416,7 @@ namespace SignToolGUI.Forms
 
             if (radioButtonTrustedSigning.Checked)
             {
-                // Switch to Trusted Signing servers - but only if we don't already have a loaded configuration
+                // For Trusted Signing: Use endpoint servers, but timestamp is always fixed
                 var currentServers = _timestampManager.GetServers();
                 var hasLoadedConfig = currentServers.Any(s => s.Url.Contains("codesigning.azure.net"));
 
@@ -434,12 +434,15 @@ namespace SignToolGUI.Forms
 
                 groupBoxTimestamp.Text = @"Trusted Signing Endpoint";
                 labelTimestampProvider.Text = @"Endpoint region:";
+                labelTimeStampServer.Text = @"Timestamp URL:";
+
+                // For Trusted Signing, timestamp URL is always fixed
                 txtTimestampProviderURL.Text = @"http://timestamp.acs.microsoft.com";
-                labelTimeStampServer.Text = @"Endpoint URL:";
+                txtTimestampProviderURL.ReadOnly = true;
             }
             else
             {
-                // Switch to default timestamp servers - but only if we don't already have a loaded configuration
+                // For PFX and Certificate Store: Use timestamp servers from configuration
                 var currentServers = _timestampManager.GetServers();
                 var hasLoadedConfig = currentServers.Any(s => s.Url.Contains("timestamp.sectigo.com") ||
                                                               s.Url.Contains("timestamp.digicert.com"));
@@ -451,7 +454,8 @@ namespace SignToolGUI.Forms
 
                 var servers = _timestampManager.GetServers();
 
-                foreach (var server in servers)
+                // Only add enabled servers to the dropdown for regular timestamp servers
+                foreach (var server in servers.Where(s => s.IsEnabled).OrderBy(s => s.Priority))
                 {
                     comboBoxTimestampProviders.Items.Add(new TimestampProvider(server.DisplayName, server.Url));
                 }
@@ -461,8 +465,11 @@ namespace SignToolGUI.Forms
 
                 groupBoxTimestamp.Text = @"Timestamp";
                 labelTimestampProvider.Text = @"Provider:";
-                txtTimestampProviderURL.Text = "";
                 labelTimeStampServer.Text = @"Timestamp URL:";
+
+                // For regular timestamp servers, make URL editable when "Custom Provider" is selected
+                txtTimestampProviderURL.ReadOnly = false;
+                txtTimestampProviderURL.Text = "";
             }
 
             // Restore the previous selected index and item if they exist and are valid
@@ -602,10 +609,6 @@ namespace SignToolGUI.Forms
                 textBoxSignToolPath.Enabled = false;
                 buttonBrowseSignTool.Enabled = false;
 
-                // Set the timestamp group box text and label text
-                groupBoxTimestamp.Text = @"Trusted Signing Endpoint";
-                labelTimeStampServer.Text = @"Endpoint URL:";
-
                 // Set the tooltip for the timestamp checkbox
                 toolTip.SetToolTip(checkBoxTimestamp, "Trusted Signing requires a timestamp. This option is disabled for Trusted Signing.");
             }
@@ -630,10 +633,6 @@ namespace SignToolGUI.Forms
                 // Enable the signtool path text box and browse button
                 textBoxSignToolPath.Enabled = true;
                 buttonBrowseSignTool.Enabled = true;
-
-                // Set the timestamp group box text and label text
-                groupBoxTimestamp.Text = @"Timestamp URL:";
-                labelTimeStampServer.Text = @"Timestamp";
 
                 // Reset the tooltip for the timestamp checkbox
                 toolTip.SetToolTip(checkBoxTimestamp, "Check this box to timestamp the signed file(s).");
@@ -826,23 +825,36 @@ namespace SignToolGUI.Forms
             TimestampProvider selectedProvider = comboBox.SelectedItem as TimestampProvider;
             if (selectedProvider == null) return;
 
-            // Update the timestamp provider URL text box with the selected provider's URL.
-            txtTimestampProviderURL.Text = selectedProvider.Url;
-
-            // Get the selected index from the timestamp providers combo box.
-            var index = comboBoxTimestampProviders.SelectedIndex;
-
-            // If the selected index is not 5, make the timestamp provider URL text box read-only.
-            if (index != 5)
+            if (radioButtonTrustedSigning.Checked)
             {
-                // Make the timestamp provider URL text box read-only.
+                // For Trusted Signing: The selected item is an endpoint, but timestamp URL is always fixed
+                // The selectedProvider.Url is the endpoint URL, not the timestamp URL
+
+                // Keep the timestamp URL fixed for Trusted Signing
+                txtTimestampProviderURL.Text = @"http://timestamp.acs.microsoft.com";
                 txtTimestampProviderURL.ReadOnly = true;
+
+                // Store the selected endpoint for use during signing (this should be handled in the signing logic)
+                // The actual endpoint selection happens in the signing process
             }
             else
             {
-                // If the selected index is 5, clear the timestamp provider URL text box and make it editable.
-                txtTimestampProviderURL.Clear();
-                txtTimestampProviderURL.ReadOnly = false;
+                // For regular timestamp servers: Update the URL based on selection
+
+                // Check if "Custom Provider" is selected
+                if (selectedProvider.DisplayName == "Custom Provider")
+                {
+                    // If Custom Provider is selected, clear the URL and make it editable
+                    txtTimestampProviderURL.Clear();
+                    txtTimestampProviderURL.ReadOnly = false;
+                    txtTimestampProviderURL.Focus(); // Set focus to the text box for user input
+                }
+                else
+                {
+                    // Update the timestamp provider URL text box with the selected provider's URL
+                    txtTimestampProviderURL.Text = selectedProvider.Url;
+                    txtTimestampProviderURL.ReadOnly = true;
+                }
             }
         }
 
@@ -1563,11 +1575,35 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             // Get the values from the form's controls for the SignerTrustedSigning class
             var signToolExe = textBoxSignToolPath.Text;
             var timeStampServer = "http://timestamp.acs.microsoft.com"; // Fixed timestamp server for Trusted Signing
-            var endpointServer = txtTimestampProviderURL.Text; // This is actually the regional endpoint
+
+            // Get the selected endpoint from the ComboBox
+            string endpointServer = "";
+            if (comboBoxTimestampProviders.SelectedItem is TimestampProvider selectedProvider)
+            {
+                endpointServer = selectedProvider.Url;
+            }
+            else
+            {
+                // Fallback to first enabled server if nothing is selected
+                var enabledServers = _timestampManager.GetEnabledServers();
+                if (enabledServers.Count > 0)
+                {
+                    endpointServer = enabledServers.First().Url;
+                }
+                else
+                {
+                    MessageBox.Show("No enabled Trusted Signing endpoints available.", "Configuration Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
             var dlibPath = @".\Tools\Azure.CodeSigning.Dlib.dll";
             var codeSigningAccountName = textBoxCodeSigningAccountName.Text;
             var certificateProfileName = textBoxCertificateProfileName.Text;
             var correlationIdData = textBoxCorrelationId.Text;
+
+            // Log which endpoint is being used
+            Message($"Using Trusted Signing endpoint: {endpointServer}", EventType.Information, 3025);
 
             // Disable the form's controls while signing the files
             ToggleDisabledForm(true);
