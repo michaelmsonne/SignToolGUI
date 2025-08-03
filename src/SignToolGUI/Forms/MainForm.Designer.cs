@@ -13,9 +13,11 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                _pfxValidationTimer?.Stop();
+                _pfxValidationTimer?.Dispose();
+                _pfxValidationTimer = null;
             }
             base.Dispose(disposing);
         }
@@ -96,6 +98,9 @@
             this.labelSignedBuildState = new System.Windows.Forms.Label();
             this.linkLabelOpenTrustedSigningPortal = new System.Windows.Forms.LinkLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.certificateMonitoringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkCertificateExpiryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showCertificateStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxFiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxCertificateInformation.SuspendLayout();
@@ -321,6 +326,7 @@
             this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.logsToolStripMenuItem,
             this.changelogToolStripMenuItem,
+            this.certificateMonitoringToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
@@ -333,7 +339,7 @@
             this.openTodaysLogfileToolStripMenuItem,
             this.openLogFolderToolStripMenuItem});
             this.logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            this.logsToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.logsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.logsToolStripMenuItem.Text = "Logs";
             // 
             // openTodaysLogfileToolStripMenuItem
@@ -356,7 +362,7 @@
             // 
             this.changelogToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
-            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.changelogToolStripMenuItem.Text = "Changelog";
             this.changelogToolStripMenuItem.Click += new System.EventHandler(this.changelogToolStripMenuItem_Click);
             // 
@@ -364,7 +370,7 @@
             // 
             this.aboutToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -478,7 +484,7 @@
             this.textBoxPFXPassword.Size = new System.Drawing.Size(163, 20);
             this.textBoxPFXPassword.TabIndex = 3;
             this.textBoxPFXPassword.UseSystemPasswordChar = true;
-            this.textBoxPFXPassword.TextChanged += new System.EventHandler(this.textBoxPFXFile_TextChanged);
+            this.textBoxPFXPassword.TextChanged += new System.EventHandler(this.textBoxPFXPassword_TextChanged);
             // 
             // textBoxPFXFile
             // 
@@ -792,6 +798,32 @@
         "ng accounts in your tenant you have.");
             this.linkLabelOpenTrustedSigningPortal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelOpenTrustedSigningPortal_LinkClicked);
             // 
+            // certificateMonitoringToolStripMenuItem
+            // 
+            this.certificateMonitoringToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.certificateMonitoringToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkCertificateExpiryToolStripMenuItem,
+            this.showCertificateStatusToolStripMenuItem});
+            this.certificateMonitoringToolStripMenuItem.Name = "certificateMonitoringToolStripMenuItem";
+            this.certificateMonitoringToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.certificateMonitoringToolStripMenuItem.Text = "Certificate Monitoring";
+            // 
+            // checkCertificateExpiryToolStripMenuItem
+            // 
+            this.checkCertificateExpiryToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.checkCertificateExpiryToolStripMenuItem.Name = "checkCertificateExpiryToolStripMenuItem";
+            this.checkCertificateExpiryToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.checkCertificateExpiryToolStripMenuItem.Text = "Check Certificate Expiry";
+            this.checkCertificateExpiryToolStripMenuItem.Click += new System.EventHandler(this.checkCertificateExpiryToolStripMenuItem_Click);
+            // 
+            // showCertificateStatusToolStripMenuItem
+            // 
+            this.showCertificateStatusToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.showCertificateStatusToolStripMenuItem.Name = "showCertificateStatusToolStripMenuItem";
+            this.showCertificateStatusToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.showCertificateStatusToolStripMenuItem.Text = "Show Certificate Status";
+            this.showCertificateStatusToolStripMenuItem.Click += new System.EventHandler(this.showCertificateStatusToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -915,6 +947,9 @@
         private System.Windows.Forms.ToolStripMenuItem logsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openTodaysLogfileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openLogFolderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem certificateMonitoringToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkCertificateExpiryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showCertificateStatusToolStripMenuItem;
     }
 }
 

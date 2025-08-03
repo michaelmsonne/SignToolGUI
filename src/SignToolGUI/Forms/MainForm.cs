@@ -30,6 +30,8 @@ namespace SignToolGUI.Forms
         public int Signerrors; //number of errors to sign
         public string SignToolExe; //path to signtool.exe
         //private bool _isSignErrorShowed;
+        private CertificateMonitor _certificateMonitor;
+        private System.Windows.Forms.Timer _pfxValidationTimer; // Timer for debouncing PFX certificate validation
 
         #region Main functions
 
@@ -40,8 +42,42 @@ namespace SignToolGUI.Forms
             // Log the application's name and version to the log file
             Message(@"Started " + Application.ProductName + @" v." + Application.ProductVersion, EventType.Information, 1000);
 
+            // Initialize PFX validation timer
+            InitializePfxValidationTimer();
+
+            // Initialize certificate monitoring
+            InitializeCertificateMonitoring();
+
             // Initialize the certificate check asynchronously and update GUI accordingly
             InitializeAsyncCertificateCheck();
+        }
+
+        // Add this method to initialize the timer
+        private void InitializePfxValidationTimer()
+        {
+            _pfxValidationTimer = new System.Windows.Forms.Timer();
+            _pfxValidationTimer.Interval = 500; // 500ms delay
+            _pfxValidationTimer.Tick += PfxValidationTimer_Tick;
+        }
+
+        private void PfxValidationTimer_Tick(object sender, EventArgs e)
+        {
+            _pfxValidationTimer.Stop(); // Stop the timer to prevent repeated execution
+
+            try
+            {
+                // Check PFX certificate expiry
+                if (!string.IsNullOrEmpty(textBoxPFXFile.Text) &&
+                    !string.IsNullOrEmpty(textBoxPFXPassword.Text) &&
+                    radioButtonPFXCertificate.Checked)
+                {
+                    CheckPfxCertificateExpiry();
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
 
         public async void InitializeAsyncCertificateCheck()
@@ -519,20 +555,13 @@ namespace SignToolGUI.Forms
                     if (labelCertificateInformation != null)
                     {
                         labelCertificateInformation.Text = @"Trusted Signing Certificate - set details in Trusted Signing account located in the Azure Portal";
+                        labelCertificateInformation.ForeColor = SystemColors.ControlText;
                     }
                 }
                 else
                 {
-                    // Retrieve the certificate from the PFX file.
-                    var certificate = GetCertificateFromPfx();
-
-                    // If the label for certificate information is not null, update it with the certificate info.
-                    if (labelCertificateInformation == null) return;
-
-                    // If the certificate is successfully retrieved, update the label with its info.
-                    labelCertificateInformation.Text = certificate != null ? GetCertificateInfo(certificate) :
-                        // If the certificate could not be retrieved, set the label to indicate this.
-                        Globals.DigitalCertificates.CertificateInfoCouldNotBeRetrieved;
+                    // Retrieve the certificate from the PFX file and check expiry
+                    CheckPfxCertificateExpiry();
                 }
             }
             catch (Exception ex)
@@ -554,9 +583,34 @@ namespace SignToolGUI.Forms
                 {
                     // Update the label with the certificate info if a certificate is selected in the combo box.
                     // If no certificate is selected, set the label to indicate that certificate info is not available.
-                    labelCertificateInformation.Text = comboBoxCertificatesInStore.SelectedIndex > 0
-                        ? GetCertificateInfo(_signingCerts[comboBoxCertificatesInStore.SelectedIndex - 1])
-                        : Globals.DigitalCertificates.CertificateInfoIsNotAvailable;
+                    if (comboBoxCertificatesInStore.SelectedIndex > 0)
+                    {
+                        var selectedCert = _signingCerts[comboBoxCertificatesInStore.SelectedIndex - 1];
+                        var certInfo = GetCertificateInfo(selectedCert);
+
+                        // Check for expiry and update label with color coding
+                        var alert = _certificateMonitor?.CheckSingleCertificate(selectedCert);
+                        if (alert != null)
+                        {
+                            var alertPrefix = alert.Level == CertificateMonitor.AlertLevel.Expired ? "⚠️ EXPIRED: " :
+                                             alert.Level == CertificateMonitor.AlertLevel.Critical ? "⚠️ CRITICAL: " :
+                                             "⚠️ WARNING: ";
+
+                            labelCertificateInformation.Text = alertPrefix + alert.Message + "\n\n" + certInfo;
+                            labelCertificateInformation.ForeColor = alert.Level == CertificateMonitor.AlertLevel.Expired ?
+                                Color.Red : (alert.Level == CertificateMonitor.AlertLevel.Critical ? Color.DarkOrange : Color.Orange);
+                        }
+                        else
+                        {
+                            labelCertificateInformation.Text = certInfo;
+                            labelCertificateInformation.ForeColor = SystemColors.ControlText;
+                        }
+                    }
+                    else
+                    {
+                        labelCertificateInformation.Text = Globals.DigitalCertificates.CertificateInfoIsNotAvailable;
+                        labelCertificateInformation.ForeColor = SystemColors.ControlText;
+                    }
 
                     // Check if the PFX Certificate radio button is selected.
                     if (radioButtonPFXCertificate.Checked)
@@ -568,11 +622,30 @@ namespace SignToolGUI.Forms
                         // Otherwise, indicate that the certificate information could not be retrieved.
                         if (certificate != null)
                         {
-                            labelCertificateInformation.Text = GetCertificateInfo(certificate);
+                            var certInfo = GetCertificateInfo(certificate);
+
+                            // Check for expiry and update label with color coding
+                            var alert = _certificateMonitor?.CheckSingleCertificate(certificate);
+                            if (alert != null)
+                            {
+                                var alertPrefix = alert.Level == CertificateMonitor.AlertLevel.Expired ? "⚠️ EXPIRED: " :
+                                                 alert.Level == CertificateMonitor.AlertLevel.Critical ? "⚠️ CRITICAL: " :
+                                                 "⚠️ WARNING: ";
+
+                                labelCertificateInformation.Text = alertPrefix + alert.Message + "\n\n" + certInfo;
+                                labelCertificateInformation.ForeColor = alert.Level == CertificateMonitor.AlertLevel.Expired ?
+                                    Color.Red : (alert.Level == CertificateMonitor.AlertLevel.Critical ? Color.DarkOrange : Color.Orange);
+                            }
+                            else
+                            {
+                                labelCertificateInformation.Text = certInfo;
+                                labelCertificateInformation.ForeColor = SystemColors.ControlText;
+                            }
                         }
                         else
                         {
                             labelCertificateInformation.Text = @"Certificate information could not be retrieved.";
+                            labelCertificateInformation.ForeColor = SystemColors.ControlText;
                         }
                     }
                 }
@@ -601,8 +674,40 @@ namespace SignToolGUI.Forms
         {
             try
             {
-                //Deactivated for now, as else getting a bug when starting up the application
-                //labelCertificateInformation.Text = GetCertificateInfo(GetCertificateFromPfx());
+                // Check PFX certificate expiry when the file path changes
+                if (!string.IsNullOrEmpty(textBoxPFXFile.Text) &&
+                    !string.IsNullOrEmpty(textBoxPFXPassword.Text) &&
+                    radioButtonPFXCertificate.Checked)
+                {
+                    CheckPfxCertificateExpiry();
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
+
+        private void textBoxPFXPassword_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Initialize timer if not already done
+                if (_pfxValidationTimer == null)
+                {
+                    InitializePfxValidationTimer();
+                }
+
+                // Stop any existing timer and restart it
+                _pfxValidationTimer.Stop();
+
+                // Only start timer if we have both file and password
+                if (!string.IsNullOrEmpty(textBoxPFXFile.Text) &&
+                    !string.IsNullOrEmpty(textBoxPFXPassword.Text) &&
+                    radioButtonPFXCertificate.Checked)
+                {
+                    _pfxValidationTimer.Start();
+                }
             }
             catch (Exception)
             {
@@ -2200,6 +2305,12 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                     // Log that no certificates were found in the specified store.
                     Message("No certificates were found in the " + loadStore + " store.", EventType.Warning, 1036);
                 }
+
+                // After loading certificates and updating the combo box, check for expiry alerts
+                if (_signingCerts.Count > 0)
+                {
+                    CheckAndShowCertificateExpiryAlerts();
+                }
             }
             catch (Exception ex)
             {
@@ -2212,5 +2323,136 @@ Use the ... button above and select the code signing certificate to use!", @"No 
         }
 
         #endregion Certificate info
+
+        public X509Certificate2Collection GetCurrentCertificates()
+        {
+            return _signingCerts;
+        }
+
+        private void InitializeCertificateMonitoring()
+        {
+            _certificateMonitor = new CertificateMonitor(90, 30); // Warning at 90 days, Critical at 30 days
+
+            // Log certificate monitoring initialization
+            Message("Certificate expiry monitoring initialized", EventType.Information, 2000);
+        }
+
+        private void CheckAndShowCertificateExpiryAlerts()
+        {
+            try
+            {
+                if (_signingCerts == null || _signingCerts.Count == 0) return;
+
+                var alerts = _certificateMonitor.CheckCertificateExpiry(_signingCerts);
+
+                if (alerts.Any())
+                {
+                    // Show notification for critical and expired certificates
+                    var criticalAlerts = alerts.Where(a => a.Level == CertificateMonitor.AlertLevel.Expired ||
+                                                          a.Level == CertificateMonitor.AlertLevel.Critical).ToList();
+
+                    if (criticalAlerts.Any())
+                    {
+                        _certificateMonitor.ShowExpiryAlerts(criticalAlerts, this);
+                    }
+
+                    // Log summary of alerts
+                    var expiredCount = alerts.Count(a => a.Level == CertificateMonitor.AlertLevel.Expired);
+                    var criticalCount = alerts.Count(a => a.Level == CertificateMonitor.AlertLevel.Critical);
+                    var warningCount = alerts.Count(a => a.Level == CertificateMonitor.AlertLevel.Warning);
+
+                    Message($"Certificate expiry check completed: {expiredCount} expired, {criticalCount} critical, {warningCount} warning",
+                        EventType.Information, 2001);
+                }
+                else
+                {
+                    Message("Certificate expiry check completed: All certificates are valid and not expiring soon",
+                        EventType.Information, 2002);
+                }
+            }
+            catch (Exception ex)
+            {
+                Message($"Error checking certificate expiry: {ex.Message}", EventType.Error, 2003);
+                MessageBox.Show($"An error occurred while checking certificate expiry: {ex.Message}",
+                    "Certificate Expiry Check Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void CheckPfxCertificateExpiry()
+        {
+            try
+            {
+                var certificate = GetCertificateFromPfx();
+                if (certificate == null) return;
+
+                var certInfo = GetCertificateInfo(certificate);
+                var alert = _certificateMonitor?.CheckSingleCertificate(certificate);
+
+                if (alert != null)
+                {
+                    // Update the certificate information label to include expiry warning
+                    var alertPrefix = alert.Level == CertificateMonitor.AlertLevel.Expired ? "⚠️ EXPIRED: " :
+                                     alert.Level == CertificateMonitor.AlertLevel.Critical ? "⚠️ CRITICAL: " :
+                                     "⚠️ WARNING: ";
+
+                    labelCertificateInformation.Text = alertPrefix + alert.Message + "\n\n" + certInfo;
+                    labelCertificateInformation.ForeColor = alert.Level == CertificateMonitor.AlertLevel.Expired ?
+                        Color.Red : (alert.Level == CertificateMonitor.AlertLevel.Critical ? Color.DarkOrange : Color.Orange);
+                }
+                else
+                {
+                    // No alert, show normal certificate info
+                    labelCertificateInformation.Text = certInfo;
+                    labelCertificateInformation.ForeColor = SystemColors.ControlText;
+                }
+            }
+            catch (Exception ex)
+            {
+                Message($"Error checking PFX certificate expiry: {ex.Message}", EventType.Error, 2004);
+            }
+        }
+
+        private void ShowCertificateStatusForm()
+        {
+            try
+            {
+                if (_signingCerts == null || _signingCerts.Count == 0)
+                {
+                    MessageBox.Show("No certificates are currently loaded. Please select a certificate store or load a PFX certificate first.",
+                        "No Certificates", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                using (var statusForm = new CertificateStatusForm())
+                {
+                    statusForm.LoadCertificateStatus(_signingCerts);
+                    statusForm.ShowDialog(this);
+                }
+
+                Message("Certificate status form displayed", EventType.Information, 2005);
+            }
+            catch (Exception ex)
+            {
+                Message($"Error showing certificate status form: {ex.Message}", EventType.Error, 2006);
+                MessageBox.Show($"An error occurred while displaying certificate status: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void checkCertificateExpiryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Log the user's action
+            Message("User clicked 'Check Certificate Expiry' menu item", EventType.Information, 2007);
+
+            CheckAndShowCertificateExpiryAlerts();
+        }
+
+        private void showCertificateStatusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Log the user's action
+            Message("User clicked 'Show Certificate Status' menu item", EventType.Information, 2008);
+
+            ShowCertificateStatusForm();
+        }
     }
 }
