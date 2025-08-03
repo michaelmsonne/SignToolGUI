@@ -1,3 +1,11 @@
+## Version 1.5.0.0 (00-00-2025):
+
+- Added certificate monitoring functionality with new CertificateMonitor class and CertificateStatus Form
+- Introduced color-coded alerts for certificate expiry in both Windows Certificate Store and PFX scenarios
+- Enhanced MainForm UI with new menu options for certificate monitoring
+- Improved certificate information display with better visual feedback
+
+
 ## Version 1.4.0.0 (17-03-2025):
 
 - Updated Trusted Signing from v0.1.103.0 to the latest v0.1.108.0

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SignToolGUI.Class;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -8,8 +9,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using SignToolGUI.Class;
 using static SignToolGUI.Class.FileLogger;
 using Application = System.Windows.Forms.Application;
 
@@ -32,6 +33,7 @@ namespace SignToolGUI.Forms
         //private bool _isSignErrorShowed;
         private CertificateMonitor _certificateMonitor;
         private System.Windows.Forms.Timer _pfxValidationTimer; // Timer for debouncing PFX certificate validation
+        private TimestampManager _timestampManager; // Timestamp manager for handling timestamping operations
 
         #region Main functions
 
@@ -42,6 +44,9 @@ namespace SignToolGUI.Forms
             // Log the application's name and version to the log file
             Message(@"Started " + Application.ProductName + @" v." + Application.ProductVersion, EventType.Information, 1000);
 
+            // Initialize timestamp management
+            InitializeTimestampManager();
+
             // Initialize PFX validation timer
             InitializePfxValidationTimer();
 
@@ -50,6 +55,91 @@ namespace SignToolGUI.Forms
 
             // Initialize the certificate check asynchronously and update GUI accordingly
             InitializeAsyncCertificateCheck();
+        }
+
+        private void InitializeTimestampManager()
+        {
+            _timestampManager = new TimestampManager();
+            _timestampManager.OnTimestampStatus += message =>
+            {
+                if (textBoxOutput.InvokeRequired)
+                {
+                    textBoxOutput.Invoke(new Action<string>(msg => textBoxOutput.AppendText(msg + Environment.NewLine)), message);
+                }
+                else
+                {
+                    textBoxOutput.AppendText(message + Environment.NewLine);
+                }
+            };
+
+            Message("Timestamp manager initialized", EventType.Information, 3000);
+        }
+
+        // Add this method to save timestamp configuration
+        private void SaveTimestampConfiguration()
+        {
+            try
+            {
+                var iniFile = new IniFile(ConfigIniPath);
+                var timestampConfig = _timestampManager.SaveConfiguration();
+
+                // Convert the configuration to a JSON string for storage
+                var jsonString = System.Text.Json.JsonSerializer.Serialize(timestampConfig);
+                iniFile.WriteValue("Timestamp", "ServerConfiguration", jsonString);
+
+                Message("Timestamp server configuration saved", EventType.Information, 3008);
+            }
+            catch (Exception ex)
+            {
+                Message($"Error saving timestamp configuration: {ex.Message}", EventType.Error, 3009);
+            }
+        }
+
+        // Add this method to load timestamp configuration
+        private void LoadTimestampConfiguration()
+        {
+            try
+            {
+                var iniFile = new IniFile(ConfigIniPath);
+                var jsonString = iniFile.GetString("Timestamp", "ServerConfiguration", "");
+
+                if (!string.IsNullOrEmpty(jsonString))
+                {
+                    // Parse JSON directly to avoid Dictionary<string, object> issues
+                    using (var document = System.Text.Json.JsonDocument.Parse(jsonString))
+                    {
+                        if (document.RootElement.TryGetProperty("TimestampServers", out var serversElement))
+                        {
+                            // Clear current servers and load from config
+                            var loadedServers = new List<TimestampServer>();
+
+                            foreach (var serverElement in serversElement.EnumerateArray())
+                            {
+                                var displayName = serverElement.GetProperty("DisplayName").GetString();
+                                var url = serverElement.GetProperty("Url").GetString();
+                                var isEnabled = serverElement.GetProperty("IsEnabled").GetBoolean();
+                                var priority = serverElement.GetProperty("Priority").GetInt32();
+                                var timeout = serverElement.GetProperty("TimeoutSeconds").GetInt32();
+
+                                loadedServers.Add(new TimestampServer(displayName, url, isEnabled, priority, timeout));
+                            }
+
+                            // Replace all servers with loaded configuration
+                            _timestampManager.ReplaceAllServers(loadedServers);
+                            Message($"Timestamp server configuration loaded: {loadedServers.Count} servers", EventType.Information, 3010);
+                        }
+                    }
+                }
+                else
+                {
+                    Message("No timestamp configuration found, using defaults", EventType.Information, 3024);
+                }
+            }
+            catch (Exception ex)
+            {
+                Message($"Error loading timestamp configuration: {ex.Message}", EventType.Error, 3011);
+                // Don't overwrite defaults if loading fails - they're already set in the constructor
+            }
         }
 
         // Add this method to initialize the timer
@@ -326,12 +416,21 @@ namespace SignToolGUI.Forms
 
             if (radioButtonTrustedSigning.Checked)
             {
-                // Add items for the checked state
-                AddTimestampProvider("West Europe", "https://weu.codesigning.azure.net");
-                AddTimestampProvider("North Europe", "https://neu.codesigning.azure.net");
-                AddTimestampProvider("West US 2", "https://wus2.codesigning.azure.net");
-                AddTimestampProvider("West Central US", "https://wcus.codesigning.azure.net");
-                AddTimestampProvider("East US", "https://eus.codesigning.azure.net");
+                // Switch to Trusted Signing servers - but only if we don't already have a loaded configuration
+                var currentServers = _timestampManager.GetServers();
+                var hasLoadedConfig = currentServers.Any(s => s.Url.Contains("codesigning.azure.net"));
+
+                if (!hasLoadedConfig)
+                {
+                    _timestampManager.InitializeTrustedSigningServers();
+                }
+
+                var servers = _timestampManager.GetServers();
+
+                foreach (var server in servers)
+                {
+                    comboBoxTimestampProviders.Items.Add(new TimestampProvider(server.DisplayName, server.Url));
+                }
 
                 groupBoxTimestamp.Text = @"Trusted Signing Endpoint";
                 labelTimestampProvider.Text = @"Endpoint region:";
@@ -340,13 +439,25 @@ namespace SignToolGUI.Forms
             }
             else
             {
-                // Add items for the unchecked state
-                AddTimestampProvider("Sectigo (Comodo)", "http://timestamp.sectigo.com");
-                AddTimestampProvider("DigiCert", "http://timestamp.digicert.com");
-                AddTimestampProvider("GlobalSign (1)", "http://timestamp.globalsign.com/tsa/r6advanced1");
-                AddTimestampProvider("GlobalSign (2)", "http://timestamp.globalsign.com/?signature=sha2");
-                AddTimestampProvider("Certum", "http://time.certum.pl");
-                AddTimestampProvider("Custom Provider", "N/A");
+                // Switch to default timestamp servers - but only if we don't already have a loaded configuration
+                var currentServers = _timestampManager.GetServers();
+                var hasLoadedConfig = currentServers.Any(s => s.Url.Contains("timestamp.sectigo.com") ||
+                                                              s.Url.Contains("timestamp.digicert.com"));
+
+                if (!hasLoadedConfig)
+                {
+                    _timestampManager.SetDefaultServers();
+                }
+
+                var servers = _timestampManager.GetServers();
+
+                foreach (var server in servers)
+                {
+                    comboBoxTimestampProviders.Items.Add(new TimestampProvider(server.DisplayName, server.Url));
+                }
+
+                // Add custom provider option
+                comboBoxTimestampProviders.Items.Add(new TimestampProvider("Custom Provider", "N/A"));
 
                 groupBoxTimestamp.Text = @"Timestamp";
                 labelTimestampProvider.Text = @"Provider:";
@@ -354,7 +465,7 @@ namespace SignToolGUI.Forms
                 labelTimeStampServer.Text = @"Timestamp URL:";
             }
 
-            // Restore the previous selected index and item if they exist
+            // Restore the previous selected index and item if they exist and are valid
             if (selectedIndex >= 0 && selectedIndex < comboBoxTimestampProviders.Items.Count)
             {
                 comboBoxTimestampProviders.SelectedIndex = selectedIndex;
@@ -370,16 +481,6 @@ namespace SignToolGUI.Forms
 
             // Log the population of the ComboBox completion message
             Message("Populating the ComboBox for timestamp providers completed", EventType.Information, 1012);
-        }
-
-        private void AddTimestampProvider(string displayName, string url)
-        {
-            // Check if the item is not already in the ComboBox and add it if it is not
-            if (comboBoxTimestampProviders.Items.Cast<TimestampProvider>().All(item => item.DisplayName != displayName))
-            {
-                // Add the item to the ComboBox
-                comboBoxTimestampProviders.Items.Add(new TimestampProvider(displayName, url));
-            }
         }
 
         private void DisableForm(bool disable)
@@ -765,9 +866,6 @@ namespace SignToolGUI.Forms
 
             toolTip.SetToolTip(checkBoxTimestamp, "Check this box to timestamp the signed file(s).");
 
-            // Perform an interface check to ensure the application is in a correct state.
-            InterfaceCheck();
-            
             // Set the Text property of the form to the application's name and version
             try
             {
@@ -810,6 +908,17 @@ namespace SignToolGUI.Forms
                 // Get data from configuration file and set the values to the form's controls
                 var iniFile = new IniFile(ConfigIniPath);
                 var settingBoxSignToolPath = iniFile.GetString("Program", "SignToolPath", "");
+
+                // IMPORTANT: Load timestamp configuration BEFORE any UI setup that might overwrite it
+                try
+                {
+                    // Load timestamp server configuration FIRST
+                    LoadTimestampConfiguration();
+                }
+                catch (Exception ex)
+                {
+                    Message($"Error loading timestamp configuration: {ex.Message}", EventType.Error, 3012);
+                }
 
                 // Check if signtool.exe exists on the computer and set the path to it
                 if (!FindSignToolExe())
@@ -907,6 +1016,10 @@ namespace SignToolGUI.Forms
                 // Show an error message if the configuration file could not be read
                 MessageBox.Show(ex.Message, @"Data.ini", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            // NOW perform interface check AFTER configuration is loaded
+            // This will populate the ComboBox with the loaded configuration instead of defaults
+            InterfaceCheck();
 
             if (!radioButtonPFXCertificate.Checked) return;
 
@@ -1110,6 +1223,17 @@ namespace SignToolGUI.Forms
                 Message("Configuration file saved successfully", EventType.Information, 1034);
             }
 
+            // Save timestamp provider to the configuration file
+            try
+            {
+                // Save timestamp server configuration
+                SaveTimestampConfiguration();
+            }
+            catch (Exception ex)
+            {
+                Message($"Error saving timestamp configuration: {ex.Message}", EventType.Error, 3013);
+            }
+
             // Log application closed message
             Message("Application " + Application.ProductName + @" v." + Application.ProductVersion + " is closed",
                 EventType.Information, 1057);
@@ -1150,7 +1274,7 @@ namespace SignToolGUI.Forms
             Message("User have cleared the list of files to sign", EventType.Information, 1037);
         }
 
-        private void SplitButtonSign_Click(object sender, EventArgs e)
+        private async void SplitButtonSign_Click(object sender, EventArgs e)
         {
             // API sign // TODO
             // Utilities.SignTool.SignWithCert(txtExecutableFilePath.Text, txtCertificatePath.Text, txtCertificatePassword.Text, txtTimestampProviderURL.Text);
@@ -1192,376 +1316,357 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                 return;
             }
 
-            // Re-enable the form's controls after the signing operation
-            DisableForm(false);
-
-            // Sign the files from the list selected is more then 0 files - start the signing process and show the output in the textbox
-            if (radioButtonWindowsCertificateStore.Checked)
+            try
             {
-                try
+                // Sign the files from the list selected is more then 0 files - start the signing process and show the output in the textbox
+                if (radioButtonWindowsCertificateStore.Checked)
                 {
-                    // Log signing process started message for Windows Certificate Store
-                    Message("Signing process started for Windows Certificate Store...", EventType.Information, 1047);
-
-                    // Disables the form's controls while signing the files
-                    ToggleDisabledForm(true);
-
-                    // Clear the output textbox
-                    textBoxOutput.Clear();
-
-                    // Create a new instance of the SignerThumbprint class
-                    SignerThumbprint signer = new SignerThumbprint(textBoxSignToolPath.Text, ThumbprintFromCertToSign, txtTimestampProviderURL.Text)
-                    {
-                        Verbose = menuItemSignVerbose.Checked,
-                        Debug = menuItemSignDebug.Checked,
-                        Timestamp = checkBoxTimestamp.Checked
-                    };
-
-                    // Add an event handler to the OnSignToolOutput event
-                    signer.OnSignToolOutput += message =>
-                    {
-                        // Check if the message is null or empty and return if it is
-                        if (string.IsNullOrEmpty(message)) return;
-
-                        // Check if the ShowOutput checkbox is unchecked and if the message contains any of the specified strings
-                        if (checkBoxShowOutput.Checked == false)
-                        {
-                            if (new[]
-                            {
-                        "Number of", "Done Adding Additional Store", "The following certificate was selected:",
-                        "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
-                        "The following additional certificates will be attached:",
-                        "The following certificates were considered:", "After EKU filter", "After Private Key filter,",
-                        "The following additional certificates will be attached:", "After expiry filter",
-
-                            }.Any(message.Contains))
-                            {
-                            }
-                            else
-                            {
-                                // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
-                                if (textBoxOutput.InvokeRequired) // safe cross-thread call
-                                {
-                                    textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
-                                        message + Environment.NewLine);
-                                }
-                                else
-                                {
-                                    // Append the message to the output textbox
-                                    textBoxOutput.AppendText(message);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
-                            if (textBoxOutput.InvokeRequired) // safe cross-thread call
-                            {
-                                textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
-                                    message + Environment.NewLine);
-                            }
-                            else
-                            {
-                                // Append the message to the output textbox
-                                textBoxOutput.AppendText(message);
-                            }
-                        }
-                    };
-
-                    foreach (var file in checkedListBoxFiles.CheckedItems)
-                    {
-                        // Show process
-                        var filename = Path.GetFileName(file.ToString());
-                        textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
-
-                        // Log the signing process started message for file
-                        Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
-
-                        // Sign file with SignerThumbprint
-                        signer.Sign(file.ToString());
-
-                        // Show process
-                        textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] '" + file + "'..." + Environment.NewLine);
-
-                        // When done
-                        _jobSigned += 1;
-                        toolStripProgressBar.Step = 1;
-                        toolStripProgressBar.PerformStep();
-                        //statusLabel.Text = @"[JOB] Signed " + jobSigned + @" of " + totalJob + @" File(s)";
-                    }
-
-                    // Enable the form's controls after signing the files again and show the output in the textbox
-                    ToggleDisabledForm(false);
-
-                    // Log the signing process completed message
-                    Message("Signing process completed for Windows Certificate Store", EventType.Information, 1048);
+                    await SignWithWindowsCertificateStoreAsync();
                 }
-                catch (Exception exception)
+                else if (radioButtonPFXCertificate.Checked)
                 {
-                    Console.WriteLine(exception);
-                    throw;
+                    await SignWithPfxCertificateAsync();
+                }
+                else if (radioButtonTrustedSigning.Checked)
+                {
+                    await SignWithTrustedSigningAsync();
                 }
             }
-            if (radioButtonPFXCertificate.Checked)
+            catch (Exception ex)
             {
-                try
-                {
-                    // Log signing process started message for PFX Certificate
-                    Message("Signing process started for PFX Certificate...", EventType.Information, 1048);
-
-                    ToggleDisabledForm(true);
-                    textBoxOutput.Clear();
-                    SignerPfx signer = new SignerPfx(textBoxSignToolPath.Text, textBoxPFXFile.Text, textBoxPFXPassword.Text,
-                        txtTimestampProviderURL.Text)
-                    {
-                        Verbose = menuItemSignVerbose.Checked,
-                        Debug = menuItemSignDebug.Checked,
-                        Timestamp = checkBoxTimestamp.Checked
-                    };
-
-                    signer.OnSignToolOutput += message =>
-                    {
-                        // Check if the message is null or empty and return if it is
-                        if (string.IsNullOrEmpty(message)) return;
-
-                        // Check if the ShowOutput checkbox is unchecked and if the message contains any of the specified strings
-                        if (checkBoxShowOutput.Checked == false)
-                        {
-                            if (new[]
-                            {
-                        "Number of", "Done Adding Additional Store", "The following certificate was selected:",
-                        "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
-                        "The following additional certificates will be attached:",
-                        "The following certificates were considered:", "After EKU filter", "After Private Key filter,",
-                        "The following additional certificates will be attached:", "After expiry filter",
-
-                            }.Any(message.Contains))
-                            {
-                            }
-                            else
-                            {
-                                // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
-                                if (textBoxOutput.InvokeRequired) // safe cross-thread call
-                                {
-                                    textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
-                                        message + Environment.NewLine);
-                                }
-                                else
-                                {
-                                    // Append the message to the output textbox
-                                    textBoxOutput.AppendText(message);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
-                            if (textBoxOutput.InvokeRequired) // safe cross-thread call
-                            {
-                                textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
-                                    message + Environment.NewLine);
-                            }
-                            else
-                            {
-                                // Append the message to the output textbox
-                                textBoxOutput.AppendText(message);
-                            }
-                        }
-                    };
-
-                    foreach (var file in checkedListBoxFiles.CheckedItems)
-                    {
-                        // Show process
-                        var filename = Path.GetFileName(file.ToString());
-                        textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
-
-                        // Log the signing process started message for file
-                        Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
-
-                        // Sign file with SignerPfx class
-                        signer.Sign(file.ToString());
-
-                        // Show process
-                        textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] " + file + "..." + Environment.NewLine);
-
-                        // When done
-                        _jobSigned += 1;
-                        toolStripProgressBar.Step = 1;
-                        toolStripProgressBar.PerformStep();
-                        //statusLabel.Text = @"[JOB] Signed " + jobSigned + @" of " + totalJob + @" File(s)";
-                    }
-
-                    // Enable the form's controls after signing the files again and show the output in the textbox
-                    ToggleDisabledForm(false);
-
-                    // Log the signing process completed message
-                    Message("Signing process completed for PFX Certificate", EventType.Information, 1049);
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception);
-                    throw;
-                }
+                MessageBox.Show($"An error occurred during signing: {ex.Message}", "Signing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Message($"Exception during signing process: {ex.Message}", EventType.Error, 1070);
             }
-            if (radioButtonTrustedSigning.Checked)
+            finally
             {
-                try
-                {
-                    // Log signing process started message for Trusted Signing Certificate
-                    Message("Signing process started for Trusted Signing Certificate...", EventType.Information, 1049);
+                // cleans up environment after job
+                toolStripProgressBar.Value = 0;
+                _totalSigned += _jobSigned;
+                _jobSigned = 0;
 
-                    // Get the values from the form's controls for the SignerTrustedSigning class
-                    var signToolExe = textBoxSignToolPath.Text;
-                    var timeStampServer = "http://timestamp.acs.microsoft.com";
-                    var endpointServer = txtTimestampProviderURL.Text;
-                    var dlibPath = @".\Tools\Azure.CodeSigning.Dlib.dll";
-                    var codeSigningAccountName = textBoxCodeSigningAccountName.Text;
-                    var certificateProfileName = textBoxCertificateProfileName.Text;
-                    var correlationIdData = textBoxCorrelationId.Text;
+                statusLabel.Text = @"[JOB] Done - see log for more information";
 
-                    // Disable the form's controls while signing the files
-                    ToggleDisabledForm(true);
+                // Enable the form's controls after signing the files again and show the output in the textbox
+                DisableForm(false);
 
-                    // Clear the output textbox
-                    textBoxOutput.Clear();
-
-                    // Create a new instance of the SignerTrustedSigning class
-                    SignerTrustedSigning signer = new SignerTrustedSigning(signToolExe, timeStampServer, dlibPath, codeSigningAccountName, certificateProfileName, correlationIdData, endpointServer)
-                    {
-                        Verbose = menuItemSignVerbose.Checked,
-                        Debug = menuItemSignDebug.Checked,
-                        Timestamp = checkBoxTimestamp.Checked
-                    };
-
-                    signer.OnSignToolOutput += message =>
-                    {
-                        // Check if the message is null or empty and return if it is
-                        if (string.IsNullOrEmpty(message)) return;
-
-                        // Check if the ShowOutput checkbox is unchecked and if the message contains any of the specified strings
-                        if (checkBoxShowOutput.Checked == false)
-                        {
-                            if (new[]
-                            {
-                        "Number of", "Done Adding Additional Store", "The following certificate was selected:",
-                        "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
-                        "The following additional certificates will be attached:",
-                        "The following certificates were considered:", "After EKU filter", "After Private Key filter,",
-                        "The following additional certificates will be attached:", "After expiry filter","Trusted Signing",
-                        "Submitting digest for signing","OperationId","Version: 1.0.60","ExcludeCredentials","CertificateProfileName",
-                        "CertificateProfileName","CodeSigningAccountName","Endpoint","Metadata","}","{"
-
-                            }.Any(message.Contains))
-                            {
-                            }
-                            else
-                            {
-                                // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
-                                if (textBoxOutput.InvokeRequired) // safe cross-thread call
-                                {
-                                    textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
-                                        message + Environment.NewLine);
-                                }
-                                else
-                                {
-                                    // Append the message to the output textbox
-                                    textBoxOutput.AppendText(message);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
-                            if (textBoxOutput.InvokeRequired) // safe cross-thread call
-                            {
-                                textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
-                                    message + Environment.NewLine);
-                            }
-                            else
-                            {
-                                // Append the message to the output textbox
-                                textBoxOutput.AppendText(message);
-                            }
-                        }
-                    };
-
-                    // Sign the files from the list selected
-                    foreach (var file in checkedListBoxFiles.CheckedItems)
-                    {
-                        // Show process
-                        var filename = Path.GetFileName(file.ToString());
-                        textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
-
-                        // Log the signing process started message for file
-                        Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
-
-                        // Sign file with SignerTrustedSigning class
-                        signer.Sign(file.ToString());
-
-                        // Show process
-                        textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] " + file + "..." + Environment.NewLine);
-
-                        // When done
-                        _jobSigned += 1;
-                        toolStripProgressBar.Step = 1;
-                        toolStripProgressBar.PerformStep();
-                        //statusLabel.Text = @"[JOB] Signed " + jobSigned + @" of " + totalJob + @" File(s)";
-                    }
-
-                    // Enable the form's controls after signing the files again and show the output in the textbox
-                    ToggleDisabledForm(false);
-
-                    // Log the signing process completed message
-                    Message("Signing process completed for Trusted Signing Certificate", EventType.Information, 1050);
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception);
-                    throw;
-                }
+                // Log the signing process completed message
+                Message("Signing process completed", EventType.Information, 1051);
             }
+        }
 
-            // count errors when sign files in use
+        private async Task SignWithWindowsCertificateStoreAsync()
+        {
+            // Log signing process started message for Windows Certificate Store
+            Message("Signing process started for Windows Certificate Store...", EventType.Information, 1047);
 
-            //WaitForNewText("An error occurred while attempting to sign:");
+            // Disables the form's controls while signing the files
+            ToggleDisabledForm(true);
 
-            /*#if DEBUG
-                        MessageBox.Show(isSignErrorShowed.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-#endif
-                    if (isSignErrorShowed)
+            // Clear the output textbox
+            textBoxOutput.Clear();
+
+            // Create a new instance of the SignerThumbprint class with TimestampManager
+            SignerThumbprint signer = new SignerThumbprint(textBoxSignToolPath.Text, ThumbprintFromCertToSign, _timestampManager)
+            {
+                Verbose = menuItemSignVerbose.Checked,
+                Debug = menuItemSignDebug.Checked,
+                Timestamp = checkBoxTimestamp.Checked
+            };
+
+            // Add an event handler to the OnSignToolOutput event
+            signer.OnSignToolOutput += message =>
+            {
+                // Check if the message is null or empty and return if it is
+                if (string.IsNullOrEmpty(message)) return;
+
+                // Check if the ShowOutput checkbox is unchecked and if the message contains any of the specified strings
+                if (checkBoxShowOutput.Checked == false)
+                {
+                    if (new[]
+                    {
+                "Number of", "Done Adding Additional Store", "The following certificate was selected:",
+                "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
+                "The following additional certificates will be attached:",
+                "The following certificates were considered:", "After EKU filter", "After Private Key filter,",
+                "The following additional certificates will be attached:", "After expiry filter",
+                "Attempt", "Using timestamp server", "Timestamp successful", "Timestamp failed"
+            }.Any(message.Contains))
+                    {
+                        // Skip filtered messages when ShowOutput is false
+                    }
+                    else
+                    {
+                        // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
+                        if (textBoxOutput.InvokeRequired) // safe cross-thread call
                         {
-                            jobSigned = - _signerrors;
-                            // runs after signing job completes
-                            statusLabel.Text = @"[JOB] Signed " + jobSigned + @" of " + totalJob + @" Files";
-
-                            MessageBox.Show(@"Job complete with errors" + Environment.NewLine + @"Signed " + jobSigned + @" of " + totalJob + @" File(s)", @"Job Report", 0, MessageBoxIcon.Information);
+                            textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
+                                message + Environment.NewLine);
                         }
                         else
                         {
-                            // runs after signing job completes
-                            statusLabel.Text = @"[JOB] Signed " + jobSigned + @" of " + totalJob + @" Files";
+                            // Append the message to the output textbox
+                            textBoxOutput.AppendText(message + Environment.NewLine);
+                        }
+                    }
+                }
+                else
+                {
+                    // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
+                    if (textBoxOutput.InvokeRequired) // safe cross-thread call
+                    {
+                        textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
+                            message + Environment.NewLine);
+                    }
+                    else
+                    {
+                        // Append the message to the output textbox
+                        textBoxOutput.AppendText(message + Environment.NewLine);
+                    }
+                }
+            };
 
-                            MessageBox.Show(@"Job complete" + Environment.NewLine + @"Signed " + jobSigned + @" of " + totalJob + @" File(s)", @"Job Report", 0, MessageBoxIcon.Information);
-                        }*/
+            foreach (var file in checkedListBoxFiles.CheckedItems)
+            {
+                // Show process
+                var filename = Path.GetFileName(file.ToString());
+                textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
 
-            // // runs after signing job completes //TODO
-            //statusLabel.Text = @"[JOB] Signed " + jobSigned + @" of " + totalJob + @" Files";
-            //
-            //MessageBox.Show(@"Job complete" + Environment.NewLine + @"Signed " + jobSigned + @" of " + totalJob + @" File(s)", @"Job Report", 0, MessageBoxIcon.Information);
+                // Log the signing process started message for file
+                Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
 
-            // cleans up environment after job
-            toolStripProgressBar.Value = 0;
-            _totalSigned += _jobSigned;
-            _jobSigned = 0;
+                // Sign file with SignerThumbprint asynchronously
+                await signer.SignAsync(file.ToString());
 
-            //statusLabel.Text = @"[JOB] Signed " + totalSigned + @" File(s) in total";
-            statusLabel.Text = @"[JOB] Done - see log for more information";
+                // Show process
+                textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] '" + file + "'..." + Environment.NewLine);
+
+                // When done
+                _jobSigned += 1;
+                toolStripProgressBar.Step = 1;
+                toolStripProgressBar.PerformStep();
+
+                // Force UI update
+                Application.DoEvents();
+            }
 
             // Enable the form's controls after signing the files again and show the output in the textbox
-            DisableForm(false);
+            ToggleDisabledForm(false);
 
             // Log the signing process completed message
-            Message("Signing process completed", EventType.Information, 1051);
+            Message("Signing process completed for Windows Certificate Store", EventType.Information, 1048);
+        }
+
+        private async Task SignWithPfxCertificateAsync()
+        {
+            // Log signing process started message for PFX Certificate
+            Message("Signing process started for PFX Certificate...", EventType.Information, 1048);
+
+            ToggleDisabledForm(true);
+            textBoxOutput.Clear();
+
+            // Create a new instance of the SignerPfx class with TimestampManager
+            SignerPfx signer = new SignerPfx(textBoxSignToolPath.Text, textBoxPFXFile.Text, textBoxPFXPassword.Text, _timestampManager)
+            {
+                Verbose = menuItemSignVerbose.Checked,
+                Debug = menuItemSignDebug.Checked,
+                Timestamp = checkBoxTimestamp.Checked
+            };
+
+            // Add an event handler to the OnSignToolOutput event (same as above)
+            signer.OnSignToolOutput += message =>
+            {
+                // Check if the message is null or empty and return if it is
+                if (string.IsNullOrEmpty(message)) return;
+
+                // Check if the ShowOutput checkbox is unchecked and if the message contains any of the specified strings
+                if (checkBoxShowOutput.Checked == false)
+                {
+                    if (new[]
+                    {
+            "Number of", "Done Adding Additional Store", "The following certificate was selected:",
+            "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
+            "The following additional certificates will be attached:",
+            "The following certificates were considered:", "After EKU filter", "After Private Key filter,",
+            "The following additional certificates will be attached:", "After expiry filter",
+            "Attempt", "Using timestamp server", "Timestamp successful", "Timestamp failed"
+        }.Any(message.Contains))
+                    {
+                        // Skip filtered messages when ShowOutput is false
+                    }
+                    else
+                    {
+                        // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
+                        if (textBoxOutput.InvokeRequired) // safe cross-thread call
+                        {
+                            textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
+                                message + Environment.NewLine);
+                        }
+                        else
+                        {
+                            // Append the message to the output textbox
+                            textBoxOutput.AppendText(message + Environment.NewLine);
+                        }
+                    }
+                }
+                else
+                {
+                    // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
+                    if (textBoxOutput.InvokeRequired) // safe cross-thread call
+                    {
+                        textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
+                            message + Environment.NewLine);
+                    }
+                    else
+                    {
+                        // Append the message to the output textbox
+                        textBoxOutput.AppendText(message + Environment.NewLine);
+                    }
+                }
+            };
+
+            foreach (var file in checkedListBoxFiles.CheckedItems)
+            {
+                // Show process
+                var filename = Path.GetFileName(file.ToString());
+                textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
+
+                // Log the signing process started message for file
+                Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
+
+                // Sign file with SignerPfx class asynchronously
+                await signer.SignAsync(file.ToString());
+
+                // Show process
+                textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] " + file + "..." + Environment.NewLine);
+
+                // When done
+                _jobSigned += 1;
+                toolStripProgressBar.Step = 1;
+                toolStripProgressBar.PerformStep();
+
+                // Force UI update
+                Application.DoEvents();
+            }
+
+            // Enable the form's controls after signing the files again and show the output in the textbox
+            ToggleDisabledForm(false);
+
+            // Log the signing process completed message
+            Message("Signing process completed for PFX Certificate", EventType.Information, 1049);
+        }
+
+        private async Task SignWithTrustedSigningAsync()
+        {
+            // Log signing process started message for Trusted Signing Certificate
+            Message("Signing process started for Trusted Signing Certificate...", EventType.Information, 1049);
+
+            // Get the values from the form's controls for the SignerTrustedSigning class
+            var signToolExe = textBoxSignToolPath.Text;
+            var timeStampServer = "http://timestamp.acs.microsoft.com"; // Fixed timestamp server for Trusted Signing
+            var endpointServer = txtTimestampProviderURL.Text; // This is actually the regional endpoint
+            var dlibPath = @".\Tools\Azure.CodeSigning.Dlib.dll";
+            var codeSigningAccountName = textBoxCodeSigningAccountName.Text;
+            var certificateProfileName = textBoxCertificateProfileName.Text;
+            var correlationIdData = textBoxCorrelationId.Text;
+
+            // Disable the form's controls while signing the files
+            ToggleDisabledForm(true);
+
+            // Clear the output textbox
+            textBoxOutput.Clear();
+
+            // Create a new instance of the SignerTrustedSigning class with TimestampManager
+            SignerTrustedSigning signer = new SignerTrustedSigning(signToolExe, timeStampServer, dlibPath, codeSigningAccountName, certificateProfileName, correlationIdData, endpointServer, _timestampManager)
+            {
+                Verbose = menuItemSignVerbose.Checked,
+                Debug = menuItemSignDebug.Checked,
+                Timestamp = checkBoxTimestamp.Checked
+            };
+
+            // Add an event handler to the OnSignToolOutput event
+            signer.OnSignToolOutput += message =>
+            {
+                // Check if the message is null or empty and return if it is
+                if (string.IsNullOrEmpty(message)) return;
+
+                // Check if the ShowOutput checkbox is unchecked and if the message contains any of the specified strings
+                if (checkBoxShowOutput.Checked == false)
+                {
+                    if (new[]
+                    {
+                "Number of", "Done Adding Additional Store", "The following certificate was selected:",
+                "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
+                "The following additional certificates will be attached:",
+                "The following certificates were considered:", "After EKU filter", "After Private Key filter,",
+                "The following additional certificates will be attached:", "After expiry filter","Trusted Signing",
+                "Submitting digest for signing","OperationId","Version: 1.0.60","ExcludeCredentials","CertificateProfileName",
+                "CertificateProfileName","CodeSigningAccountName","Endpoint","Metadata","}","{",
+                "Attempt", "Using timestamp server", "Timestamp successful", "Timestamp failed"
+            }.Any(message.Contains))
+                    {
+                        // Skip filtered messages when ShowOutput is false
+                    }
+                    else
+                    {
+                        // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
+                        if (textBoxOutput.InvokeRequired) // safe cross-thread call
+                        {
+                            textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
+                                message + Environment.NewLine);
+                        }
+                        else
+                        {
+                            // Append the message to the output textbox
+                            textBoxOutput.AppendText(message + Environment.NewLine);
+                        }
+                    }
+                }
+                else
+                {
+                    // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
+                    if (textBoxOutput.InvokeRequired) // safe cross-thread call
+                    {
+                        textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
+                            message + Environment.NewLine);
+                    }
+                    else
+                    {
+                        // Append the message to the output textbox
+                        textBoxOutput.AppendText(message + Environment.NewLine);
+                    }
+                }
+            };
+
+            // Sign the files from the list selected
+            foreach (var file in checkedListBoxFiles.CheckedItems)
+            {
+                // Show process
+                var filename = Path.GetFileName(file.ToString());
+                textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
+
+                // Log the signing process started message for file
+                Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
+
+                // Sign file with SignerTrustedSigning class asynchronously
+                await signer.SignAsync(file.ToString());
+
+                // Show process
+                textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] " + file + "..." + Environment.NewLine);
+
+                // When done
+                _jobSigned += 1;
+                toolStripProgressBar.Step = 1;
+                toolStripProgressBar.PerformStep();
+
+                // Force UI update
+                Application.DoEvents();
+            }
+
+            // Enable the form's controls after signing the files again and show the output in the textbox
+            ToggleDisabledForm(false);
+
+            // Log the signing process completed message
+            Message("Signing process completed for Trusted Signing Certificate", EventType.Information, 1050);
         }
 
         private void buttonShowAllCertDataPopup_Click(object sender, EventArgs e)
@@ -2453,6 +2558,27 @@ Use the ... button above and select the code signing certificate to use!", @"No 
             Message("User clicked 'Show Certificate Status' menu item", EventType.Information, 2008);
 
             ShowCertificateStatusForm();
+        }
+
+        private void manageTimestampServersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var timestampForm = new TimestampServerManagementForm(_timestampManager, ConfigIniPath))
+                {
+                    if (timestampForm.ShowDialog(this) == DialogResult.OK)
+                    {
+                        // Refresh the ComboBox to reflect any changes
+                        PopulateComboBox();
+                        Message("Timestamp server management completed", EventType.Information, 3015);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening timestamp server management: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Message($"Error opening timestamp server management: {ex.Message}", EventType.Error, 3016); // Changed 'message' to 'Message'
+            }
         }
     }
 }
