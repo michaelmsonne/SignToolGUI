@@ -328,10 +328,10 @@
             // menuToolStripMenuItem
             // 
             this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.manageTimestampServersToolStripMenuItem,
+            this.certificateMonitoringToolStripMenuItem,
             this.logsToolStripMenuItem,
             this.changelogToolStripMenuItem,
-            this.certificateMonitoringToolStripMenuItem,
-            this.manageTimestampServersToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
@@ -351,7 +351,7 @@
             // 
             this.openTodaysLogfileToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.openTodaysLogfileToolStripMenuItem.Name = "openTodaysLogfileToolStripMenuItem";
-            this.openTodaysLogfileToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.openTodaysLogfileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openTodaysLogfileToolStripMenuItem.Text = "Open todays logfile";
             this.openTodaysLogfileToolStripMenuItem.Click += new System.EventHandler(this.OpenTodaysLogfileToolStripMenuItem_Click);
             // 
@@ -359,7 +359,7 @@
             // 
             this.openLogFolderToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.openLogFolderToolStripMenuItem.Name = "openLogFolderToolStripMenuItem";
-            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openLogFolderToolStripMenuItem.Text = "Open log folder";
             this.openLogFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenLogfolderToolStripMenuItem_Click);
             // 
@@ -688,6 +688,7 @@
             // comboBoxTimestampProviders
             // 
             this.comboBoxTimestampProviders.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTimestampProviders.Enabled = false;
             this.comboBoxTimestampProviders.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxTimestampProviders.FormattingEnabled = true;
             this.comboBoxTimestampProviders.Items.AddRange(new object[] {

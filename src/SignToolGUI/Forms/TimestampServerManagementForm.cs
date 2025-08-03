@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using SignToolGUI.Class;
 using static SignToolGUI.Class.FileLogger;
@@ -15,14 +14,31 @@ namespace SignToolGUI.Forms
         private List<TimestampServer> _currentServers;
         private bool _isModified = false;
         private string _configIniPath;
+        private bool _isTrustedSigning;
 
-        public TimestampServerManagementForm(TimestampManager timestampManager, string configIniPath)
+        public TimestampServerManagementForm(TimestampManager timestampManager, string configIniPath, bool isTrustedSigning = false)
         {
             _timestampManager = timestampManager;
             _configIniPath = configIniPath; // Store the config path
+            _isTrustedSigning = isTrustedSigning;
             _currentServers = new List<TimestampServer>();
             InitializeComponent();
+            UpdateGroupBoxTitle();
             LoadServers();
+        }
+
+        private void UpdateGroupBoxTitle()
+        {
+            if (_isTrustedSigning)
+            {
+                groupBoxServers.Text = "Endpoints";
+                this.Text = "Trusted Signing Endpoint Management";
+            }
+            else
+            {
+                groupBoxServers.Text = "Timestamp Servers";
+                this.Text = "Timestamp Server Management";
+            }
         }
 
         private void LoadServers()
@@ -229,7 +245,7 @@ namespace SignToolGUI.Forms
         private void ButtonReset_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show(
-                "This will reset all timestamp servers to default settings. Continue?",
+                $"This will reset all {(_isTrustedSigning ? "endpoints" : "timestamp servers")} to default settings. Continue?",
                 "Reset to Defaults",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -238,6 +254,14 @@ namespace SignToolGUI.Forms
             {
                 // Create a temporary manager to get default servers
                 var tempManager = new TimestampManager();
+                if (_isTrustedSigning)
+                {
+                    tempManager.InitializeTrustedSigningServers();
+                }
+                else
+                {
+                    tempManager.SetDefaultServers();
+                }
                 _currentServers = tempManager.GetServers().ToList();
                 RefreshServerList();
                 _isModified = true;
@@ -269,7 +293,7 @@ namespace SignToolGUI.Forms
 
                 _isModified = false;
                 UpdateButtonStates(); // This will disable the Apply button
-                Message("Timestamp server configuration applied and saved", EventType.Information, 3014);
+                Message($"{(_isTrustedSigning ? "Endpoint" : "Timestamp server")} configuration applied and saved", EventType.Information, 3014);
 
                 MessageBox.Show("Changes have been applied and saved successfully.", "Configuration Applied",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -277,7 +301,7 @@ namespace SignToolGUI.Forms
             catch (Exception ex)
             {
                 MessageBox.Show($"Error applying changes: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Message($"Error applying timestamp server changes: {ex.Message}", EventType.Error, 3017);
+                Message($"Error applying {(_isTrustedSigning ? "endpoint" : "timestamp server")} changes: {ex.Message}", EventType.Error, 3017);
             }
         }
 
@@ -292,11 +316,11 @@ namespace SignToolGUI.Forms
                 var jsonString = System.Text.Json.JsonSerializer.Serialize(timestampConfig);
                 iniFile.WriteValue("Timestamp", "ServerConfiguration", jsonString);
 
-                Message("Timestamp server configuration saved to file", EventType.Information, 3018);
+                Message($"{(_isTrustedSigning ? "Endpoint" : "Timestamp server")} configuration saved to file", EventType.Information, 3018);
             }
             catch (Exception ex)
             {
-                Message($"Error saving timestamp configuration to file: {ex.Message}", EventType.Error, 3019);
+                Message($"Error saving {(_isTrustedSigning ? "endpoint" : "timestamp")} configuration to file: {ex.Message}", EventType.Error, 3019);
                 throw; // Re-throw to let the calling method handle it
             }
         }

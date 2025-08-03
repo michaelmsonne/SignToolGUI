@@ -878,6 +878,20 @@ namespace SignToolGUI.Forms
 
             toolTip.SetToolTip(checkBoxTimestamp, "Check this box to timestamp the signed file(s).");
 
+            // Load type of certificate configuration
+            try
+            {
+                // Load timestamp server configuration FIRST
+                LoadTimestampConfiguration();
+
+                // Load certificate type configuration
+                LoadCertificateTypeConfiguration();
+            }
+            catch (Exception ex)
+            {
+                Message($"Error loading timestamp configuration: {ex.Message}", EventType.Error, 3012);
+            }
+
             // Set the Text property of the form to the application's name and version
             try
             {
@@ -1244,6 +1258,16 @@ namespace SignToolGUI.Forms
             catch (Exception ex)
             {
                 Message($"Error saving timestamp configuration: {ex.Message}", EventType.Error, 3013);
+            }
+
+            // Save certificate type configuration
+            try
+            {
+                SaveCertificateTypeConfiguration();
+            }
+            catch (Exception ex)
+            {
+                Message($"Error saving certificate type configuration: {ex.Message}", EventType.Error, 3030);
             }
 
             // Log application closed message
@@ -2600,20 +2624,89 @@ Use the ... button above and select the code signing certificate to use!", @"No 
         {
             try
             {
-                using (var timestampForm = new TimestampServerManagementForm(_timestampManager, ConfigIniPath))
+                // Determine if we're currently in Trusted Signing mode
+                bool isTrustedSigning = radioButtonTrustedSigning.Checked;
+
+                using (var timestampForm = new TimestampServerManagementForm(_timestampManager, ConfigIniPath, isTrustedSigning))
                 {
                     if (timestampForm.ShowDialog(this) == DialogResult.OK)
                     {
                         // Refresh the ComboBox to reflect any changes
                         PopulateComboBox();
-                        Message("Timestamp server management completed", EventType.Information, 3015);
+                        Message($"{(isTrustedSigning ? "Endpoint" : "Timestamp server")} management completed", EventType.Information, 3015);
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error opening timestamp server management: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Message($"Error opening timestamp server management: {ex.Message}", EventType.Error, 3016); // Changed 'message' to 'Message'
+                MessageBox.Show($"Error opening {(radioButtonTrustedSigning.Checked ? "endpoint" : "timestamp server")} management: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Message($"Error opening {(radioButtonTrustedSigning.Checked ? "endpoint" : "timestamp server")} management: {ex.Message}", EventType.Error, 3016);
+            }
+        }
+
+        private void SaveCertificateTypeConfiguration()
+        {
+            try
+            {
+                var iniFile = new IniFile(ConfigIniPath);
+
+                // Determine and save the certificate type
+                string certificateType = "WindowsCertificateStore"; // Default
+                if (radioButtonPFXCertificate.Checked)
+                {
+                    certificateType = "PFXCertificate";
+                }
+                else if (radioButtonTrustedSigning.Checked)
+                {
+                    certificateType = "TrustedSigning";
+                }
+
+                iniFile.WriteValue("Program", "CertificateType", certificateType);
+                Message($"Certificate type configuration saved: {certificateType}", EventType.Information, 3026);
+            }
+            catch (Exception ex)
+            {
+                Message($"Error saving certificate type configuration: {ex.Message}", EventType.Error, 3027);
+            }
+        }
+
+        private void LoadCertificateTypeConfiguration()
+        {
+            try
+            {
+                var iniFile = new IniFile(ConfigIniPath);
+                var certificateType = iniFile.GetString("Program", "CertificateType", "WindowsCertificateStore");
+
+                // Set the appropriate radio button based on saved configuration
+                switch (certificateType)
+                {
+                    case "PFXCertificate":
+                        radioButtonPFXCertificate.Checked = true;
+                        radioButtonWindowsCertificateStore.Checked = false;
+                        radioButtonTrustedSigning.Checked = false;
+                        break;
+                    case "TrustedSigning":
+                        radioButtonTrustedSigning.Checked = true;
+                        radioButtonWindowsCertificateStore.Checked = false;
+                        radioButtonPFXCertificate.Checked = false;
+                        break;
+                    case "WindowsCertificateStore":
+                    default:
+                        radioButtonWindowsCertificateStore.Checked = true;
+                        radioButtonPFXCertificate.Checked = false;
+                        radioButtonTrustedSigning.Checked = false;
+                        break;
+                }
+
+                Message($"Certificate type configuration loaded: {certificateType}", EventType.Information, 3028);
+            }
+            catch (Exception ex)
+            {
+                Message($"Error loading certificate type configuration: {ex.Message}", EventType.Error, 3029);
+                // Default to Windows Certificate Store if loading fails
+                radioButtonWindowsCertificateStore.Checked = true;
+                radioButtonPFXCertificate.Checked = false;
+                radioButtonTrustedSigning.Checked = false;
             }
         }
     }
