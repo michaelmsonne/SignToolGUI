@@ -87,7 +87,7 @@ namespace SignToolGUI.Forms
             // 
             // columnDaysUntilExpire
             // 
-            this.columnDaysUntilExpire.Text = "Daus Until Expiry";
+            this.columnDaysUntilExpire.Text = "Days Until Expiry";
             this.columnDaysUntilExpire.Width = 120;
             // 
             // columnThumprint
