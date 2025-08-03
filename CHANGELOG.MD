@@ -1,10 +1,40 @@
-## Version 1.5.0.0 (00-00-2025):
+﻿## Version 2.0.0.0 (00-00-2025)
 
-- Added certificate monitoring functionality with new CertificateMonitor class and CertificateStatus Form
+### 🆕 New Features
+- Added certificate monitoring functionality with new `CertificateMonitor` class and `CertificateStatus` Form
+- Introduced comprehensive timestamp server management system
+  - New `TimestampServerEditForm` for adding and editing individual timestamp servers
+  - New `TimestampServerManagementForm` for centralized server configuration management
+  - Added `TimestampServer` and `TimestampManager` classes for server handling and orchestration
+- Built-in timestamp server availability testing and health monitoring
+- Support for server prioritization, enabling/disabling, and timeout configuration
+
+### 🎨 User Interface Enhancements
+- Enhanced MainForm UI with new menu options for certificate monitoring and timestamp server management
 - Introduced color-coded alerts for certificate expiry in both Windows Certificate Store and PFX scenarios
-- Enhanced MainForm UI with new menu options for certificate monitoring
 - Improved certificate information display with better visual feedback
+- Added intuitive forms for managing timestamp server configurations
 
+### 🏗️ Architecture Improvements
+- Refactored signing classes (`SignerPfx`, `SignerThumbprint`, `SignerTrustedSigning`) to inherit from new `SignerBase` abstract class
+- Centralized common signing logic, reducing code redundancy and improving maintainability
+- Enhanced certificate validation and monitoring capabilities
+- Improved error handling and validation for certificate paths and passwords
+
+### ⚡ Performance & Reliability
+- Implemented asynchronous operations for better application responsiveness
+- Enhanced logging system for improved troubleshooting and debugging
+- Added automatic failover to backup timestamp servers when primary servers are unavailable
+- Improved stability when handling certificate operations and network-related timestamp failures
+
+### 🐛 Bug Fixes
+- Better error recovery for network-related timestamp failures
+- Enhanced validation for certificate operations
+- Improved stability in certificate monitoring scenarios
+
+---
+
+*This release significantly enhances the reliability, user experience, and enterprise-readiness of the SignTool GUI, particularly for environments requiring robust certificate management and timestamping
 
 ## Version 1.4.0.0 (17-03-2025):
 
