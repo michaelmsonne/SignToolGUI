@@ -220,7 +220,7 @@
             // labelInstructions
             // 
             this.labelInstructions.AutoSize = true;
-            this.labelInstructions.Location = new System.Drawing.Point(211, 412);
+            this.labelInstructions.Location = new System.Drawing.Point(9, 410);
             this.labelInstructions.Name = "labelInstructions";
             this.labelInstructions.Size = new System.Drawing.Size(465, 13);
             this.labelInstructions.TabIndex = 14;
@@ -229,7 +229,7 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(12, 408);
+            this.progressBar.Location = new System.Drawing.Point(473, 407);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(196, 20);
             this.progressBar.TabIndex = 15;

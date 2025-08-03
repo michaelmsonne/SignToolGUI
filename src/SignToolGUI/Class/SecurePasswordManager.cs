@@ -74,7 +74,7 @@ namespace SignToolGUI.Class
         }
 
         /// <summary>
-        /// Encrypts a password using AES with machine-specific key derivation
+        /// Encrypts a password using AES with machine-specific key derivation and validates the result
         /// </summary>
         /// <param name="plainText">Password to encrypt</param>
         /// <returns>Base64 encoded encrypted password with metadata</returns>
@@ -120,7 +120,17 @@ namespace SignToolGUI.Class
                                 csEncrypt.FlushFinalBlock();
                             }
 
-                            return Convert.ToBase64String(msEncrypt.ToArray());
+                            var encryptedResult = Convert.ToBase64String(msEncrypt.ToArray());
+
+                            // Validate that we can decrypt what we just encrypted on this machine
+                            if (!ValidateEncryptionResult(encryptedResult, plainText))
+                            {
+                                Message("Encryption validation failed - encrypted data cannot be decrypted", EventType.Error, 3039);
+                                throw new InvalidOperationException("Encryption validation failed - the encrypted password cannot be decrypted on this machine");
+                            }
+
+                            Message("Password encryption and validation successful", EventType.Information, 3040);
+                            return encryptedResult;
                         }
                     }
                 }
@@ -129,6 +139,41 @@ namespace SignToolGUI.Class
             {
                 Message($"Error encrypting password: {ex.Message}", EventType.Error, 3032);
                 throw new InvalidOperationException("Failed to encrypt password", ex);
+            }
+        }
+
+        /// <summary>
+        /// Validates that an encrypted password can be properly decrypted and matches the original
+        /// </summary>
+        /// <param name="encryptedPassword">The encrypted password to validate</param>
+        /// <param name="originalPassword">The original plain text password for comparison</param>
+        /// <returns>True if the encrypted password can be decrypted and matches the original</returns>
+        private static bool ValidateEncryptionResult(string encryptedPassword, string originalPassword)
+        {
+            try
+            {
+                // Test that we can decrypt the password
+                if (!CanDecryptOnThisMachine(encryptedPassword))
+                {
+                    Message("Validation failed: Cannot decrypt encrypted password on this machine", EventType.Warning, 3041);
+                    return false;
+                }
+
+                // Test that the decrypted password matches the original
+                var decryptedPassword = DecryptPassword(encryptedPassword);
+                if (decryptedPassword != originalPassword)
+                {
+                    Message("Validation failed: Decrypted password does not match original", EventType.Warning, 3042);
+                    return false;
+                }
+
+                Message("Encryption validation successful: Password can be decrypted and matches original", EventType.Information, 3043);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Message($"Error during encryption validation: {ex.Message}", EventType.Warning, 3044);
+                return false;
             }
         }
 
@@ -245,14 +290,52 @@ namespace SignToolGUI.Class
         /// <returns>True if the password can be decrypted on this machine</returns>
         public static bool CanDecryptOnThisMachine(string encryptedPassword)
         {
+            if (string.IsNullOrEmpty(encryptedPassword))
+                return false;
+
             try
             {
                 var decrypted = DecryptPassword(encryptedPassword);
                 return !string.IsNullOrEmpty(decrypted);
             }
-            catch
+            catch (Exception ex)
             {
+                Message($"Cannot decrypt password on this machine: {ex.Message}", EventType.Information, 3045);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Enhanced method to safely encrypt and validate a password with comprehensive error handling
+        /// </summary>
+        /// <param name="plainText">Password to encrypt</param>
+        /// <param name="performValidation">Whether to perform validation test (default: true)</param>
+        /// <returns>Encrypted password or empty string if encryption/validation fails</returns>
+        public static string SafeEncryptPassword(string plainText, bool performValidation = true)
+        {
+            if (string.IsNullOrEmpty(plainText))
+                return string.Empty;
+
+            try
+            {
+                var encrypted = EncryptPassword(plainText);
+
+                if (performValidation && !string.IsNullOrEmpty(encrypted))
+                {
+                    // Additional validation using CanDecryptOnThisMachine
+                    if (!CanDecryptOnThisMachine(encrypted))
+                    {
+                        Message("Safe encryption failed: Encrypted password cannot be validated for decryption", EventType.Error, 3046);
+                        return string.Empty;
+                    }
+                }
+
+                return encrypted;
+            }
+            catch (Exception ex)
+            {
+                Message($"Safe encryption failed: {ex.Message}", EventType.Error, 3047);
+                return string.Empty;
             }
         }
     }

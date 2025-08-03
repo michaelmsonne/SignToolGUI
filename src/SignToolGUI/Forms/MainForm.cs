@@ -1168,11 +1168,29 @@ namespace SignToolGUI.Forms
                                 }
                             }
 
-                            // Encrypt the certificate password and save it to the configuration file
-                            var encryptedstring = SecurePasswordManager.EncryptPassword(textBoxPFXPassword.Text);
+                            // Encrypt the certificate password with validation and save it to the configuration file
+                            var encryptedstring = SecurePasswordManager.SafeEncryptPassword(textBoxPFXPassword.Text);
 
-                            // Save the encrypted certificate password to the configuration file
-                            iniFile.WriteValue("Program", "CertificatePassword", encryptedstring);
+                            if (string.IsNullOrEmpty(encryptedstring) && !string.IsNullOrEmpty(textBoxPFXPassword.Text))
+                            {
+                                // Encryption failed, warn the user
+                                MessageBox.Show("Failed to securely encrypt the certificate password. The password will not be saved.",
+                                    "Encryption Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                                // Save empty password instead of potentially corrupted data
+                                iniFile.WriteValue("Program", "CertificatePassword", "");
+                                Message("Certificate password not saved due to encryption failure", EventType.Warning, 3048);
+                            }
+                            else
+                            {
+                                // Save the encrypted certificate password to the configuration file
+                                iniFile.WriteValue("Program", "CertificatePassword", encryptedstring);
+
+                                if (!string.IsNullOrEmpty(encryptedstring))
+                                {
+                                    Message("Certificate password successfully encrypted and saved", EventType.Information, 3049);
+                                }
+                            }
                         }
                         catch (Exception ex)
                         {
