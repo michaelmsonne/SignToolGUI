@@ -1025,8 +1025,46 @@ namespace SignToolGUI.Forms
                 // Set the certificate password from the configuration file if it exists and decrypt it
                 if (settingCertificatePasswordEncrypted != "")
                 {
-                    // TODO - Decrypt the certificate password based on hardware hash
-                    textBoxPFXPassword.Text = StringCipher.Decrypt(settingCertificatePasswordEncrypted, "pMmInS?m24Caae#?2EySvsFUgDsUG06Qzz8R0X8F8WUNn04#g%mP02*36datrZka?cQh/Q2E/Oc4/21%");
+                    try
+                    {
+                        // First try new secure encryption method
+                        var decryptedPassword = SecurePasswordManager.DecryptPassword(settingCertificatePasswordEncrypted);
+
+                        if (string.IsNullOrEmpty(decryptedPassword))
+                        {
+                            // If new method fails, try to migrate from old StringCipher method
+                            Message("Attempting to migrate password from old encryption method", EventType.Information, 3036);
+                            var migratedPassword = SecurePasswordManager.MigrateFromStringCipher(
+                                settingCertificatePasswordEncrypted,
+                                "pMmInS?m24Caae#?2EySvsFUgDsUG06Qzz8R0X8F8WUNn04#g%mP02*36datrZka?cQh/Q2E/Oc4/21%");
+
+                            if (!string.IsNullOrEmpty(migratedPassword))
+                            {
+                                // Save the migrated password immediately
+                                iniFile.WriteValue("Program", "CertificatePassword", migratedPassword);
+                                decryptedPassword = SecurePasswordManager.DecryptPassword(migratedPassword);
+                                Message("Password successfully migrated and saved with new encryption", EventType.Information, 3037);
+                            }
+                        }
+
+                        textBoxPFXPassword.Text = decryptedPassword;
+                    }
+                    catch (Exception ex)
+                    {
+                        Message($"Failed to decrypt certificate password: {ex.Message}", EventType.Error, 3038);
+                        textBoxPFXPassword.Text = "";
+
+                        // Optionally clear the corrupted password from config
+                        if (MessageBox.Show("The saved password could not be decrypted. This may be due to " +
+                            "the password being encrypted on a different machine or corrupted data. " +
+                            "Would you like to clear the saved password?",
+                            "Password Decryption Failed",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            iniFile.WriteValue("Program", "CertificatePassword", "");
+                        }
+                    }
                 }
                 else
                 {
@@ -1131,8 +1169,7 @@ namespace SignToolGUI.Forms
                             }
 
                             // Encrypt the certificate password and save it to the configuration file
-                            var encryptedstring = StringCipher.Encrypt(textBoxPFXPassword.Text,
-                                "pMmInS?m24Caae#?2EySvsFUgDsUG06Qzz8R0X8F8WUNn04#g%mP02*36datrZka?cQh/Q2E/Oc4/21%");
+                            var encryptedstring = SecurePasswordManager.EncryptPassword(textBoxPFXPassword.Text);
 
                             // Save the encrypted certificate password to the configuration file
                             iniFile.WriteValue("Program", "CertificatePassword", encryptedstring);

@@ -90,6 +90,7 @@
     <Compile Include="Class\FileLogger.cs" />
     <Compile Include="Class\HighDpi.cs" />
     <Compile Include="Class\NativeMethods.cs" />
+    <Compile Include="Class\SecurePasswordManager.cs" />
     <Compile Include="Class\SignerBase.cs" />
     <Compile Include="Class\SignerTrustedSigning.cs" />
     <Compile Include="Class\SignTool.cs" />
