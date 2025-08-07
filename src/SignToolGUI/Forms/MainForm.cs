@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -55,6 +56,53 @@ namespace SignToolGUI.Forms
 
             // Initialize the certificate check asynchronously and update GUI accordingly
             InitializeAsyncCertificateCheck();
+        }
+
+        // --- Signing Report Entry ---
+        public class SigningReportEntry
+        {
+            public string FileName { get; set; }
+            public string Status { get; set; }
+            public string Error { get; set; }
+            public string CertificateInfo { get; set; }
+            public string Timestamp { get; set; }
+        }
+
+        private List<SigningReportEntry> _signingReportEntries = new List<SigningReportEntry>();
+
+        private string GetSigningTimestampFromFile(string filePath)
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = SignToolExe,
+                Arguments = $"verify /v /all \"{filePath}\"",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            using (var process = Process.Start(psi))
+            {
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+
+                // Try to match several possible timestamp lines
+                var match1 = System.Text.RegularExpressions.Regex.Match(output, @"Timestamp:\s*(.+)");
+                if (match1.Success)
+                    return match1.Groups[1].Value.Trim();
+
+                var match2 = System.Text.RegularExpressions.Regex.Match(output, @"Signed Time:\s*(.+)");
+                if (match2.Success)
+                    return match2.Groups[1].Value.Trim();
+
+                var match3 = System.Text.RegularExpressions.Regex.Match(output, @"The signature is timestamped:\s*(.+)");
+                if (match3.Success)
+                    return match3.Groups[1].Value.Trim();
+
+                // Optionally, log the output for debugging
+                Message("SignTool verify output for timestamp: " + output, EventType.Error, 9999);
+
+                return "N/A";
+            }
         }
 
         private void InitializeTimestampManager()
@@ -1516,27 +1564,44 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                 }
             };
 
+            _signingReportEntries.Clear();
+
             foreach (var file in checkedListBoxFiles.CheckedItems)
             {
-                // Show process
+                var entry = new SigningReportEntry
+                {
+                    FileName = file.ToString(),
+                    Status = "Pending",
+                    Error = "",
+                    CertificateInfo = comboBoxCertificatesInStore.SelectedIndex > 0
+                        ? GetCertificateInfo(_signingCerts[comboBoxCertificatesInStore.SelectedIndex - 1])
+                        : "N/A"
+                };
+
+                try
+                {
+                    await signer.SignAsync(file.ToString());
+                    entry.Status = "Success";
+                    entry.Timestamp = GetSigningTimestampFromFile(file.ToString());
+                }
+                catch (Exception ex)
+                {
+                    entry.Status = "Error";
+                    entry.Error = ex.Message;
+                    entry.Timestamp = "N/A";
+                }
+
+                _signingReportEntries.Add(entry);
+
                 var filename = Path.GetFileName(file.ToString());
-                textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
 
                 // Log the signing process started message for file
                 Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
-
-                // Sign file with SignerThumbprint asynchronously
-                await signer.SignAsync(file.ToString());
-
-                // Show process
+                textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
                 textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] '" + file + "'..." + Environment.NewLine);
-
-                // When done
                 _jobSigned += 1;
                 toolStripProgressBar.Step = 1;
                 toolStripProgressBar.PerformStep();
-
-                // Force UI update
                 Application.DoEvents();
             }
 
@@ -1615,27 +1680,45 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                 }
             };
 
+            _signingReportEntries.Clear();
+
+            var certInfo = GetCertificateInfo(GetCertificateFromPfx());
+
             foreach (var file in checkedListBoxFiles.CheckedItems)
-            {
-                // Show process
+            {          
+                var entry = new SigningReportEntry
+                {
+                    FileName = file.ToString(),
+                    Status = "Pending",
+                    Error = "",
+                    CertificateInfo = certInfo
+                };
+
+                try
+                {
+                    await signer.SignAsync(file.ToString());
+                    entry.Status = "Success";
+                    entry.Timestamp = GetSigningTimestampFromFile(file.ToString());
+                }
+                catch (Exception ex)
+                {
+                    entry.Status = "Error";
+                    entry.Error = ex.Message;
+                    entry.Timestamp = "N/A";
+                }
+
+                _signingReportEntries.Add(entry);
+
+                // Existing UI update code...
                 var filename = Path.GetFileName(file.ToString());
                 textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
-
                 // Log the signing process started message for file
                 Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
 
-                // Sign file with SignerPfx class asynchronously
-                await signer.SignAsync(file.ToString());
-
-                // Show process
                 textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] " + file + "..." + Environment.NewLine);
-
-                // When done
                 _jobSigned += 1;
                 toolStripProgressBar.Step = 1;
                 toolStripProgressBar.PerformStep();
-
-                // Force UI update
                 Application.DoEvents();
             }
 
@@ -1752,28 +1835,47 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                 }
             };
 
+            _signingReportEntries.Clear();
+
+            var certInfo = "Trusted Signing (see Azure Portal for details)";
+
             // Sign the files from the list selected
             foreach (var file in checkedListBoxFiles.CheckedItems)
             {
-                // Show process
+                var entry = new SigningReportEntry
+                {
+                    FileName = file.ToString(),
+                    Status = "Pending",
+                    Error = "",
+                    CertificateInfo = certInfo
+                };
+
+                try
+                {
+                    await signer.SignAsync(file.ToString());
+                    entry.Status = "Success";
+                    entry.Timestamp = GetSigningTimestampFromFile(file.ToString());
+                }
+                catch (Exception ex)
+                {
+                    entry.Status = "Error";
+                    entry.Error = ex.Message;
+                    entry.Timestamp = "N/A";
+                }
+
+                _signingReportEntries.Add(entry);
+
+                // Existing UI update code...
                 var filename = Path.GetFileName(file.ToString());
                 textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
 
                 // Log the signing process started message for file
                 Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
 
-                // Sign file with SignerTrustedSigning class asynchronously
-                await signer.SignAsync(file.ToString());
-
-                // Show process
                 textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] " + file + "..." + Environment.NewLine);
-
-                // When done
                 _jobSigned += 1;
                 toolStripProgressBar.Step = 1;
                 toolStripProgressBar.PerformStep();
-
-                // Force UI update
                 Application.DoEvents();
             }
 
@@ -1782,6 +1884,95 @@ Please select one or more binaries into the list above to proceed!", @"No files 
 
             // Log the signing process completed message
             Message("Signing process completed for Trusted Signing Certificate", EventType.Information, 1050);
+        }
+
+        private void ExportSigningReportToCsv()
+        {
+            var sfd = new SaveFileDialog { Filter = "CSV Files|*.csv", Title = "Export Signing Report (CSV)" };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+
+            var lines = new List<string> { "File Name,Status,Error,Certificate Info,Timestamp" };
+            foreach (var entry in _signingReportEntries)
+            {
+                lines.Add($"\"{entry.FileName}\",\"{entry.Status}\",\"{entry.Error}\",\"{entry.CertificateInfo.Replace("\"", "\"\"")}\",\"{entry.Timestamp}\"");
+            }
+            File.WriteAllLines(sfd.FileName, lines);
+            Message("Signing report exported to CSV: " + sfd.FileName, EventType.Information, 20010);
+        }
+
+        private void ExportSigningReportToTxt()
+        {
+            var sfd = new SaveFileDialog { Filter = "Text Files|*.txt", Title = "Export Signing Report (TXT)" };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("=== Signing Report ===");
+            foreach (var entry in _signingReportEntries)
+            {
+                sb.AppendLine($"File: {entry.FileName}");
+                sb.AppendLine($"Status: {entry.Status}");
+                if (!string.IsNullOrEmpty(entry.Error))
+                    sb.AppendLine($"Error: {entry.Error}");
+                sb.AppendLine("Certificate Info:");
+                sb.AppendLine(entry.CertificateInfo);
+                sb.AppendLine($"Timestamp: {entry.Timestamp}");
+                sb.AppendLine(new string('-', 60));
+            }
+            File.WriteAllText(sfd.FileName, sb.ToString());
+            Message("Signing report exported to TXT: " + sfd.FileName, EventType.Information, 20011);
+        }
+
+        private void ExportSigningReportToHtml()
+        {
+            var sfd = new SaveFileDialog { Filter = "HTML Files|*.html", Title = "Export Signing Report (HTML)" };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("<!DOCTYPE html>");
+            sb.AppendLine("<html><head><meta charset='utf-8'><title>Signing Report</title>");
+            sb.AppendLine(@"<style>
+        body { font-family: Segoe UI, Arial, sans-serif; background: #f8f8f8; }
+        h1 { color: #2d5c8a; }
+        h2 { color: #444; font-size: 1.1em; margin-bottom: 0.5em; }
+        ul.job-summary { list-style: none; padding: 0; margin: 0 0 1em 0; }
+        ul.job-summary li { margin-bottom: 4px; }
+        table { border-collapse: collapse; width: 100%; background: #fff; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+        th { background: #e3eaf2; }
+        tr.success { background: #eafbe7; }
+        tr.error { background: #ffeaea; }
+        tr.pending { background: #fffbe7; }
+        pre { font-family: Consolas, monospace; font-size: 12px; white-space: pre-wrap; }
+    </style></head><body>");
+            sb.AppendLine("<h1>Signing Report</h1>");
+            string certType = radioButtonWindowsCertificateStore.Checked ? "Windows Certificate Store"
+                : radioButtonPFXCertificate.Checked ? "PFX Certificate"
+                : radioButtonTrustedSigning.Checked ? "Trusted Signing"
+                : "Unknown";
+            sb.AppendLine("<h2>Job Summary</h2>");
+            sb.AppendLine("<ul class='job-summary'>");
+            sb.AppendLine($"<li><strong>Date:</strong> {DateTime.Now:yyyy-MM-dd HH:mm:ss}</li>");
+            sb.AppendLine($"<li><strong>Certificate Type:</strong> {System.Net.WebUtility.HtmlEncode(certType)}</li>");
+            sb.AppendLine($"<li><strong>Files Signed:</strong> {_signingReportEntries.Count}</li>");
+            sb.AppendLine("</ul>");
+
+            sb.AppendLine("<table>");
+            sb.AppendLine("<tr><th>File Name</th><th>Status</th><th>Error</th><th>Certificate Info</th><th>Timestamp</th></tr>");
+            foreach (var entry in _signingReportEntries)
+            {
+                var rowClass = entry.Status == "Success" ? "success" : entry.Status == "Error" ? "error" : "pending";
+                sb.AppendLine($"<tr class='{rowClass}'>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(entry.FileName)}</td>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(entry.Status)}</td>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(entry.Error)}</td>");
+                sb.AppendLine($"<td><pre>{System.Net.WebUtility.HtmlEncode(entry.CertificateInfo)}</pre></td>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(entry.Timestamp)}</td>");
+                sb.AppendLine("</tr>");
+            }
+            sb.AppendLine("</table>");
+            sb.AppendLine("</body></html>");
+            File.WriteAllText(sfd.FileName, sb.ToString());
+            Message("Signing report exported to HTML: " + sfd.FileName, EventType.Information, 20012);
         }
 
         private void buttonShowAllCertDataPopup_Click(object sender, EventArgs e)
@@ -2789,6 +2980,21 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                 comboBoxCertificatesInStore.Items.Add(cert.GetNameInfo(X509NameType.SimpleName, false));
             }
             comboBoxCertificatesInStore.SelectedIndex = filteredCerts.Length > 0 ? 1 : 0;
+        }
+
+        private void exportReportCSVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportSigningReportToCsv();
+        }
+
+        private void exportReportTXTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportSigningReportToTxt();
+        }
+
+        private void exportReportHTMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportSigningReportToHtml();
         }
     }
 }

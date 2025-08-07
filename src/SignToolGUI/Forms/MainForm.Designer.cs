@@ -82,6 +82,9 @@
             this.groupBoxPFXCertificate = new System.Windows.Forms.GroupBox();
             this.buttonShowSigninigCertificatePFX = new System.Windows.Forms.Button();
             this.groupBoxWindowsCertificateStore = new System.Windows.Forms.GroupBox();
+            this.lableSelectedCertificate = new System.Windows.Forms.Label();
+            this.labelFilterCerts = new System.Windows.Forms.Label();
+            this.textBoxCertificateSearch = new System.Windows.Forms.TextBox();
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -105,9 +108,10 @@
             this.labelSignedBuildState = new System.Windows.Forms.Label();
             this.linkLabelOpenTrustedSigningPortal = new System.Windows.Forms.LinkLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.textBoxCertificateSearch = new System.Windows.Forms.TextBox();
-            this.labelFilterCerts = new System.Windows.Forms.Label();
-            this.lableSelectedCertificate = new System.Windows.Forms.Label();
+            this.exportSigningReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportReportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportReportTXTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportReportHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxFiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxCertificateInformation.SuspendLayout();
@@ -335,7 +339,8 @@
             this.certificateMonitoringToolStripMenuItem,
             this.logsToolStripMenuItem,
             this.changelogToolStripMenuItem,
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.exportSigningReportToolStripMenuItem});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.menuToolStripMenuItem.Text = "Menu";
@@ -606,6 +611,33 @@
             this.groupBoxWindowsCertificateStore.TabStop = false;
             this.groupBoxWindowsCertificateStore.Text = "Code Sign certificates available in Windows Certificate Store";
             // 
+            // lableSelectedCertificate
+            // 
+            this.lableSelectedCertificate.AutoSize = true;
+            this.lableSelectedCertificate.Location = new System.Drawing.Point(6, 80);
+            this.lableSelectedCertificate.Name = "lableSelectedCertificate";
+            this.lableSelectedCertificate.Size = new System.Drawing.Size(101, 13);
+            this.lableSelectedCertificate.TabIndex = 7;
+            this.lableSelectedCertificate.Text = "Selected certificate:";
+            // 
+            // labelFilterCerts
+            // 
+            this.labelFilterCerts.AutoSize = true;
+            this.labelFilterCerts.Location = new System.Drawing.Point(6, 52);
+            this.labelFilterCerts.Name = "labelFilterCerts";
+            this.labelFilterCerts.Size = new System.Drawing.Size(81, 13);
+            this.labelFilterCerts.TabIndex = 6;
+            this.labelFilterCerts.Text = "Search or Filter:";
+            // 
+            // textBoxCertificateSearch
+            // 
+            this.textBoxCertificateSearch.Location = new System.Drawing.Point(113, 50);
+            this.textBoxCertificateSearch.Name = "textBoxCertificateSearch";
+            this.textBoxCertificateSearch.Size = new System.Drawing.Size(254, 20);
+            this.textBoxCertificateSearch.TabIndex = 5;
+            this.toolTip.SetToolTip(this.textBoxCertificateSearch, "Type part of the certificate name, issuer, or thumbprint to filter the list.");
+            this.textBoxCertificateSearch.TextChanged += new System.EventHandler(this.textBoxCertificateSearch_TextChanged);
+            // 
             // statusBar
             // 
             this.statusBar.BackColor = System.Drawing.Color.White;
@@ -844,32 +876,36 @@
         "ng accounts in your tenant you have.");
             this.linkLabelOpenTrustedSigningPortal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelOpenTrustedSigningPortal_LinkClicked);
             // 
-            // textBoxCertificateSearch
+            // exportSigningReportToolStripMenuItem
             // 
-            this.textBoxCertificateSearch.Location = new System.Drawing.Point(113, 50);
-            this.textBoxCertificateSearch.Name = "textBoxCertificateSearch";
-            this.textBoxCertificateSearch.Size = new System.Drawing.Size(254, 20);
-            this.textBoxCertificateSearch.TabIndex = 5;
-            this.toolTip.SetToolTip(this.textBoxCertificateSearch, "Type part of the certificate name, issuer, or thumbprint to filter the list.");
-            this.textBoxCertificateSearch.TextChanged += new System.EventHandler(this.textBoxCertificateSearch_TextChanged);
+            this.exportSigningReportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportReportCSVToolStripMenuItem,
+            this.exportReportTXTToolStripMenuItem,
+            this.exportReportHTMLToolStripMenuItem});
+            this.exportSigningReportToolStripMenuItem.Name = "exportSigningReportToolStripMenuItem";
+            this.exportSigningReportToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.exportSigningReportToolStripMenuItem.Text = "Export signing report";
             // 
-            // labelFilterCerts
+            // exportReportCSVToolStripMenuItem
             // 
-            this.labelFilterCerts.AutoSize = true;
-            this.labelFilterCerts.Location = new System.Drawing.Point(6, 52);
-            this.labelFilterCerts.Name = "labelFilterCerts";
-            this.labelFilterCerts.Size = new System.Drawing.Size(81, 13);
-            this.labelFilterCerts.TabIndex = 6;
-            this.labelFilterCerts.Text = "Search or Filter:";
+            this.exportReportCSVToolStripMenuItem.Name = "exportReportCSVToolStripMenuItem";
+            this.exportReportCSVToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.exportReportCSVToolStripMenuItem.Text = "Export Report (CSV)";
+            this.exportReportCSVToolStripMenuItem.Click += new System.EventHandler(this.exportReportCSVToolStripMenuItem_Click);
             // 
-            // lableSelectedCertificate
+            // exportReportTXTToolStripMenuItem
             // 
-            this.lableSelectedCertificate.AutoSize = true;
-            this.lableSelectedCertificate.Location = new System.Drawing.Point(6, 80);
-            this.lableSelectedCertificate.Name = "lableSelectedCertificate";
-            this.lableSelectedCertificate.Size = new System.Drawing.Size(101, 13);
-            this.lableSelectedCertificate.TabIndex = 7;
-            this.lableSelectedCertificate.Text = "Selected certificate:";
+            this.exportReportTXTToolStripMenuItem.Name = "exportReportTXTToolStripMenuItem";
+            this.exportReportTXTToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.exportReportTXTToolStripMenuItem.Text = "Export Report (TXT)";
+            this.exportReportTXTToolStripMenuItem.Click += new System.EventHandler(this.exportReportTXTToolStripMenuItem_Click);
+            // 
+            // exportReportHTMLToolStripMenuItem
+            // 
+            this.exportReportHTMLToolStripMenuItem.Name = "exportReportHTMLToolStripMenuItem";
+            this.exportReportHTMLToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.exportReportHTMLToolStripMenuItem.Text = "Export Report (HTML)";
+            this.exportReportHTMLToolStripMenuItem.Click += new System.EventHandler(this.exportReportHTMLToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -1001,6 +1037,10 @@
         private System.Windows.Forms.Label labelFilterCerts;
         private System.Windows.Forms.TextBox textBoxCertificateSearch;
         private System.Windows.Forms.Label lableSelectedCertificate;
+        private System.Windows.Forms.ToolStripMenuItem exportSigningReportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportReportCSVToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportReportTXTToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportReportHTMLToolStripMenuItem;
     }
 }
 
