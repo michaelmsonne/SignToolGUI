@@ -17,6 +17,7 @@
 - Improved certificate information display with better visual feedback
 - Added intuitive forms for managing timestamp server configurations
 - Context-aware UI labels that change based on signing type (Trusted Signing vs. traditional methods)
+- Added search functionality for certificates (Windows Certificate Store) for name, thumbprint and issuer in the list
 
 ### 🔒 Security Improvements
 - **Major Security Enhancement**: Completely redesigned password encryption system
@@ -54,6 +55,7 @@
 - Improved machine-specific key generation using multiple entropy sources
 - Added comprehensive error handling and logging for security operations
 - Backward compatibility maintained through automatic password migration system
+- Changed configuration file name to `Config.ini` for clarity (previously `Data.ini`)
 
 ---
 

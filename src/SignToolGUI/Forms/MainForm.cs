@@ -2764,5 +2764,31 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                 radioButtonTrustedSigning.Checked = false;
             }
         }
+
+        private void textBoxCertificateSearch_TextChanged(object sender, EventArgs e)
+        {
+            // Filter the certificates in the combo box based on the search text
+            string searchText = textBoxCertificateSearch.Text.Trim().ToLower();
+
+            // If the search text is empty, show all certificates
+            var filteredCerts = _signingCerts.Cast<X509Certificate2>()
+                .Where(cert =>
+                    cert.GetNameInfo(X509NameType.SimpleName, false)?.ToLower().Contains(searchText) == true ||
+                    cert.GetNameInfo(X509NameType.SimpleName, true)?.ToLower().Contains(searchText) == true ||
+                    cert.Thumbprint?.ToLower().Contains(searchText) == true)
+                .ToArray();
+
+            // Clear the combo box and repopulate it with filtered certificates
+            comboBoxCertificatesInStore.Items.Clear();
+            comboBoxCertificatesInStore.Items.Add("<No certificate selected>");
+
+            // Add filtered certificates to the combo box
+            foreach (var cert in filteredCerts)
+            {
+                // Add the certificate's simple name to the combo box
+                comboBoxCertificatesInStore.Items.Add(cert.GetNameInfo(X509NameType.SimpleName, false));
+            }
+            comboBoxCertificatesInStore.SelectedIndex = filteredCerts.Length > 0 ? 1 : 0;
+        }
     }
 }

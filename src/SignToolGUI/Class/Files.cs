@@ -9,7 +9,7 @@ namespace SignToolGUI.Class
             get
             {
                 // Path to the configuration file
-                var configIniPathvar = ProgramDataFilePath + @"\Data.ini";
+                var configIniPathvar = ProgramDataFilePath + @"\Config.ini";
                 return configIniPathvar;
             }
         }
