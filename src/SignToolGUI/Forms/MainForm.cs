@@ -1891,12 +1891,25 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             var sfd = new SaveFileDialog { Filter = "CSV Files|*.csv", Title = "Export Signing Report (CSV)" };
             if (sfd.ShowDialog() != DialogResult.OK) return;
 
-            var lines = new List<string> { "File Name,Status,Error,Certificate Info,Timestamp" };
-            foreach (var entry in _signingReportEntries)
-            {
-                lines.Add($"\"{entry.FileName}\",\"{entry.Status}\",\"{entry.Error}\",\"{entry.CertificateInfo.Replace("\"", "\"\"")}\",\"{entry.Timestamp}\"");
-            }
-            File.WriteAllLines(sfd.FileName, lines);
+            string certType = radioButtonWindowsCertificateStore.Checked ? "Windows Certificate Store"
+                : radioButtonPFXCertificate.Checked ? "PFX Certificate"
+                : radioButtonTrustedSigning.Checked ? "Trusted Signing"
+                : "Unknown";
+
+            string certDetails = "";
+            var certEntry = _signingReportEntries.FirstOrDefault(e => !string.IsNullOrWhiteSpace(e.CertificateInfo) && e.CertificateInfo != "N/A");
+            if (certEntry != null)
+                certDetails = certEntry.CertificateInfo;
+            else if (_signingReportEntries.Count > 0)
+                certDetails = _signingReportEntries[0].CertificateInfo;
+
+            SigningReportExporter.ExportToCsv(
+                _signingReportEntries,
+                certType,
+                certDetails,
+                Application.ProductVersion,
+                sfd.FileName);
+
             Message("Signing report exported to CSV: " + sfd.FileName, EventType.Information, 20010);
         }
 
@@ -1905,20 +1918,25 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             var sfd = new SaveFileDialog { Filter = "Text Files|*.txt", Title = "Export Signing Report (TXT)" };
             if (sfd.ShowDialog() != DialogResult.OK) return;
 
-            var sb = new System.Text.StringBuilder();
-            sb.AppendLine("=== Signing Report ===");
-            foreach (var entry in _signingReportEntries)
-            {
-                sb.AppendLine($"File: {entry.FileName}");
-                sb.AppendLine($"Status: {entry.Status}");
-                if (!string.IsNullOrEmpty(entry.Error))
-                    sb.AppendLine($"Error: {entry.Error}");
-                sb.AppendLine("Certificate Info:");
-                sb.AppendLine(entry.CertificateInfo);
-                sb.AppendLine($"Timestamp: {entry.Timestamp}");
-                sb.AppendLine(new string('-', 60));
-            }
-            File.WriteAllText(sfd.FileName, sb.ToString());
+            string certType = radioButtonWindowsCertificateStore.Checked ? "Windows Certificate Store"
+                : radioButtonPFXCertificate.Checked ? "PFX Certificate"
+                : radioButtonTrustedSigning.Checked ? "Trusted Signing"
+                : "Unknown";
+
+            string certDetails = "";
+            var certEntry = _signingReportEntries.FirstOrDefault(e => !string.IsNullOrWhiteSpace(e.CertificateInfo) && e.CertificateInfo != "N/A");
+            if (certEntry != null)
+                certDetails = certEntry.CertificateInfo;
+            else if (_signingReportEntries.Count > 0)
+                certDetails = _signingReportEntries[0].CertificateInfo;
+
+            SigningReportExporter.ExportToTxt(
+                _signingReportEntries,
+                certType,
+                certDetails,
+                Application.ProductVersion,
+                sfd.FileName);
+
             Message("Signing report exported to TXT: " + sfd.FileName, EventType.Information, 20011);
         }
 
@@ -1927,51 +1945,25 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             var sfd = new SaveFileDialog { Filter = "HTML Files|*.html", Title = "Export Signing Report (HTML)" };
             if (sfd.ShowDialog() != DialogResult.OK) return;
 
-            var sb = new System.Text.StringBuilder();
-            sb.AppendLine("<!DOCTYPE html>");
-            sb.AppendLine("<html><head><meta charset='utf-8'><title>Signing Report</title>");
-            sb.AppendLine(@"<style>
-        body { font-family: Segoe UI, Arial, sans-serif; background: #f8f8f8; }
-        h1 { color: #2d5c8a; }
-        h2 { color: #444; font-size: 1.1em; margin-bottom: 0.5em; }
-        ul.job-summary { list-style: none; padding: 0; margin: 0 0 1em 0; }
-        ul.job-summary li { margin-bottom: 4px; }
-        table { border-collapse: collapse; width: 100%; background: #fff; }
-        th, td { border: 1px solid #ccc; padding: 8px; }
-        th { background: #e3eaf2; }
-        tr.success { background: #eafbe7; }
-        tr.error { background: #ffeaea; }
-        tr.pending { background: #fffbe7; }
-        pre { font-family: Consolas, monospace; font-size: 12px; white-space: pre-wrap; }
-    </style></head><body>");
-            sb.AppendLine("<h1>Signing Report</h1>");
             string certType = radioButtonWindowsCertificateStore.Checked ? "Windows Certificate Store"
                 : radioButtonPFXCertificate.Checked ? "PFX Certificate"
                 : radioButtonTrustedSigning.Checked ? "Trusted Signing"
                 : "Unknown";
-            sb.AppendLine("<h2>Job Summary</h2>");
-            sb.AppendLine("<ul class='job-summary'>");
-            sb.AppendLine($"<li><strong>Date:</strong> {DateTime.Now:yyyy-MM-dd HH:mm:ss}</li>");
-            sb.AppendLine($"<li><strong>Certificate Type:</strong> {System.Net.WebUtility.HtmlEncode(certType)}</li>");
-            sb.AppendLine($"<li><strong>Files Signed:</strong> {_signingReportEntries.Count}</li>");
-            sb.AppendLine("</ul>");
 
-            sb.AppendLine("<table>");
-            sb.AppendLine("<tr><th>File Name</th><th>Status</th><th>Error</th><th>Certificate Info</th><th>Timestamp</th></tr>");
-            foreach (var entry in _signingReportEntries)
-            {
-                var rowClass = entry.Status == "Success" ? "success" : entry.Status == "Error" ? "error" : "pending";
-                sb.AppendLine($"<tr class='{rowClass}'>");
-                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(entry.FileName)}</td>");
-                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(entry.Status)}</td>");
-                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(entry.Error)}</td>");
-                sb.AppendLine($"<td><pre>{System.Net.WebUtility.HtmlEncode(entry.CertificateInfo)}</pre></td>");
-                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(entry.Timestamp)}</td>");
-                sb.AppendLine("</tr>");
-            }
-            sb.AppendLine("</table>");
-            sb.AppendLine("</body></html>");
-            File.WriteAllText(sfd.FileName, sb.ToString());
+            string certDetails = "";
+            var certEntry = _signingReportEntries.FirstOrDefault(e => !string.IsNullOrWhiteSpace(e.CertificateInfo) && e.CertificateInfo != "N/A");
+            if (certEntry != null)
+                certDetails = certEntry.CertificateInfo;
+            else if (_signingReportEntries.Count > 0)
+                certDetails = _signingReportEntries[0].CertificateInfo;
+
+            SigningReportExporter.ExportToHtml(
+                _signingReportEntries,
+                certType,
+                certDetails,
+                Application.ProductVersion,
+                sfd.FileName);
+
             Message("Signing report exported to HTML: " + sfd.FileName, EventType.Information, 20012);
         }
 

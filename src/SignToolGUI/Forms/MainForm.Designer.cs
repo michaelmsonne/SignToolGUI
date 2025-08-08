@@ -65,6 +65,10 @@
             this.openLogFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportSigningReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportReportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportReportTXTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportReportHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelCertificateInformation = new System.Windows.Forms.Label();
             this.comboBoxCertificateStore = new System.Windows.Forms.ComboBox();
             this.labelCertificateStore = new System.Windows.Forms.Label();
@@ -108,10 +112,6 @@
             this.labelSignedBuildState = new System.Windows.Forms.Label();
             this.linkLabelOpenTrustedSigningPortal = new System.Windows.Forms.LinkLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.exportSigningReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportReportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportReportTXTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportReportHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxFiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxCertificateInformation.SuspendLayout();
@@ -337,10 +337,10 @@
             this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.manageTimestampServersToolStripMenuItem,
             this.certificateMonitoringToolStripMenuItem,
+            this.exportSigningReportToolStripMenuItem,
             this.logsToolStripMenuItem,
             this.changelogToolStripMenuItem,
-            this.aboutToolStripMenuItem,
-            this.exportSigningReportToolStripMenuItem});
+            this.aboutToolStripMenuItem});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.menuToolStripMenuItem.Text = "Menu";
@@ -393,7 +393,7 @@
             // 
             this.openTodaysLogfileToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.openTodaysLogfileToolStripMenuItem.Name = "openTodaysLogfileToolStripMenuItem";
-            this.openTodaysLogfileToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.openTodaysLogfileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openTodaysLogfileToolStripMenuItem.Text = "Open todays logfile";
             this.openTodaysLogfileToolStripMenuItem.Click += new System.EventHandler(this.OpenTodaysLogfileToolStripMenuItem_Click);
             // 
@@ -401,7 +401,7 @@
             // 
             this.openLogFolderToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.openLogFolderToolStripMenuItem.Name = "openLogFolderToolStripMenuItem";
-            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openLogFolderToolStripMenuItem.Text = "Open log folder";
             this.openLogFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenLogfolderToolStripMenuItem_Click);
             // 
@@ -420,6 +420,37 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // exportSigningReportToolStripMenuItem
+            // 
+            this.exportSigningReportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportReportCSVToolStripMenuItem,
+            this.exportReportTXTToolStripMenuItem,
+            this.exportReportHTMLToolStripMenuItem});
+            this.exportSigningReportToolStripMenuItem.Name = "exportSigningReportToolStripMenuItem";
+            this.exportSigningReportToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.exportSigningReportToolStripMenuItem.Text = "Export signing report";
+            // 
+            // exportReportCSVToolStripMenuItem
+            // 
+            this.exportReportCSVToolStripMenuItem.Name = "exportReportCSVToolStripMenuItem";
+            this.exportReportCSVToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.exportReportCSVToolStripMenuItem.Text = "Export Report (CSV)";
+            this.exportReportCSVToolStripMenuItem.Click += new System.EventHandler(this.exportReportCSVToolStripMenuItem_Click);
+            // 
+            // exportReportTXTToolStripMenuItem
+            // 
+            this.exportReportTXTToolStripMenuItem.Name = "exportReportTXTToolStripMenuItem";
+            this.exportReportTXTToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.exportReportTXTToolStripMenuItem.Text = "Export Report (TXT)";
+            this.exportReportTXTToolStripMenuItem.Click += new System.EventHandler(this.exportReportTXTToolStripMenuItem_Click);
+            // 
+            // exportReportHTMLToolStripMenuItem
+            // 
+            this.exportReportHTMLToolStripMenuItem.Name = "exportReportHTMLToolStripMenuItem";
+            this.exportReportHTMLToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.exportReportHTMLToolStripMenuItem.Text = "Export Report (HTML)";
+            this.exportReportHTMLToolStripMenuItem.Click += new System.EventHandler(this.exportReportHTMLToolStripMenuItem_Click);
             // 
             // labelCertificateInformation
             // 
@@ -875,37 +906,6 @@
             this.toolTip.SetToolTip(this.linkLabelOpenTrustedSigningPortal, "Click here to open the Azure Portal, where you can see the diffrent Trusted Signi" +
         "ng accounts in your tenant you have.");
             this.linkLabelOpenTrustedSigningPortal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelOpenTrustedSigningPortal_LinkClicked);
-            // 
-            // exportSigningReportToolStripMenuItem
-            // 
-            this.exportSigningReportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exportReportCSVToolStripMenuItem,
-            this.exportReportTXTToolStripMenuItem,
-            this.exportReportHTMLToolStripMenuItem});
-            this.exportSigningReportToolStripMenuItem.Name = "exportSigningReportToolStripMenuItem";
-            this.exportSigningReportToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
-            this.exportSigningReportToolStripMenuItem.Text = "Export signing report";
-            // 
-            // exportReportCSVToolStripMenuItem
-            // 
-            this.exportReportCSVToolStripMenuItem.Name = "exportReportCSVToolStripMenuItem";
-            this.exportReportCSVToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.exportReportCSVToolStripMenuItem.Text = "Export Report (CSV)";
-            this.exportReportCSVToolStripMenuItem.Click += new System.EventHandler(this.exportReportCSVToolStripMenuItem_Click);
-            // 
-            // exportReportTXTToolStripMenuItem
-            // 
-            this.exportReportTXTToolStripMenuItem.Name = "exportReportTXTToolStripMenuItem";
-            this.exportReportTXTToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.exportReportTXTToolStripMenuItem.Text = "Export Report (TXT)";
-            this.exportReportTXTToolStripMenuItem.Click += new System.EventHandler(this.exportReportTXTToolStripMenuItem_Click);
-            // 
-            // exportReportHTMLToolStripMenuItem
-            // 
-            this.exportReportHTMLToolStripMenuItem.Name = "exportReportHTMLToolStripMenuItem";
-            this.exportReportHTMLToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.exportReportHTMLToolStripMenuItem.Text = "Export Report (HTML)";
-            this.exportReportHTMLToolStripMenuItem.Click += new System.EventHandler(this.exportReportHTMLToolStripMenuItem_Click);
             // 
             // MainForm
             // 

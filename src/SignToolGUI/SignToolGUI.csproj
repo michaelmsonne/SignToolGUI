@@ -93,6 +93,7 @@
     <Compile Include="Class\SecurePasswordManager.cs" />
     <Compile Include="Class\SignerBase.cs" />
     <Compile Include="Class\SignerTrustedSigning.cs" />
+    <Compile Include="Class\SigningReportExporter.cs" />
     <Compile Include="Class\SignTool.cs" />
     <Compile Include="Class\TimestampServer.cs" />
     <Compile Include="Forms\AboutForm.cs">
