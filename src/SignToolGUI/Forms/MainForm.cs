@@ -66,6 +66,8 @@ namespace SignToolGUI.Forms
             public string Error { get; set; }
             public string CertificateInfo { get; set; }
             public string Timestamp { get; set; }
+
+            public string SignatureValid { get; set; }
         }
 
         private List<SigningReportEntry> _signingReportEntries = new List<SigningReportEntry>();
@@ -1493,18 +1495,17 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             }
         }
 
+        /// <summary>
+        /// Signs files using a certificate from the Windows Certificate Store.
+        /// </summary>
         private async Task SignWithWindowsCertificateStoreAsync()
         {
-            // Log signing process started message for Windows Certificate Store
+            // Inform that the signing process has started.
             Message("Signing process started for Windows Certificate Store...", EventType.Information, 1047);
-
-            // Disables the form's controls while signing the files
             ToggleDisabledForm(true);
-
-            // Clear the output textbox
             textBoxOutput.Clear();
 
-            // Create a new instance of the SignerThumbprint class with TimestampManager
+            // Create the signer object using the selected certificate thumbprint.
             SignerThumbprint signer = new SignerThumbprint(textBoxSignToolPath.Text, ThumbprintFromCertToSign, _timestampManager)
             {
                 Verbose = menuItemSignVerbose.Checked,
@@ -1512,65 +1513,47 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                 Timestamp = checkBoxTimestamp.Checked
             };
 
-            // Add an event handler to the OnSignToolOutput event
+            // Subscribe to the signer output event to display output messages.
             signer.OnSignToolOutput += message =>
             {
-                // Check if the message is null or empty and return if it is
                 if (string.IsNullOrEmpty(message)) return;
-
-                // Check if the ShowOutput checkbox is unchecked and if the message contains any of the specified strings
-                if (checkBoxShowOutput.Checked == false)
+                // Filter out non-essential messages if the output checkbox is not checked.
+                if (!checkBoxShowOutput.Checked && new[]
                 {
-                    if (new[]
-                    {
-                "Number of", "Done Adding Additional Store", "The following certificate was selected:",
-                "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
-                "The following additional certificates will be attached:",
-                "The following certificates were considered:", "After EKU filter", "After Private Key filter,",
-                "The following additional certificates will be attached:", "After expiry filter",
-                "Attempt", "Using timestamp server", "Timestamp successful", "Timestamp failed"
-            }.Any(message.Contains))
-                    {
-                        // Skip filtered messages when ShowOutput is false
-                    }
-                    else
-                    {
-                        // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
-                        if (textBoxOutput.InvokeRequired) // safe cross-thread call
-                        {
-                            textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
-                                message + Environment.NewLine);
-                        }
-                        else
-                        {
-                            // Append the message to the output textbox
-                            textBoxOutput.AppendText(message + Environment.NewLine);
-                        }
-                    }
+            "Number of", "Done Adding Additional Store", "The following certificate was selected:",
+            "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
+            "The following additional certificates will be attached:",
+            "The following certificates were considered:", "After EKU filter", "After Private Key filter,",
+            "The following additional certificates will be attached:", "After expiry filter",
+            "Attempt", "Using timestamp server", "Timestamp successful", "Timestamp failed"
+        }.Any(message.Contains))
+                {
+                    // Skip filtered messages
                 }
                 else
                 {
-                    // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
-                    if (textBoxOutput.InvokeRequired) // safe cross-thread call
-                    {
-                        textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
-                            message + Environment.NewLine);
-                    }
+                    // Append the message to the output text box (thread-safe).
+                    if (textBoxOutput.InvokeRequired)
+                        textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText), message + Environment.NewLine);
                     else
-                    {
-                        // Append the message to the output textbox
                         textBoxOutput.AppendText(message + Environment.NewLine);
-                    }
                 }
             };
 
+            // Clear previous signing report entries.
             _signingReportEntries.Clear();
 
+            // Iterate over each checked file to sign.
             foreach (var file in checkedListBoxFiles.CheckedItems)
             {
+                // Clean up file path by removing validation tags.
+                string filePath = System.Text.RegularExpressions.Regex.Replace(
+                    file.ToString(), @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                // Create a signing report entry for this file.
                 var entry = new SigningReportEntry
                 {
-                    FileName = file.ToString(),
+                    FileName = filePath,
                     Status = "Pending",
                     Error = "",
                     CertificateInfo = comboBoxCertificatesInStore.SelectedIndex > 0
@@ -1580,47 +1563,48 @@ Please select one or more binaries into the list above to proceed!", @"No files 
 
                 try
                 {
-                    await signer.SignAsync(file.ToString());
+                    // Attempt to sign the file asynchronously.
+                    await signer.SignAsync(filePath);
                     entry.Status = "Success";
-                    entry.Timestamp = GetSigningTimestampFromFile(file.ToString());
+                    entry.Timestamp = GetSigningTimestampFromFile(filePath);
                 }
                 catch (Exception ex)
                 {
+                    // Handle signing errors.
                     entry.Status = "Error";
                     entry.Error = ex.Message;
                     entry.Timestamp = "N/A";
                 }
 
+                // Add the entry to the report.
                 _signingReportEntries.Add(entry);
 
-                var filename = Path.GetFileName(file.ToString());
-
-                // Log the signing process started message for file
+                // Update UI and progress bar.
+                var filename = Path.GetFileName(filePath);
                 Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
                 textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
-                textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] '" + file + "'..." + Environment.NewLine);
+                textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] '" + filePath + "'..." + Environment.NewLine);
                 _jobSigned += 1;
                 toolStripProgressBar.Step = 1;
                 toolStripProgressBar.PerformStep();
                 Application.DoEvents();
             }
 
-            // Enable the form's controls after signing the files again and show the output in the textbox
+            // Restore form state and inform completion.
             ToggleDisabledForm(false);
-
-            // Log the signing process completed message
             Message("Signing process completed for Windows Certificate Store", EventType.Information, 1048);
         }
 
+        /// <summary>
+        /// Signs files using a PFX certificate file.
+        /// </summary>
         private async Task SignWithPfxCertificateAsync()
         {
-            // Log signing process started message for PFX Certificate
             Message("Signing process started for PFX Certificate...", EventType.Information, 1048);
-
             ToggleDisabledForm(true);
             textBoxOutput.Clear();
 
-            // Create a new instance of the SignerPfx class with TimestampManager
+            // Create the signer object using PFX file and password.
             SignerPfx signer = new SignerPfx(textBoxSignToolPath.Text, textBoxPFXFile.Text, textBoxPFXPassword.Text, _timestampManager)
             {
                 Verbose = menuItemSignVerbose.Checked,
@@ -1628,17 +1612,13 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                 Timestamp = checkBoxTimestamp.Checked
             };
 
-            // Add an event handler to the OnSignToolOutput event (same as above)
+            // Subscribe to the signer output event to display output messages.
             signer.OnSignToolOutput += message =>
             {
-                // Check if the message is null or empty and return if it is
                 if (string.IsNullOrEmpty(message)) return;
-
-                // Check if the ShowOutput checkbox is unchecked and if the message contains any of the specified strings
-                if (checkBoxShowOutput.Checked == false)
+                // Filter out non-essential messages if the output checkbox is not checked.
+                if (!checkBoxShowOutput.Checked && new[]
                 {
-                    if (new[]
-                    {
             "Number of", "Done Adding Additional Store", "The following certificate was selected:",
             "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
             "The following additional certificates will be attached:",
@@ -1646,49 +1626,36 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             "The following additional certificates will be attached:", "After expiry filter",
             "Attempt", "Using timestamp server", "Timestamp successful", "Timestamp failed"
         }.Any(message.Contains))
-                    {
-                        // Skip filtered messages when ShowOutput is false
-                    }
-                    else
-                    {
-                        // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
-                        if (textBoxOutput.InvokeRequired) // safe cross-thread call
-                        {
-                            textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
-                                message + Environment.NewLine);
-                        }
-                        else
-                        {
-                            // Append the message to the output textbox
-                            textBoxOutput.AppendText(message + Environment.NewLine);
-                        }
-                    }
+                {
+                    // Skip filtered messages
                 }
                 else
                 {
-                    // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
-                    if (textBoxOutput.InvokeRequired) // safe cross-thread call
-                    {
-                        textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
-                            message + Environment.NewLine);
-                    }
+                    // Append the message to the output text box (thread-safe).
+                    if (textBoxOutput.InvokeRequired)
+                        textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText), message + Environment.NewLine);
                     else
-                    {
-                        // Append the message to the output textbox
                         textBoxOutput.AppendText(message + Environment.NewLine);
-                    }
                 }
             };
 
+            // Clear previous signing report entries.
             _signingReportEntries.Clear();
 
+            // Get certificate info from the PFX file.
             var certInfo = GetCertificateInfo(GetCertificateFromPfx());
 
+            // Iterate over each checked file to sign.
             foreach (var file in checkedListBoxFiles.CheckedItems)
-            {          
+            {
+                // Clean up file path by removing validation tags.
+                string filePath = System.Text.RegularExpressions.Regex.Replace(
+                    file.ToString(), @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                // Create a signing report entry for this file.
                 var entry = new SigningReportEntry
                 {
-                    FileName = file.ToString(),
+                    FileName = filePath,
                     Status = "Pending",
                     Error = "",
                     CertificateInfo = certInfo
@@ -1696,49 +1663,48 @@ Please select one or more binaries into the list above to proceed!", @"No files 
 
                 try
                 {
-                    await signer.SignAsync(file.ToString());
+                    // Attempt to sign the file asynchronously.
+                    await signer.SignAsync(filePath);
                     entry.Status = "Success";
-                    entry.Timestamp = GetSigningTimestampFromFile(file.ToString());
+                    entry.Timestamp = GetSigningTimestampFromFile(filePath);
                 }
                 catch (Exception ex)
                 {
+                    // Handle signing errors.
                     entry.Status = "Error";
                     entry.Error = ex.Message;
                     entry.Timestamp = "N/A";
                 }
 
+                // Add the entry to the report.
                 _signingReportEntries.Add(entry);
 
-                // Existing UI update code...
-                var filename = Path.GetFileName(file.ToString());
+                // Update UI and progress bar.
+                var filename = Path.GetFileName(filePath);
                 textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
-                // Log the signing process started message for file
                 Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
-
-                textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] " + file + "..." + Environment.NewLine);
+                textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] " + filePath + "..." + Environment.NewLine);
                 _jobSigned += 1;
                 toolStripProgressBar.Step = 1;
                 toolStripProgressBar.PerformStep();
                 Application.DoEvents();
             }
 
-            // Enable the form's controls after signing the files again and show the output in the textbox
+            // Restore form state and inform completion.
             ToggleDisabledForm(false);
-
-            // Log the signing process completed message
             Message("Signing process completed for PFX Certificate", EventType.Information, 1049);
         }
 
+        /// <summary>
+        /// Signs files using Azure Trusted Signing.
+        /// </summary>
         private async Task SignWithTrustedSigningAsync()
         {
-            // Log signing process started message for Trusted Signing Certificate
             Message("Signing process started for Trusted Signing Certificate...", EventType.Information, 1049);
 
-            // Get the values from the form's controls for the SignerTrustedSigning class
+            // Gather required settings for Trusted Signing.
             var signToolExe = textBoxSignToolPath.Text;
-            var timeStampServer = "http://timestamp.acs.microsoft.com"; // Fixed timestamp server for Trusted Signing
-
-            // Get the selected endpoint from the ComboBox
+            var timeStampServer = "http://timestamp.acs.microsoft.com";
             string endpointServer = "";
             if (comboBoxTimestampProviders.SelectedItem is TimestampProvider selectedProvider)
             {
@@ -1746,7 +1712,7 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             }
             else
             {
-                // Fallback to first enabled server if nothing is selected
+                // Use the first enabled Trusted Signing endpoint if available.
                 var enabledServers = _timestampManager.GetEnabledServers();
                 if (enabledServers.Count > 0)
                 {
@@ -1764,16 +1730,12 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             var certificateProfileName = textBoxCertificateProfileName.Text;
             var correlationIdData = textBoxCorrelationId.Text;
 
-            // Log which endpoint is being used
+            // Inform about selected endpoint.
             Message($"Using Trusted Signing endpoint: {endpointServer}", EventType.Information, 3025);
-
-            // Disable the form's controls while signing the files
             ToggleDisabledForm(true);
-
-            // Clear the output textbox
             textBoxOutput.Clear();
 
-            // Create a new instance of the SignerTrustedSigning class with TimestampManager
+            // Create the Trusted Signing signer object.
             SignerTrustedSigning signer = new SignerTrustedSigning(signToolExe, timeStampServer, dlibPath, codeSigningAccountName, certificateProfileName, correlationIdData, endpointServer, _timestampManager)
             {
                 Verbose = menuItemSignVerbose.Checked,
@@ -1781,70 +1743,52 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                 Timestamp = checkBoxTimestamp.Checked
             };
 
-            // Add an event handler to the OnSignToolOutput event
+            // Subscribe to the signer output event to display output messages.
             signer.OnSignToolOutput += message =>
             {
-                // Check if the message is null or empty and return if it is
                 if (string.IsNullOrEmpty(message)) return;
-
-                // Check if the ShowOutput checkbox is unchecked and if the message contains any of the specified strings
-                if (checkBoxShowOutput.Checked == false)
+                // Filter out non-essential messages if the output checkbox is not checked.
+                if (!checkBoxShowOutput.Checked && new[]
                 {
-                    if (new[]
-                    {
-                "Number of", "Done Adding Additional Store", "The following certificate was selected:",
-                "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
-                "The following additional certificates will be attached:",
-                "The following certificates were considered:", "After EKU filter", "After Private Key filter,",
-                "The following additional certificates will be attached:", "After expiry filter","Trusted Signing",
-                "Submitting digest for signing","OperationId","Version: 1.0.60","ExcludeCredentials","CertificateProfileName",
-                "CertificateProfileName","CodeSigningAccountName","Endpoint","Metadata","}","{",
-                "Attempt", "Using timestamp server", "Timestamp successful", "Timestamp failed"
-            }.Any(message.Contains))
-                    {
-                        // Skip filtered messages when ShowOutput is false
-                    }
-                    else
-                    {
-                        // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
-                        if (textBoxOutput.InvokeRequired) // safe cross-thread call
-                        {
-                            textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
-                                message + Environment.NewLine);
-                        }
-                        else
-                        {
-                            // Append the message to the output textbox
-                            textBoxOutput.AppendText(message + Environment.NewLine);
-                        }
-                    }
+            "Number of", "Done Adding Additional Store", "The following certificate was selected:",
+            "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
+            "The following additional certificates will be attached:",
+            "The following certificates were considered:", "After EKU filter", "After Private Key filter,",
+            "The following additional certificates will be attached:", "After expiry filter","Trusted Signing",
+            "Submitting digest for signing","OperationId","Version: 1.0.60","ExcludeCredentials","CertificateProfileName",
+            "CertificateProfileName","CodeSigningAccountName","Endpoint","Metadata","}","{",
+            "Attempt", "Using timestamp server", "Timestamp successful", "Timestamp failed"
+        }.Any(message.Contains))
+                {
+                    // Skip filtered messages
                 }
                 else
                 {
-                    // Check if the output textbox's InvokeRequired property is true and if it is, append the message to the textbox
-                    if (textBoxOutput.InvokeRequired) // safe cross-thread call
-                    {
-                        textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText),
-                            message + Environment.NewLine);
-                    }
+                    // Append the message to the output text box (thread-safe).
+                    if (textBoxOutput.InvokeRequired)
+                        textBoxOutput.Invoke(new Action<string>(textBoxOutput.AppendText), message + Environment.NewLine);
                     else
-                    {
-                        // Append the message to the output textbox
                         textBoxOutput.AppendText(message + Environment.NewLine);
-                    }
                 }
             };
 
+            // Clear previous signing report entries.
             _signingReportEntries.Clear();
 
+            // Set certificate info to Trusted Signing.
             var certInfo = "Trusted Signing (see Azure Portal for details)";
 
-            // Sign the files from the list selected
+            // Iterate over each checked file to sign.
             foreach (var file in checkedListBoxFiles.CheckedItems)
             {
+                // Clean up file path by removing validation tags.
+                string filePath = System.Text.RegularExpressions.Regex.Replace(
+                    file.ToString(), @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                // Create a signing report entry for this file.
                 var entry = new SigningReportEntry
                 {
-                    FileName = file.ToString(),
+                    FileName = filePath,
                     Status = "Pending",
                     Error = "",
                     CertificateInfo = certInfo
@@ -1852,37 +1796,35 @@ Please select one or more binaries into the list above to proceed!", @"No files 
 
                 try
                 {
-                    await signer.SignAsync(file.ToString());
+                    // Attempt to sign the file asynchronously.
+                    await signer.SignAsync(filePath);
                     entry.Status = "Success";
-                    entry.Timestamp = GetSigningTimestampFromFile(file.ToString());
+                    entry.Timestamp = GetSigningTimestampFromFile(filePath);
                 }
                 catch (Exception ex)
                 {
+                    // Handle signing errors.
                     entry.Status = "Error";
                     entry.Error = ex.Message;
                     entry.Timestamp = "N/A";
                 }
 
+                // Add the entry to the report.
                 _signingReportEntries.Add(entry);
 
-                // Existing UI update code...
-                var filename = Path.GetFileName(file.ToString());
+                // Update UI and progress bar.
+                var filename = Path.GetFileName(filePath);
                 textBoxOutput.AppendText($"Signing file: '{filename}'...{Environment.NewLine}");
-
-                // Log the signing process started message for file
                 Message("Signing process started for file: '" + filename + "'", EventType.Information, 1053);
-
-                textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] " + file + "..." + Environment.NewLine);
+                textBoxOutput.AppendText("[" + (_jobSigned + 1) + "] " + filePath + "..." + Environment.NewLine);
                 _jobSigned += 1;
                 toolStripProgressBar.Step = 1;
                 toolStripProgressBar.PerformStep();
                 Application.DoEvents();
             }
 
-            // Enable the form's controls after signing the files again and show the output in the textbox
+            // Restore form state and inform completion.
             ToggleDisabledForm(false);
-
-            // Log the signing process completed message
             Message("Signing process completed for Trusted Signing Certificate", EventType.Information, 1050);
         }
 
@@ -2987,6 +2929,36 @@ Use the ... button above and select the code signing certificate to use!", @"No 
         private void exportReportHTMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ExportSigningReportToHtml();
+        }
+
+        private void buttonVerifySignatures_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < checkedListBoxFiles.Items.Count; i++)
+            {
+                // Remove previous [Valid] or [Invalid] tags using a regex
+                string displayText = checkedListBoxFiles.Items[i].ToString();
+                string cleanedText = System.Text.RegularExpressions.Regex.Replace(
+                    displayText, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                // Find the corresponding SigningReportEntry by matching the cleaned file path
+                var entry = _signingReportEntries.FirstOrDefault(x => x.FileName == cleanedText);
+                if (entry != null)
+                {
+                    bool isValid = SigningReportExporter.VerifySignature(SignToolExe, entry.FileName);
+                    entry.SignatureValid = isValid ? "Valid" : "Invalid";
+
+                    // Update UI: append status to item text
+                    string statusText = isValid ? "[Valid]" : "[Invalid]";
+                    checkedListBoxFiles.Items[i] = $"{entry.FileName} {statusText}";
+                }
+                else
+                {
+                    // If not found, fallback to cleanedText for verification
+                    bool isValid = SigningReportExporter.VerifySignature(SignToolExe, cleanedText);
+                    string statusText = isValid ? "[Valid]" : "[Invalid]";
+                    checkedListBoxFiles.Items[i] = $"{cleanedText} {statusText}";
+                }
+            }
         }
     }
 }

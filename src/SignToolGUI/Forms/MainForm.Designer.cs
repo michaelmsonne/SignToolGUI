@@ -60,15 +60,15 @@
             this.certificateMonitoringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkCertificateExpiryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showCertificateStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportSigningReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportReportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportReportTXTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportReportHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openTodaysLogfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportSigningReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportReportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportReportTXTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportReportHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelCertificateInformation = new System.Windows.Forms.Label();
             this.comboBoxCertificateStore = new System.Windows.Forms.ComboBox();
             this.labelCertificateStore = new System.Windows.Forms.Label();
@@ -112,6 +112,7 @@
             this.labelSignedBuildState = new System.Windows.Forms.Label();
             this.linkLabelOpenTrustedSigningPortal = new System.Windows.Forms.LinkLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.buttonVerifySignatures = new System.Windows.Forms.Button();
             this.groupBoxFiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxCertificateInformation.SuspendLayout();
@@ -152,6 +153,7 @@
             // 
             this.groupBoxFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxFiles.Controls.Add(this.buttonVerifySignatures);
             this.groupBoxFiles.Controls.Add(this.ResetJob);
             this.groupBoxFiles.Controls.Add(this.checkBoxShowOutput);
             this.groupBoxFiles.Controls.Add(this.checkBoxAll);
@@ -288,6 +290,8 @@
             this.splitButtonSign.SplitMenu = this.contextMenuSignSwitches;
             this.splitButtonSign.TabIndex = 3;
             this.splitButtonSign.Text = "Sign...";
+            this.toolTip.SetToolTip(this.splitButtonSign, "Sign files selected - will also validate them on signing for Signing Report (opti" +
+        "onal)");
             this.splitButtonSign.UseVisualStyleBackColor = true;
             this.splitButtonSign.Click += new System.EventHandler(this.SplitButtonSign_Click);
             // 
@@ -379,48 +383,6 @@
             this.showCertificateStatusToolStripMenuItem.Text = "Show Certificate Status";
             this.showCertificateStatusToolStripMenuItem.Click += new System.EventHandler(this.showCertificateStatusToolStripMenuItem_Click);
             // 
-            // logsToolStripMenuItem
-            // 
-            this.logsToolStripMenuItem.BackColor = System.Drawing.Color.White;
-            this.logsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openTodaysLogfileToolStripMenuItem,
-            this.openLogFolderToolStripMenuItem});
-            this.logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            this.logsToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
-            this.logsToolStripMenuItem.Text = "Logs";
-            // 
-            // openTodaysLogfileToolStripMenuItem
-            // 
-            this.openTodaysLogfileToolStripMenuItem.BackColor = System.Drawing.Color.White;
-            this.openTodaysLogfileToolStripMenuItem.Name = "openTodaysLogfileToolStripMenuItem";
-            this.openTodaysLogfileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openTodaysLogfileToolStripMenuItem.Text = "Open todays logfile";
-            this.openTodaysLogfileToolStripMenuItem.Click += new System.EventHandler(this.OpenTodaysLogfileToolStripMenuItem_Click);
-            // 
-            // openLogFolderToolStripMenuItem
-            // 
-            this.openLogFolderToolStripMenuItem.BackColor = System.Drawing.Color.White;
-            this.openLogFolderToolStripMenuItem.Name = "openLogFolderToolStripMenuItem";
-            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openLogFolderToolStripMenuItem.Text = "Open log folder";
-            this.openLogFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenLogfolderToolStripMenuItem_Click);
-            // 
-            // changelogToolStripMenuItem
-            // 
-            this.changelogToolStripMenuItem.BackColor = System.Drawing.Color.White;
-            this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
-            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
-            this.changelogToolStripMenuItem.Text = "Changelog";
-            this.changelogToolStripMenuItem.Click += new System.EventHandler(this.changelogToolStripMenuItem_Click);
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.BackColor = System.Drawing.Color.White;
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
-            this.aboutToolStripMenuItem.Text = "&About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
             // exportSigningReportToolStripMenuItem
             // 
             this.exportSigningReportToolStripMenuItem.BackColor = System.Drawing.Color.White;
@@ -455,6 +417,48 @@
             this.exportReportHTMLToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.exportReportHTMLToolStripMenuItem.Text = "Export Report (HTML)";
             this.exportReportHTMLToolStripMenuItem.Click += new System.EventHandler(this.exportReportHTMLToolStripMenuItem_Click);
+            // 
+            // logsToolStripMenuItem
+            // 
+            this.logsToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.logsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openTodaysLogfileToolStripMenuItem,
+            this.openLogFolderToolStripMenuItem});
+            this.logsToolStripMenuItem.Name = "logsToolStripMenuItem";
+            this.logsToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.logsToolStripMenuItem.Text = "Logs";
+            // 
+            // openTodaysLogfileToolStripMenuItem
+            // 
+            this.openTodaysLogfileToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.openTodaysLogfileToolStripMenuItem.Name = "openTodaysLogfileToolStripMenuItem";
+            this.openTodaysLogfileToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.openTodaysLogfileToolStripMenuItem.Text = "Open todays logfile";
+            this.openTodaysLogfileToolStripMenuItem.Click += new System.EventHandler(this.OpenTodaysLogfileToolStripMenuItem_Click);
+            // 
+            // openLogFolderToolStripMenuItem
+            // 
+            this.openLogFolderToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.openLogFolderToolStripMenuItem.Name = "openLogFolderToolStripMenuItem";
+            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.openLogFolderToolStripMenuItem.Text = "Open log folder";
+            this.openLogFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenLogfolderToolStripMenuItem_Click);
+            // 
+            // changelogToolStripMenuItem
+            // 
+            this.changelogToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
+            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.changelogToolStripMenuItem.Text = "Changelog";
+            this.changelogToolStripMenuItem.Click += new System.EventHandler(this.changelogToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.aboutToolStripMenuItem.Text = "&About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // labelCertificateInformation
             // 
@@ -911,6 +915,18 @@
         "ng accounts in your tenant you have.");
             this.linkLabelOpenTrustedSigningPortal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelOpenTrustedSigningPortal_LinkClicked);
             // 
+            // buttonVerifySignatures
+            // 
+            this.buttonVerifySignatures.Location = new System.Drawing.Point(344, 190);
+            this.buttonVerifySignatures.Name = "buttonVerifySignatures";
+            this.buttonVerifySignatures.Size = new System.Drawing.Size(143, 23);
+            this.buttonVerifySignatures.TabIndex = 10;
+            this.buttonVerifySignatures.Text = "Verify Signatures for files";
+            this.toolTip.SetToolTip(this.buttonVerifySignatures, "For the files selected in \"File(s) to digital signing\" (the files itself) - not t" +
+        "he same data for the report");
+            this.buttonVerifySignatures.UseVisualStyleBackColor = true;
+            this.buttonVerifySignatures.Click += new System.EventHandler(this.buttonVerifySignatures_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1045,6 +1061,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportReportCSVToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportReportTXTToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportReportHTMLToolStripMenuItem;
+        private System.Windows.Forms.Button buttonVerifySignatures;
     }
 }
 
