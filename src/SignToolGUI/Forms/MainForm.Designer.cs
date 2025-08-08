@@ -423,6 +423,7 @@
             // 
             // exportSigningReportToolStripMenuItem
             // 
+            this.exportSigningReportToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.exportSigningReportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exportReportCSVToolStripMenuItem,
             this.exportReportTXTToolStripMenuItem,
@@ -433,6 +434,7 @@
             // 
             // exportReportCSVToolStripMenuItem
             // 
+            this.exportReportCSVToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.exportReportCSVToolStripMenuItem.Name = "exportReportCSVToolStripMenuItem";
             this.exportReportCSVToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.exportReportCSVToolStripMenuItem.Text = "Export Report (CSV)";
@@ -440,6 +442,7 @@
             // 
             // exportReportTXTToolStripMenuItem
             // 
+            this.exportReportTXTToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.exportReportTXTToolStripMenuItem.Name = "exportReportTXTToolStripMenuItem";
             this.exportReportTXTToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.exportReportTXTToolStripMenuItem.Text = "Export Report (TXT)";
@@ -447,6 +450,7 @@
             // 
             // exportReportHTMLToolStripMenuItem
             // 
+            this.exportReportHTMLToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.exportReportHTMLToolStripMenuItem.Name = "exportReportHTMLToolStripMenuItem";
             this.exportReportHTMLToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.exportReportHTMLToolStripMenuItem.Text = "Export Report (HTML)";
