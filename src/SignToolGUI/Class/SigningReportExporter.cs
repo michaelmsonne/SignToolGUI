@@ -6,24 +6,6 @@ namespace SignToolGUI.Class
 {
     public static class SigningReportExporter
     {
-        public static bool VerifySignature(string signToolExe, string filePath)
-        {
-            var psi = new System.Diagnostics.ProcessStartInfo
-            {
-                FileName = signToolExe,
-                Arguments = $"verify /pa \"{filePath}\"",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-            using (var process = System.Diagnostics.Process.Start(psi))
-            {
-                string output = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
-                return output.IndexOf("Successfully verified", StringComparison.OrdinalIgnoreCase) >= 0;
-            }
-        }
-
         public static void ExportToHtml(
             IList<Forms.MainForm.SigningReportEntry> entries,
             string certType,

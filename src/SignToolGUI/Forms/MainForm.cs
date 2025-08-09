@@ -2944,7 +2944,7 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                 var entry = _signingReportEntries.FirstOrDefault(x => x.FileName == cleanedText);
                 if (entry != null)
                 {
-                    bool isValid = SigningReportExporter.VerifySignature(SignToolExe, entry.FileName);
+                    bool isValid = SignerBase.VerifySignature(SignToolExe, entry.FileName);
                     entry.SignatureValid = isValid ? "Valid" : "Invalid";
 
                     // Update UI: append status to item text
@@ -2954,7 +2954,7 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                 else
                 {
                     // If not found, fallback to cleanedText for verification
-                    bool isValid = SigningReportExporter.VerifySignature(SignToolExe, cleanedText);
+                    bool isValid = SignerBase.VerifySignature(SignToolExe, cleanedText);
                     string statusText = isValid ? "[Valid]" : "[Invalid]";
                     checkedListBoxFiles.Items[i] = $"{cleanedText} {statusText}";
                 }

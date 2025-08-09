@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using static SignToolGUI.Class.FileLogger;
 
@@ -210,6 +209,24 @@ namespace SignToolGUI.Class
                     return "/v";
                 default:
                     return Debug ? "/debug" : string.Empty;
+            }
+        }
+
+        public static bool VerifySignature(string signToolExe, string filePath)
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = signToolExe,
+                Arguments = $"verify /pa \"{filePath}\"",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            using (var process = System.Diagnostics.Process.Start(psi))
+            {
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+                return output.IndexOf("Successfully verified", StringComparison.OrdinalIgnoreCase) >= 0;
             }
         }
     }
