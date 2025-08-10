@@ -2,7 +2,7 @@
 
 namespace SignToolGUI.Class
 {
-    class Files
+    class FileManager
     {
         public static string ConfigIniPath
         {

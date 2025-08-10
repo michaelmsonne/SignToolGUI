@@ -94,15 +94,16 @@
     <Compile Include="Class\SignerBase.cs" />
     <Compile Include="Class\SignerTrustedSigning.cs" />
     <Compile Include="Class\SigningReportExporter.cs" />
+    <Compile Include="Class\SigningValidator.cs" />
     <Compile Include="Class\SignTool.cs" />
-    <Compile Include="Class\TimestampServer.cs" />
+    <Compile Include="Class\TimestampServerManager.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Class\Files.cs" />
+    <Compile Include="Class\FileManager.cs" />
     <Compile Include="Class\IniFile.cs" />
     <Compile Include="Class\SignerThumbprint.cs" />
     <Compile Include="Forms\CertificateStatusForm.cs">
