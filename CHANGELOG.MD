@@ -57,6 +57,8 @@
 - Backward compatibility maintained through automatic password migration system
 - Changed configuration file name to `Config.ini` for clarity (previously `Data.ini`)
 
+Think I have it all now, but can be I forgot something - a lot of work went into this release, so please test it thoroughly and report any issues you find 😉
+
 ---
 
 *This release represents a major milestone in security and usability, significantly enhancing the reliability, user experience, and enterprise-readiness of the SignTool GUI. The new security architecture ensures that sensitive certificate passwords are protected with industry-standard encryption while maintaining seamless user experience through automatic migration and intelligent configuration management.*
