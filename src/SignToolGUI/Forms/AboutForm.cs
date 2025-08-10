@@ -119,7 +119,7 @@ namespace SignToolGUI.Forms
             labelVersion.Text = String.Format(@"Version {0}", AssemblyVersion);
             labelCopyright.Text = AssemblyCopyright + @" " + DateTime.Now.Year;
             labelCompanyName.Text = AssemblyCompany;
-            textBoxDescription.Text = AssemblyDescription;
+            //textBoxDescription.Text = AssemblyDescription;
 
             // Create an instance of the ToolTip class to provide tooltip information for the pictureBoxBuyMeACoffee control
             ToolTip toolTipForPictureBox = new ToolTip();
