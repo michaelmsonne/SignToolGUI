@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -72,6 +71,12 @@ namespace SignToolGUI.Forms
 
         private List<SigningReportEntry> _signingReportEntries = new List<SigningReportEntry>();
 
+        // Method to add a signing report entry
+        public X509Certificate2Collection GetCurrentCertificates()
+        {
+            return _signingCerts;
+        }
+
         private string GetSigningTimestampFromFile(string filePath)
         {
             var psi = new ProcessStartInfo
@@ -125,7 +130,6 @@ namespace SignToolGUI.Forms
             Message("Timestamp manager initialized", EventType.Information, 3000);
         }
 
-        // Add this method to save timestamp configuration
         private void SaveTimestampConfiguration()
         {
             try
@@ -145,7 +149,6 @@ namespace SignToolGUI.Forms
             }
         }
 
-        // Add this method to load timestamp configuration
         private void LoadTimestampConfiguration()
         {
             try
@@ -192,7 +195,6 @@ namespace SignToolGUI.Forms
             }
         }
 
-        // Add this method to initialize the timer
         private void InitializePfxValidationTimer()
         {
             _pfxValidationTimer = new System.Windows.Forms.Timer();
@@ -433,7 +435,6 @@ namespace SignToolGUI.Forms
             return !string.IsNullOrEmpty(SignToolExe) && File.Exists(SignToolExe);
         }
 
-        // Custom class to hold the display name and URL
         public class TimestampProvider
         {
             public string DisplayName { get; set; }
@@ -905,6 +906,182 @@ namespace SignToolGUI.Forms
                     txtTimestampProviderURL.Text = selectedProvider.Url;
                     txtTimestampProviderURL.ReadOnly = true;
                 }
+            }
+        }
+
+        private void InitializeCertificateMonitoring()
+        {
+            _certificateMonitor = new CertificateMonitor(90, 30); // Warning at 90 days, Critical at 30 days
+
+            // Log certificate monitoring initialization
+            Message("Certificate expiry monitoring initialized", EventType.Information, 2000);
+        }
+
+        private void SaveCertificateTypeConfiguration()
+        {
+            try
+            {
+                var iniFile = new IniFile(ConfigIniPath);
+
+                // Determine and save the certificate type
+                string certificateType = "WindowsCertificateStore"; // Default
+                if (radioButtonPFXCertificate.Checked)
+                {
+                    certificateType = "PFXCertificate";
+                }
+                else if (radioButtonTrustedSigning.Checked)
+                {
+                    certificateType = "TrustedSigning";
+                }
+
+                iniFile.WriteValue("Program", "CertificateType", certificateType);
+                Message($"Certificate type configuration saved: {certificateType}", EventType.Information, 3026);
+            }
+            catch (Exception ex)
+            {
+                Message($"Error saving certificate type configuration: {ex.Message}", EventType.Error, 3027);
+            }
+        }
+
+        private void LoadCertificateTypeConfiguration()
+        {
+            try
+            {
+                var iniFile = new IniFile(ConfigIniPath);
+                var certificateType = iniFile.GetString("Program", "CertificateType", "WindowsCertificateStore");
+
+                // Set the appropriate radio button based on saved configuration
+                switch (certificateType)
+                {
+                    case "PFXCertificate":
+                        radioButtonPFXCertificate.Checked = true;
+                        radioButtonWindowsCertificateStore.Checked = false;
+                        radioButtonTrustedSigning.Checked = false;
+                        break;
+                    case "TrustedSigning":
+                        radioButtonTrustedSigning.Checked = true;
+                        radioButtonWindowsCertificateStore.Checked = false;
+                        radioButtonPFXCertificate.Checked = false;
+                        break;
+                    case "WindowsCertificateStore":
+                    default:
+                        radioButtonWindowsCertificateStore.Checked = true;
+                        radioButtonPFXCertificate.Checked = false;
+                        radioButtonTrustedSigning.Checked = false;
+                        break;
+                }
+
+                Message($"Certificate type configuration loaded: {certificateType}", EventType.Information, 3028);
+            }
+            catch (Exception ex)
+            {
+                Message($"Error loading certificate type configuration: {ex.Message}", EventType.Error, 3029);
+                // Default to Windows Certificate Store if loading fails
+                radioButtonWindowsCertificateStore.Checked = true;
+                radioButtonPFXCertificate.Checked = false;
+                radioButtonTrustedSigning.Checked = false;
+            }
+        }
+
+        private void CheckAndShowCertificateExpiryAlerts()
+        {
+            try
+            {
+                if (_signingCerts == null || _signingCerts.Count == 0) return;
+
+                var alerts = _certificateMonitor.CheckCertificateExpiry(_signingCerts);
+
+                if (alerts.Any())
+                {
+                    // Show notification for critical and expired certificates
+                    var criticalAlerts = alerts.Where(a => a.Level == CertificateMonitor.AlertLevel.Expired ||
+                                                          a.Level == CertificateMonitor.AlertLevel.Critical).ToList();
+
+                    if (criticalAlerts.Any())
+                    {
+                        _certificateMonitor.ShowExpiryAlerts(criticalAlerts, this);
+                    }
+
+                    // Log summary of alerts
+                    var expiredCount = alerts.Count(a => a.Level == CertificateMonitor.AlertLevel.Expired);
+                    var criticalCount = alerts.Count(a => a.Level == CertificateMonitor.AlertLevel.Critical);
+                    var warningCount = alerts.Count(a => a.Level == CertificateMonitor.AlertLevel.Warning);
+
+                    Message($"Certificate expiry check completed: {expiredCount} expired, {criticalCount} critical, {warningCount} warning",
+                        EventType.Information, 2001);
+                }
+                else
+                {
+                    Message("Certificate expiry check completed: All certificates are valid and not expiring soon",
+                        EventType.Information, 2002);
+                }
+            }
+            catch (Exception ex)
+            {
+                Message($"Error checking certificate expiry: {ex.Message}", EventType.Error, 2003);
+                MessageBox.Show($"An error occurred while checking certificate expiry: {ex.Message}",
+                    "Certificate Expiry Check Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void CheckPfxCertificateExpiry()
+        {
+            try
+            {
+                var certificate = GetCertificateFromPfx();
+                if (certificate == null) return;
+
+                var certInfo = GetCertificateInfo(certificate);
+                var alert = _certificateMonitor?.CheckSingleCertificate(certificate);
+
+                if (alert != null)
+                {
+                    // Update the certificate information label to include expiry warning
+                    var alertPrefix = alert.Level == CertificateMonitor.AlertLevel.Expired ? "⚠️ EXPIRED: " :
+                                     alert.Level == CertificateMonitor.AlertLevel.Critical ? "⚠️ CRITICAL: " :
+                                     "⚠️ WARNING: ";
+
+                    labelCertificateInformation.Text = alertPrefix + alert.Message + "\n\n" + certInfo;
+                    labelCertificateInformation.ForeColor = alert.Level == CertificateMonitor.AlertLevel.Expired ?
+                        Color.Red : (alert.Level == CertificateMonitor.AlertLevel.Critical ? Color.DarkOrange : Color.Orange);
+                }
+                else
+                {
+                    // No alert, show normal certificate info
+                    labelCertificateInformation.Text = certInfo;
+                    labelCertificateInformation.ForeColor = SystemColors.ControlText;
+                }
+            }
+            catch (Exception ex)
+            {
+                Message($"Error checking PFX certificate expiry: {ex.Message}", EventType.Error, 2004);
+            }
+        }
+
+        private void ShowCertificateStatusForm()
+        {
+            try
+            {
+                if (_signingCerts == null || _signingCerts.Count == 0)
+                {
+                    MessageBox.Show("No certificates are currently loaded. Please select a certificate store or load a PFX certificate first.",
+                        "No Certificates", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                using (var statusForm = new CertificateStatusForm())
+                {
+                    statusForm.LoadCertificateStatus(_signingCerts);
+                    statusForm.ShowDialog(this);
+                }
+
+                Message("Certificate status form displayed", EventType.Information, 2005);
+            }
+            catch (Exception ex)
+            {
+                Message($"Error showing certificate status form: {ex.Message}", EventType.Error, 2006);
+                MessageBox.Show($"An error occurred while displaying certificate status: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -2177,6 +2354,117 @@ Use the ... button above and select the code signing certificate to use!", @"No 
             }
         }
 
+        private void checkCertificateExpiryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Log the user's action
+            Message("User clicked 'Check Certificate Expiry' menu item", EventType.Information, 2007);
+
+            CheckAndShowCertificateExpiryAlerts();
+        }
+
+        private void showCertificateStatusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Log the user's action
+            Message("User clicked 'Show Certificate Status' menu item", EventType.Information, 2008);
+
+            ShowCertificateStatusForm();
+        }
+
+        private void buttonVerifySignatures_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < checkedListBoxFiles.Items.Count; i++)
+            {
+                // Remove previous [Valid] or [Invalid] tags using a regex
+                string displayText = checkedListBoxFiles.Items[i].ToString();
+                string cleanedText = System.Text.RegularExpressions.Regex.Replace(
+                    displayText, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                // Find the corresponding SigningReportEntry by matching the cleaned file path
+                var entry = _signingReportEntries.FirstOrDefault(x => x.FileName == cleanedText);
+                if (entry != null)
+                {
+                    bool isValid = SignerBase.VerifySignature(SignToolExe, entry.FileName);
+                    entry.SignatureValid = isValid ? "Valid" : "Invalid";
+
+                    // Update UI: append status to item text
+                    string statusText = isValid ? "[Valid]" : "[Invalid]";
+                    checkedListBoxFiles.Items[i] = $"{entry.FileName} {statusText}";
+                }
+                else
+                {
+                    // If not found, fallback to cleanedText for verification
+                    bool isValid = SignerBase.VerifySignature(SignToolExe, cleanedText);
+                    string statusText = isValid ? "[Valid]" : "[Invalid]";
+                    checkedListBoxFiles.Items[i] = $"{cleanedText} {statusText}";
+                }
+            }
+        }
+
+        private void manageTimestampServersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Determine if we're currently in Trusted Signing mode
+                bool isTrustedSigning = radioButtonTrustedSigning.Checked;
+
+                using (var timestampForm = new TimestampServerManagementForm(_timestampManager, ConfigIniPath, isTrustedSigning))
+                {
+                    if (timestampForm.ShowDialog(this) == DialogResult.OK)
+                    {
+                        // Refresh the ComboBox to reflect any changes
+                        PopulateComboBox();
+                        Message($"{(isTrustedSigning ? "Endpoint" : "Timestamp server")} management completed", EventType.Information, 3015);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening {(radioButtonTrustedSigning.Checked ? "endpoint" : "timestamp server")} management: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Message($"Error opening {(radioButtonTrustedSigning.Checked ? "endpoint" : "timestamp server")} management: {ex.Message}", EventType.Error, 3016);
+            }
+        }
+
+        private void exportReportCSVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportSigningReportToCsv();
+        }
+
+        private void exportReportTXTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportSigningReportToTxt();
+        }
+
+        private void exportReportHTMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportSigningReportToHtml();
+        }
+
+        private void textBoxCertificateSearch_TextChanged(object sender, EventArgs e)
+        {
+            // Filter the certificates in the combo box based on the search text
+            string searchText = textBoxCertificateSearch.Text.Trim().ToLower();
+
+            // If the search text is empty, show all certificates
+            var filteredCerts = _signingCerts.Cast<X509Certificate2>()
+                .Where(cert =>
+                    cert.GetNameInfo(X509NameType.SimpleName, false)?.ToLower().Contains(searchText) == true ||
+                    cert.GetNameInfo(X509NameType.SimpleName, true)?.ToLower().Contains(searchText) == true ||
+                    cert.Thumbprint?.ToLower().Contains(searchText) == true)
+                .ToArray();
+
+            // Clear the combo box and repopulate it with filtered certificates
+            comboBoxCertificatesInStore.Items.Clear();
+            comboBoxCertificatesInStore.Items.Add("<No certificate selected>");
+
+            // Add filtered certificates to the combo box
+            foreach (var cert in filteredCerts)
+            {
+                // Add the certificate's simple name to the combo box
+                comboBoxCertificatesInStore.Items.Add(cert.GetNameInfo(X509NameType.SimpleName, false));
+            }
+            comboBoxCertificatesInStore.SelectedIndex = filteredCerts.Length > 0 ? 1 : 0;
+        }
+
         #endregion Form actions
 
         #region Sign options - GUI
@@ -2668,297 +2956,5 @@ Use the ... button above and select the code signing certificate to use!", @"No 
         }
 
         #endregion Certificate info
-
-        public X509Certificate2Collection GetCurrentCertificates()
-        {
-            return _signingCerts;
-        }
-
-        private void InitializeCertificateMonitoring()
-        {
-            _certificateMonitor = new CertificateMonitor(90, 30); // Warning at 90 days, Critical at 30 days
-
-            // Log certificate monitoring initialization
-            Message("Certificate expiry monitoring initialized", EventType.Information, 2000);
-        }
-
-        private void CheckAndShowCertificateExpiryAlerts()
-        {
-            try
-            {
-                if (_signingCerts == null || _signingCerts.Count == 0) return;
-
-                var alerts = _certificateMonitor.CheckCertificateExpiry(_signingCerts);
-
-                if (alerts.Any())
-                {
-                    // Show notification for critical and expired certificates
-                    var criticalAlerts = alerts.Where(a => a.Level == CertificateMonitor.AlertLevel.Expired ||
-                                                          a.Level == CertificateMonitor.AlertLevel.Critical).ToList();
-
-                    if (criticalAlerts.Any())
-                    {
-                        _certificateMonitor.ShowExpiryAlerts(criticalAlerts, this);
-                    }
-
-                    // Log summary of alerts
-                    var expiredCount = alerts.Count(a => a.Level == CertificateMonitor.AlertLevel.Expired);
-                    var criticalCount = alerts.Count(a => a.Level == CertificateMonitor.AlertLevel.Critical);
-                    var warningCount = alerts.Count(a => a.Level == CertificateMonitor.AlertLevel.Warning);
-
-                    Message($"Certificate expiry check completed: {expiredCount} expired, {criticalCount} critical, {warningCount} warning",
-                        EventType.Information, 2001);
-                }
-                else
-                {
-                    Message("Certificate expiry check completed: All certificates are valid and not expiring soon",
-                        EventType.Information, 2002);
-                }
-            }
-            catch (Exception ex)
-            {
-                Message($"Error checking certificate expiry: {ex.Message}", EventType.Error, 2003);
-                MessageBox.Show($"An error occurred while checking certificate expiry: {ex.Message}",
-                    "Certificate Expiry Check Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-        private void CheckPfxCertificateExpiry()
-        {
-            try
-            {
-                var certificate = GetCertificateFromPfx();
-                if (certificate == null) return;
-
-                var certInfo = GetCertificateInfo(certificate);
-                var alert = _certificateMonitor?.CheckSingleCertificate(certificate);
-
-                if (alert != null)
-                {
-                    // Update the certificate information label to include expiry warning
-                    var alertPrefix = alert.Level == CertificateMonitor.AlertLevel.Expired ? "⚠️ EXPIRED: " :
-                                     alert.Level == CertificateMonitor.AlertLevel.Critical ? "⚠️ CRITICAL: " :
-                                     "⚠️ WARNING: ";
-
-                    labelCertificateInformation.Text = alertPrefix + alert.Message + "\n\n" + certInfo;
-                    labelCertificateInformation.ForeColor = alert.Level == CertificateMonitor.AlertLevel.Expired ?
-                        Color.Red : (alert.Level == CertificateMonitor.AlertLevel.Critical ? Color.DarkOrange : Color.Orange);
-                }
-                else
-                {
-                    // No alert, show normal certificate info
-                    labelCertificateInformation.Text = certInfo;
-                    labelCertificateInformation.ForeColor = SystemColors.ControlText;
-                }
-            }
-            catch (Exception ex)
-            {
-                Message($"Error checking PFX certificate expiry: {ex.Message}", EventType.Error, 2004);
-            }
-        }
-
-        private void ShowCertificateStatusForm()
-        {
-            try
-            {
-                if (_signingCerts == null || _signingCerts.Count == 0)
-                {
-                    MessageBox.Show("No certificates are currently loaded. Please select a certificate store or load a PFX certificate first.",
-                        "No Certificates", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-
-                using (var statusForm = new CertificateStatusForm())
-                {
-                    statusForm.LoadCertificateStatus(_signingCerts);
-                    statusForm.ShowDialog(this);
-                }
-
-                Message("Certificate status form displayed", EventType.Information, 2005);
-            }
-            catch (Exception ex)
-            {
-                Message($"Error showing certificate status form: {ex.Message}", EventType.Error, 2006);
-                MessageBox.Show($"An error occurred while displaying certificate status: {ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void checkCertificateExpiryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Log the user's action
-            Message("User clicked 'Check Certificate Expiry' menu item", EventType.Information, 2007);
-
-            CheckAndShowCertificateExpiryAlerts();
-        }
-
-        private void showCertificateStatusToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Log the user's action
-            Message("User clicked 'Show Certificate Status' menu item", EventType.Information, 2008);
-
-            ShowCertificateStatusForm();
-        }
-
-        private void manageTimestampServersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // Determine if we're currently in Trusted Signing mode
-                bool isTrustedSigning = radioButtonTrustedSigning.Checked;
-
-                using (var timestampForm = new TimestampServerManagementForm(_timestampManager, ConfigIniPath, isTrustedSigning))
-                {
-                    if (timestampForm.ShowDialog(this) == DialogResult.OK)
-                    {
-                        // Refresh the ComboBox to reflect any changes
-                        PopulateComboBox();
-                        Message($"{(isTrustedSigning ? "Endpoint" : "Timestamp server")} management completed", EventType.Information, 3015);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error opening {(radioButtonTrustedSigning.Checked ? "endpoint" : "timestamp server")} management: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Message($"Error opening {(radioButtonTrustedSigning.Checked ? "endpoint" : "timestamp server")} management: {ex.Message}", EventType.Error, 3016);
-            }
-        }
-
-        private void SaveCertificateTypeConfiguration()
-        {
-            try
-            {
-                var iniFile = new IniFile(ConfigIniPath);
-
-                // Determine and save the certificate type
-                string certificateType = "WindowsCertificateStore"; // Default
-                if (radioButtonPFXCertificate.Checked)
-                {
-                    certificateType = "PFXCertificate";
-                }
-                else if (radioButtonTrustedSigning.Checked)
-                {
-                    certificateType = "TrustedSigning";
-                }
-
-                iniFile.WriteValue("Program", "CertificateType", certificateType);
-                Message($"Certificate type configuration saved: {certificateType}", EventType.Information, 3026);
-            }
-            catch (Exception ex)
-            {
-                Message($"Error saving certificate type configuration: {ex.Message}", EventType.Error, 3027);
-            }
-        }
-
-        private void LoadCertificateTypeConfiguration()
-        {
-            try
-            {
-                var iniFile = new IniFile(ConfigIniPath);
-                var certificateType = iniFile.GetString("Program", "CertificateType", "WindowsCertificateStore");
-
-                // Set the appropriate radio button based on saved configuration
-                switch (certificateType)
-                {
-                    case "PFXCertificate":
-                        radioButtonPFXCertificate.Checked = true;
-                        radioButtonWindowsCertificateStore.Checked = false;
-                        radioButtonTrustedSigning.Checked = false;
-                        break;
-                    case "TrustedSigning":
-                        radioButtonTrustedSigning.Checked = true;
-                        radioButtonWindowsCertificateStore.Checked = false;
-                        radioButtonPFXCertificate.Checked = false;
-                        break;
-                    case "WindowsCertificateStore":
-                    default:
-                        radioButtonWindowsCertificateStore.Checked = true;
-                        radioButtonPFXCertificate.Checked = false;
-                        radioButtonTrustedSigning.Checked = false;
-                        break;
-                }
-
-                Message($"Certificate type configuration loaded: {certificateType}", EventType.Information, 3028);
-            }
-            catch (Exception ex)
-            {
-                Message($"Error loading certificate type configuration: {ex.Message}", EventType.Error, 3029);
-                // Default to Windows Certificate Store if loading fails
-                radioButtonWindowsCertificateStore.Checked = true;
-                radioButtonPFXCertificate.Checked = false;
-                radioButtonTrustedSigning.Checked = false;
-            }
-        }
-
-        private void textBoxCertificateSearch_TextChanged(object sender, EventArgs e)
-        {
-            // Filter the certificates in the combo box based on the search text
-            string searchText = textBoxCertificateSearch.Text.Trim().ToLower();
-
-            // If the search text is empty, show all certificates
-            var filteredCerts = _signingCerts.Cast<X509Certificate2>()
-                .Where(cert =>
-                    cert.GetNameInfo(X509NameType.SimpleName, false)?.ToLower().Contains(searchText) == true ||
-                    cert.GetNameInfo(X509NameType.SimpleName, true)?.ToLower().Contains(searchText) == true ||
-                    cert.Thumbprint?.ToLower().Contains(searchText) == true)
-                .ToArray();
-
-            // Clear the combo box and repopulate it with filtered certificates
-            comboBoxCertificatesInStore.Items.Clear();
-            comboBoxCertificatesInStore.Items.Add("<No certificate selected>");
-
-            // Add filtered certificates to the combo box
-            foreach (var cert in filteredCerts)
-            {
-                // Add the certificate's simple name to the combo box
-                comboBoxCertificatesInStore.Items.Add(cert.GetNameInfo(X509NameType.SimpleName, false));
-            }
-            comboBoxCertificatesInStore.SelectedIndex = filteredCerts.Length > 0 ? 1 : 0;
-        }
-
-        private void exportReportCSVToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ExportSigningReportToCsv();
-        }
-
-        private void exportReportTXTToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ExportSigningReportToTxt();
-        }
-
-        private void exportReportHTMLToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ExportSigningReportToHtml();
-        }
-
-        private void buttonVerifySignatures_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < checkedListBoxFiles.Items.Count; i++)
-            {
-                // Remove previous [Valid] or [Invalid] tags using a regex
-                string displayText = checkedListBoxFiles.Items[i].ToString();
-                string cleanedText = System.Text.RegularExpressions.Regex.Replace(
-                    displayText, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-                // Find the corresponding SigningReportEntry by matching the cleaned file path
-                var entry = _signingReportEntries.FirstOrDefault(x => x.FileName == cleanedText);
-                if (entry != null)
-                {
-                    bool isValid = SignerBase.VerifySignature(SignToolExe, entry.FileName);
-                    entry.SignatureValid = isValid ? "Valid" : "Invalid";
-
-                    // Update UI: append status to item text
-                    string statusText = isValid ? "[Valid]" : "[Invalid]";
-                    checkedListBoxFiles.Items[i] = $"{entry.FileName} {statusText}";
-                }
-                else
-                {
-                    // If not found, fallback to cleanedText for verification
-                    bool isValid = SignerBase.VerifySignature(SignToolExe, cleanedText);
-                    string statusText = isValid ? "[Valid]" : "[Invalid]";
-                    checkedListBoxFiles.Items[i] = $"{cleanedText} {statusText}";
-                }
-            }
-        }
     }
 }
