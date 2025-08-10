@@ -136,6 +136,12 @@
     <Compile Include="Forms\TimestampServerManagementForm.Designer.cs">
       <DependentUpon>TimestampServerManagementForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ValidationProgressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ValidationProgressForm.Designer.cs">
+      <DependentUpon>ValidationProgressForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Class\SignerPfx.cs" />
@@ -159,6 +165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TimestampServerManagementForm.resx">
       <DependentUpon>TimestampServerManagementForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ValidationProgressForm.resx">
+      <DependentUpon>ValidationProgressForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

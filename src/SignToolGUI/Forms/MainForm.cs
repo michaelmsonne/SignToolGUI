@@ -264,6 +264,11 @@ namespace SignToolGUI.Forms
                     }
                 }
 
+                // Check if the certificate path is set in the configuration file
+                var validatePasswordOnSave = iniFile.GetString("Program", "ValidatePasswordOnSave", "");
+                // Set the checkbox for validating password on save based on the configuration file
+                checkBoxValidatePasswordOnSave.Checked = validatePasswordOnSave == "1";
+
                 // Check if the certificate password is set in the configuration file
                 var settingCertificatePasswordEncrypted = iniFile.GetString("Program", "CertificatePassword", "");
 
@@ -359,220 +364,147 @@ namespace SignToolGUI.Forms
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Log the form closing message
+            // Log that the application is closing
             Message("Application is closing...", EventType.Information, 1027);
 
-            // Save the configuration to the configuration file when the form is closing
             var iniFile = new IniFile(ConfigIniPath);
 
-            // Check if the certificate password is set in the GUI and if it is, ask the user if they want to save it to the configuration file
-            if (textBoxPFXPassword.Text != "")
+            // Helper method to save all general configuration and log messages
+            void SaveGeneralConfig(string encryptedPassword)
             {
-                // Ask the user if they want to save the certificate password to the configuration file
-                var msgresult =
-                    MessageBox.Show(@"Do you want to save the .PFX password for the next time you use this program?",
-                        @"Be careful not to store highly confidential information.", MessageBoxButtons.YesNoCancel,
-                        MessageBoxIcon.Warning);
+                // Save main program settings
+                iniFile.WriteValue("Program", "SignToolPath", textBoxSignToolPath.Text);
+                iniFile.WriteValue("Program", "TimestampProvider", comboBoxTimestampProviders.SelectedIndex);
+                iniFile.WriteValue("Program", "TimestampURL", txtTimestampProviderURL.Text);
 
-                // Log the save message box
+                // Save certificate path if file exists
+                if (File.Exists(textBoxPFXFile.Text))
+                    iniFile.WriteValue("Program", "CertificatePath", textBoxPFXFile.Text);
+
+                // Save "Validate Password on Save" setting
+                iniFile.WriteValue("Program", "ValidatePasswordOnSave", checkBoxValidatePasswordOnSave.Checked ? "1" : "0");
+
+                // Save encrypted password (or empty if not saving)
+                iniFile.WriteValue("Program", "CertificatePassword", encryptedPassword ?? "");
+
+                // Save timestamp and certificate type configuration
+                try { SaveTimestampConfiguration(); } catch (Exception ex) { Message($"Error saving timestamp configuration: {ex.Message}", EventType.Error, 3013); }
+                try { SaveCertificateTypeConfiguration(); } catch (Exception ex) { Message($"Error saving certificate type configuration: {ex.Message}", EventType.Error, 3030); }
+
+                // Log configuration save and application close
+                Message("Configuration file saved successfully", EventType.Information, 1033);
+                Message("Application " + Application.ProductName + @" v." + Application.ProductVersion + " is closed", EventType.Information, 1057);
+            }
+
+            // If password is set, ask user if it should be saved
+            if (!string.IsNullOrEmpty(textBoxPFXPassword.Text))
+            {
+                // Ask user if they want to save the password
+                var msgresult = MessageBox.Show(
+                    @"Do you want to save the .PFX password for the next time you use this program?",
+                    @"Be careful not to store highly confidential information.",
+                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+
+                // Log that the save password dialog was shown
                 Message("Save certificate (.pfx) password message box shown to user", EventType.Information, 1028);
 
                 switch (msgresult)
                 {
                     case DialogResult.Yes:
-                        // Log the user's choice to save the certificate password to the configuration file
-                        Message("User chose to save the certificate (.pfx) password to the configuration file",
-                            EventType.Information, 1029);
+                        // User chose to save the password
+                        Message("User chose to save the certificate (.pfx) password to the configuration file", EventType.Information, 1029);
 
-                        // Save the certificate password to the configuration file if the user clicks Yes
-                        try
+                        // If validation is enabled, show splash and run encryption async
+                        if (checkBoxValidatePasswordOnSave.Checked)
                         {
-                            // Save the sign tool path to the configuration file
-                            iniFile.WriteValue("Program", "SignToolPath", textBoxSignToolPath.Text);
+                            // Show splash/progress form
+                            var progressForm = new ValidationProgressForm();
+                            progressForm.StartPosition = FormStartPosition.CenterScreen;
+                            progressForm.Show(this);
 
-                            // Save timestamp provider to the configuration file
-                            iniFile.WriteValue("Program", "TimestampProvider",
-                                comboBoxTimestampProviders.SelectedIndex);
-
-                            // Save the timestamp URL to the configuration file
-                            iniFile.WriteValue("Program", "TimestampURL", txtTimestampProviderURL.Text);
-
-                            // Save the certificate path to the configuration file if the file exists
-                            if (File.Exists(textBoxPFXFile.Text))
+                            // Run encryption/validation in background
+                            Task.Run(() =>
                             {
-                                try
-                                {
-                                    // Save the certificate path to the configuration file
-                                    iniFile.WriteValue("Program", "CertificatePath", textBoxPFXFile.Text);
-                                }
-                                catch (Exception exception)
-                                {
-                                    // Show an error message if the certificate path could not be saved to the configuration file
-                                    Console.WriteLine(exception);
-                                    throw;
-                                }
-                            }
+                                // Encrypt password with validation
+                                var encryptedstring = SecurePasswordManager.SafeEncryptPassword(
+                                    textBoxPFXPassword.Text, performValidation: true);
 
-                            // Encrypt the certificate password with validation and save it to the configuration file
-                            var encryptedstring = SecurePasswordManager.SafeEncryptPassword(textBoxPFXPassword.Text);
+                                // Save result and log on UI thread
+                                this.Invoke((Action)(() =>
+                                {
+                                    // If encryption failed, warn user and save empty password
+                                    if (string.IsNullOrEmpty(encryptedstring) && !string.IsNullOrEmpty(textBoxPFXPassword.Text))
+                                    {
+                                        MessageBox.Show("Failed to securely encrypt the certificate password. The password will not be saved.",
+                                            "Encryption Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        Message("Certificate password not saved due to encryption failure", EventType.Warning, 3048);
+                                        SaveGeneralConfig("");
+                                    }
+                                    else
+                                    {
+                                        Message("Certificate password successfully encrypted and saved", EventType.Information, 3049);
+                                        SaveGeneralConfig(encryptedstring);
+                                    }
 
+                                    // Close splash/progress form
+                                    progressForm.Close();
+                                    progressForm.Dispose();
+
+                                    // Exit application after all saves and logs
+                                    Application.ExitThread();
+                                }));
+                            });
+
+                            // Prevent immediate close, wait for async task
+                            e.Cancel = true;
+                            return;
+                        }
+                        else
+                        {
+                            // Synchronous encryption (no splash)
+                            var encryptedstring = SecurePasswordManager.SafeEncryptPassword(
+                                textBoxPFXPassword.Text, performValidation: false);
+
+                            // If encryption failed, warn user and save empty password
                             if (string.IsNullOrEmpty(encryptedstring) && !string.IsNullOrEmpty(textBoxPFXPassword.Text))
                             {
-                                // Encryption failed, warn the user
                                 MessageBox.Show("Failed to securely encrypt the certificate password. The password will not be saved.",
                                     "Encryption Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                                // Save empty password instead of potentially corrupted data
-                                iniFile.WriteValue("Program", "CertificatePassword", "");
                                 Message("Certificate password not saved due to encryption failure", EventType.Warning, 3048);
+                                SaveGeneralConfig("");
                             }
                             else
                             {
-                                // Save the encrypted certificate password to the configuration file
-                                iniFile.WriteValue("Program", "CertificatePassword", encryptedstring);
-
-                                if (!string.IsNullOrEmpty(encryptedstring))
-                                {
-                                    Message("Certificate password successfully encrypted and saved", EventType.Information, 3049);
-                                }
+                                Message("Certificate password successfully encrypted and saved", EventType.Information, 3049);
+                                SaveGeneralConfig(encryptedstring);
                             }
+                            // Exit application after all saves and logs
+                            Application.ExitThread();
                         }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-
-                        // Log the application closing message and saved configuration
-                        Message("Application is closing - .pfx certificate password saved", EventType.Information,
-                            1030);
-
-                        Application.ExitThread();
                         break;
+
                     case DialogResult.No:
-                        // Log the user's choice not to save the certificate password to the configuration file
-                        Message("User chose not to save the certificate (.pfx) password to the configuration file",
-                            EventType.Information, 1031);
-
-                        // Do not save the certificate password to the configuration file if the user clicks No
-                        iniFile.WriteValue("Program", "SignToolPath", textBoxSignToolPath.Text);
-                        iniFile.WriteValue("Program", "TimestampURL", txtTimestampProviderURL.Text);
-
-                        // Save the certificate path to the configuration file if the file exists
-                        if (File.Exists(textBoxPFXFile.Text))
-                        {
-                            try
-                            {
-                                // Save the certificate path to the configuration file
-                                iniFile.WriteValue("Program", "CertificatePath", textBoxPFXFile.Text);
-                            }
-                            catch (Exception exception)
-                            {
-                                // Show an error message if the certificate path could not be saved to the configuration file
-                                Console.WriteLine(exception);
-                                throw;
-                            }
-
-                            try
-                            {
-                                // Save the certificate password as null to the configuration file if the file exists
-                                iniFile.WriteValue("Program", "CertificatePassword", "");
-                            }
-                            catch (Exception exception)
-                            {
-                                // Show an error message if the certificate path could not be saved to the configuration file
-                                Console.WriteLine(exception);
-                                throw;
-                            }
-                        }
-
-                        // Log the application closing message and not saved configuration
-                        Message("Application is closing - .pfx certificate password and information not saved",
-                            EventType.Information, 1032);
-
-                        // Log configuration file save completion message
-                        Message("Configuration file saved successfully", EventType.Information, 1033);
-
-                        // Close the application if the user clicks No
+                        // User chose not to save the password
+                        Message("User chose not to save the certificate (.pfx) password to the configuration file", EventType.Information, 1031);
+                        SaveGeneralConfig("");
                         Application.ExitThread();
                         break;
+
                     case DialogResult.Cancel:
+                        // User cancelled close
                         e.Cancel = true;
                         break;
-                    case DialogResult.None:
-                        break;
-                    case DialogResult.OK:
-                        break;
-                    case DialogResult.Abort:
-                        break;
-                    case DialogResult.Retry:
-                        break;
-                    case DialogResult.Ignore:
-                        break;
+
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
             else
             {
-                // Save the configuration to the configuration file when the form is closing
-                iniFile.WriteValue("Program", "SignToolPath", textBoxSignToolPath.Text);
-
-                // Save timestamp provider to the configuration file
-                iniFile.WriteValue("Program", "TimestampProvider", comboBoxTimestampProviders.SelectedIndex);
-
-
-                // Save the timestamp URL to the configuration file
-                iniFile.WriteValue("Program", "TimestampURL", txtTimestampProviderURL.Text);
-
-                // Save the certificate path to the configuration file if the file exists
-                if (File.Exists(textBoxPFXFile.Text))
-                {
-                    try
-                    {
-                        iniFile.WriteValue("Program", "CertificatePath", textBoxPFXFile.Text);
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                        throw;
-                    }
-                }
-
-                // Save the certificate password as null to the configuration file if the file exists
-                iniFile.WriteValue("Program", "CertificatePassword", "");
-
-                // Log the application closing message and not saved configuration
-                Message("Application is closing - .pfx certificate password and information not saved",
-                    EventType.Information, 1033);
-
-                // Log configuration file save completion message
-                Message("Configuration file saved successfully", EventType.Information, 1034);
+                // No password set, just save config and log
+                SaveGeneralConfig("");
+                Application.ExitThread();
             }
-
-            // Save timestamp provider to the configuration file
-            try
-            {
-                // Save timestamp server configuration
-                SaveTimestampConfiguration();
-            }
-            catch (Exception ex)
-            {
-                Message($"Error saving timestamp configuration: {ex.Message}", EventType.Error, 3013);
-            }
-
-            // Save certificate type configuration
-            try
-            {
-                SaveCertificateTypeConfiguration();
-            }
-            catch (Exception ex)
-            {
-                Message($"Error saving certificate type configuration: {ex.Message}", EventType.Error, 3030);
-            }
-
-            // Log application closed message
-            Message("Application " + Application.ProductName + @" v." + Application.ProductVersion + " is closed",
-                EventType.Information, 1057);
         }
 
         #endregion

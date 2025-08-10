@@ -39,6 +39,7 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.labelTimeStampServer = new System.Windows.Forms.Label();
             this.groupBoxFiles = new System.Windows.Forms.GroupBox();
+            this.buttonVerifySignatures = new System.Windows.Forms.Button();
             this.ResetJob = new System.Windows.Forms.Button();
             this.checkBoxShowOutput = new System.Windows.Forms.CheckBox();
             this.checkBoxAll = new System.Windows.Forms.CheckBox();
@@ -112,7 +113,7 @@
             this.labelSignedBuildState = new System.Windows.Forms.Label();
             this.linkLabelOpenTrustedSigningPortal = new System.Windows.Forms.LinkLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.buttonVerifySignatures = new System.Windows.Forms.Button();
+            this.checkBoxValidatePasswordOnSave = new System.Windows.Forms.CheckBox();
             this.groupBoxFiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxCertificateInformation.SuspendLayout();
@@ -168,6 +169,18 @@
             this.groupBoxFiles.TabIndex = 1;
             this.groupBoxFiles.TabStop = false;
             this.groupBoxFiles.Text = "File(s) to digital signing";
+            // 
+            // buttonVerifySignatures
+            // 
+            this.buttonVerifySignatures.Location = new System.Drawing.Point(344, 190);
+            this.buttonVerifySignatures.Name = "buttonVerifySignatures";
+            this.buttonVerifySignatures.Size = new System.Drawing.Size(143, 23);
+            this.buttonVerifySignatures.TabIndex = 10;
+            this.buttonVerifySignatures.Text = "Verify Signatures for files";
+            this.toolTip.SetToolTip(this.buttonVerifySignatures, "For the files selected in \"File(s) to digital signing\" (the files itself) - not t" +
+        "he same data for the report");
+            this.buttonVerifySignatures.UseVisualStyleBackColor = true;
+            this.buttonVerifySignatures.Click += new System.EventHandler(this.buttonVerifySignatures_Click);
             // 
             // ResetJob
             // 
@@ -567,7 +580,7 @@
             this.textBoxPFXPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxPFXPassword.Location = new System.Drawing.Point(70, 52);
             this.textBoxPFXPassword.Name = "textBoxPFXPassword";
-            this.textBoxPFXPassword.Size = new System.Drawing.Size(163, 20);
+            this.textBoxPFXPassword.Size = new System.Drawing.Size(296, 20);
             this.textBoxPFXPassword.TabIndex = 3;
             this.textBoxPFXPassword.UseSystemPasswordChar = true;
             this.textBoxPFXPassword.TextChanged += new System.EventHandler(this.textBoxPFXPassword_TextChanged);
@@ -598,7 +611,7 @@
             this.radioButtonWindowsCertificateStore.AutoSize = true;
             this.radioButtonWindowsCertificateStore.Checked = true;
             this.radioButtonWindowsCertificateStore.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonWindowsCertificateStore.Location = new System.Drawing.Point(15, 143);
+            this.radioButtonWindowsCertificateStore.Location = new System.Drawing.Point(15, 170);
             this.radioButtonWindowsCertificateStore.Name = "radioButtonWindowsCertificateStore";
             this.radioButtonWindowsCertificateStore.Size = new System.Drawing.Size(172, 17);
             this.radioButtonWindowsCertificateStore.TabIndex = 10;
@@ -609,6 +622,7 @@
             // 
             // groupBoxPFXCertificate
             // 
+            this.groupBoxPFXCertificate.Controls.Add(this.checkBoxValidatePasswordOnSave);
             this.groupBoxPFXCertificate.Controls.Add(this.PFXFilePassword);
             this.groupBoxPFXCertificate.Controls.Add(this.buttonSelectPFXCertificate);
             this.groupBoxPFXCertificate.Controls.Add(this.textBoxPFXPassword);
@@ -617,7 +631,7 @@
             this.groupBoxPFXCertificate.Enabled = false;
             this.groupBoxPFXCertificate.Location = new System.Drawing.Point(7, 55);
             this.groupBoxPFXCertificate.Name = "groupBoxPFXCertificate";
-            this.groupBoxPFXCertificate.Size = new System.Drawing.Size(373, 82);
+            this.groupBoxPFXCertificate.Size = new System.Drawing.Size(373, 109);
             this.groupBoxPFXCertificate.TabIndex = 13;
             this.groupBoxPFXCertificate.TabStop = false;
             this.groupBoxPFXCertificate.Text = "Certificate File";
@@ -625,7 +639,7 @@
             // buttonShowSigninigCertificatePFX
             // 
             this.buttonShowSigninigCertificatePFX.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonShowSigninigCertificatePFX.Location = new System.Drawing.Point(241, 50);
+            this.buttonShowSigninigCertificatePFX.Location = new System.Drawing.Point(241, 78);
             this.buttonShowSigninigCertificatePFX.Name = "buttonShowSigninigCertificatePFX";
             this.buttonShowSigninigCertificatePFX.Size = new System.Drawing.Size(126, 23);
             this.buttonShowSigninigCertificatePFX.TabIndex = 4;
@@ -643,7 +657,7 @@
             this.groupBoxWindowsCertificateStore.Controls.Add(this.checkBoxShowExpiredCertificates);
             this.groupBoxWindowsCertificateStore.Controls.Add(this.comboBoxCertificatesInStore);
             this.groupBoxWindowsCertificateStore.Controls.Add(this.buttonShowSigninigCertificateStore);
-            this.groupBoxWindowsCertificateStore.Location = new System.Drawing.Point(7, 168);
+            this.groupBoxWindowsCertificateStore.Location = new System.Drawing.Point(7, 195);
             this.groupBoxWindowsCertificateStore.Name = "groupBoxWindowsCertificateStore";
             this.groupBoxWindowsCertificateStore.Size = new System.Drawing.Size(373, 109);
             this.groupBoxWindowsCertificateStore.TabIndex = 11;
@@ -821,7 +835,7 @@
             this.groupBoxTrustedSigningMetadata.Controls.Add(this.textBoxCertificateProfileName);
             this.groupBoxTrustedSigningMetadata.Controls.Add(this.textBoxCodeSigningAccountName);
             this.groupBoxTrustedSigningMetadata.Enabled = false;
-            this.groupBoxTrustedSigningMetadata.Location = new System.Drawing.Point(7, 310);
+            this.groupBoxTrustedSigningMetadata.Location = new System.Drawing.Point(7, 335);
             this.groupBoxTrustedSigningMetadata.Name = "groupBoxTrustedSigningMetadata";
             this.groupBoxTrustedSigningMetadata.Size = new System.Drawing.Size(373, 97);
             this.groupBoxTrustedSigningMetadata.TabIndex = 23;
@@ -884,7 +898,7 @@
             // 
             this.radioButtonTrustedSigning.AutoSize = true;
             this.radioButtonTrustedSigning.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonTrustedSigning.Location = new System.Drawing.Point(13, 284);
+            this.radioButtonTrustedSigning.Location = new System.Drawing.Point(13, 309);
             this.radioButtonTrustedSigning.Name = "radioButtonTrustedSigning";
             this.radioButtonTrustedSigning.Size = new System.Drawing.Size(114, 17);
             this.radioButtonTrustedSigning.TabIndex = 24;
@@ -905,7 +919,7 @@
             // 
             this.linkLabelOpenTrustedSigningPortal.AutoSize = true;
             this.linkLabelOpenTrustedSigningPortal.Enabled = false;
-            this.linkLabelOpenTrustedSigningPortal.Location = new System.Drawing.Point(133, 288);
+            this.linkLabelOpenTrustedSigningPortal.Location = new System.Drawing.Point(133, 313);
             this.linkLabelOpenTrustedSigningPortal.Name = "linkLabelOpenTrustedSigningPortal";
             this.linkLabelOpenTrustedSigningPortal.Size = new System.Drawing.Size(176, 13);
             this.linkLabelOpenTrustedSigningPortal.TabIndex = 27;
@@ -915,17 +929,15 @@
         "ng accounts in your tenant you have.");
             this.linkLabelOpenTrustedSigningPortal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelOpenTrustedSigningPortal_LinkClicked);
             // 
-            // buttonVerifySignatures
+            // checkBoxValidatePasswordOnSave
             // 
-            this.buttonVerifySignatures.Location = new System.Drawing.Point(344, 190);
-            this.buttonVerifySignatures.Name = "buttonVerifySignatures";
-            this.buttonVerifySignatures.Size = new System.Drawing.Size(143, 23);
-            this.buttonVerifySignatures.TabIndex = 10;
-            this.buttonVerifySignatures.Text = "Verify Signatures for files";
-            this.toolTip.SetToolTip(this.buttonVerifySignatures, "For the files selected in \"File(s) to digital signing\" (the files itself) - not t" +
-        "he same data for the report");
-            this.buttonVerifySignatures.UseVisualStyleBackColor = true;
-            this.buttonVerifySignatures.Click += new System.EventHandler(this.buttonVerifySignatures_Click);
+            this.checkBoxValidatePasswordOnSave.AutoSize = true;
+            this.checkBoxValidatePasswordOnSave.Location = new System.Drawing.Point(9, 83);
+            this.checkBoxValidatePasswordOnSave.Name = "checkBoxValidatePasswordOnSave";
+            this.checkBoxValidatePasswordOnSave.Size = new System.Drawing.Size(183, 17);
+            this.checkBoxValidatePasswordOnSave.TabIndex = 5;
+            this.checkBoxValidatePasswordOnSave.Text = "Validate password on save/close";
+            this.checkBoxValidatePasswordOnSave.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -1062,6 +1074,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportReportTXTToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportReportHTMLToolStripMenuItem;
         private System.Windows.Forms.Button buttonVerifySignatures;
+        private System.Windows.Forms.CheckBox checkBoxValidatePasswordOnSave;
     }
 }
 
