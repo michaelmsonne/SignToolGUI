@@ -6,7 +6,7 @@
   <img src="https://visitor-badge.laobi.icu/badge?page_id=michaelmsonne.SignToolGUI" alt="Visitors">
   <img src="https://img.shields.io/badge/C%23-239120" alt="PowerShell"></a> 
   <img src="https://img.shields.io/badge/Platform-Windows-0078D7" alt="Platform"></a>
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+  <a href="https://github.com/michaelmsonne/TEMPLATE/blob/main/LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
   <a href="https://github.com/michaelmsonne/SignToolGUI"><img src="https://img.shields.io/github/downloads/michaelmsonne/SignToolGUI/total.svg"></a>
 </p>
 
@@ -150,3 +150,4 @@ The installer is created from a Free Advanced Installer License for Open-Source 
 ## SAST Tools
 
 [PVS-Studio](https://pvs-studio.com/en/pvs-studio/?utm_source=github&utm_medium=organic&utm_campaign=open_source) - static analyzer for C, C++, C#, and Java code.
+
