@@ -3,8 +3,14 @@
 <p align="center">
   <a href="https://github.com/michaelmsonne/SignToolGUI"><img src="https://img.shields.io/github/languages/top/michaelmsonne/SignToolGUI.svg"></a>
   <a href="https://github.com/michaelmsonne/SignToolGUI"><img src="https://img.shields.io/github/languages/code-size/michaelmsonne/SignToolGUI.svg"></a>
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=michaelmsonne.SignToolGUI" alt="Visitors">
+  <img src="https://img.shields.io/badge/C%23-239120" alt="PowerShell"></a> 
+  <img src="https://img.shields.io/badge/Platform-Windows-0078D7" alt="Platform"></a>
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
   <a href="https://github.com/michaelmsonne/SignToolGUI"><img src="https://img.shields.io/github/downloads/michaelmsonne/SignToolGUI/total.svg"></a>
 </p>
+
+
 
 <div align="center">
   <a href="https://github.com/michaelmsonne/SignToolGUI/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
@@ -142,4 +148,5 @@ The installer is created from a Free Advanced Installer License for Open-Source 
 [<img src="https://cdn.advancedinstaller.com/svg/pressinfo/AiLogoColor.svg" title="Advanced Installer" alt="Advanced Instzaller" height="120"/>](https://www.advancedinstaller.com/)
 
 ## SAST Tools
+
 [PVS-Studio](https://pvs-studio.com/en/pvs-studio/?utm_source=github&utm_medium=organic&utm_campaign=open_source) - static analyzer for C, C++, C#, and Java code.
