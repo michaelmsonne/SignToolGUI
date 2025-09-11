@@ -19,7 +19,7 @@ namespace SignToolGUI.Forms
         private void PopulateChangelog()
         {
             // Changelog content
-            var changelogContent = " Version 2.0.0.0 (00-00-2025):\n\n" +
+            var changelogContent = " Version 2.0.0.0 (11-09-2025):\n\n" +
                                    " New Features\n" +
                                    " - Added certificate monitoring functionality with new CertificateMonitor class and CertificateStatus Form\n" +
                                    " - Introduced comprehensive timestamp server management system\n" +
