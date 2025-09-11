@@ -1,4 +1,4 @@
-﻿## Version 2.0.0.0 (00-00-2025)
+﻿## Version 2.0.0.0 (11-09-2025)
 
 ### 🆕 New Features
 - Added certificate monitoring functionality with new `CertificateMonitor` class and `CertificateStatus` Form
