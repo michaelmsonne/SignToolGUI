@@ -81,6 +81,16 @@ Main tool GUI
 - Support for both 32-bit and 64-bit architectures.
 - Option to save and load configuration settings for ease of use.
 - Comprehensive error handling and user notifications.
+- Machine-specific password encryption: Passwords are now encrypted using AES-256 with machine-specific keys, making encrypted data only decryptable on the original machine
+- Automatic password migration: Seamlessly upgrades old encrypted passwords to the new secure format
+- Advanced key derivation: Uses PBKDF2 with 100,000 iterations for enhanced security
+- Advanced Timestamp Server Management:
+    - Real-time certificate monitoring: Track certificate expiration dates and health status
+    - Centralized timestamp server configuration: Dedicated management interface for timestamp servers/endpoints
+    - Automatic failover: Smart failover to backup servers when primary servers are unavailable
+    - Server prioritization: Configure priority order and enable/disable individual servers
+- and more...
+
 
 ## To do list
 - [ ] Soon... Verification and Validation: After signing, SignToolGUI allows users to verify and validate the digital signatures to ensure the integrity and authenticity of the signed files.
