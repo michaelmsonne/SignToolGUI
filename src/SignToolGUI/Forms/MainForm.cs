@@ -2344,6 +2344,9 @@ Please select one or more binaries into the list above to proceed!", @"No files 
 
                 // Set the tooltip for the timestamp checkbox
                 toolTip.SetToolTip(checkBoxTimestamp, "Trusted Signing requires a timestamp. This option is disabled for Trusted Signing.");
+
+                // Update menu item text for Trusted Signing mode
+                manageTimestampServersToolStripMenuItem.Text = "Manage Endpoints...";
             }
             else
             {
@@ -2369,6 +2372,9 @@ Please select one or more binaries into the list above to proceed!", @"No files 
 
                 // Reset the tooltip for the timestamp checkbox
                 toolTip.SetToolTip(checkBoxTimestamp, "Check this box to timestamp the signed file(s).");
+
+                // Update menu item text for regular timestamp servers mode
+                manageTimestampServersToolStripMenuItem.Text = "Manage Timestamp Servers...";
             }
 
             // Check if the rest checkboxes are enabled and set handling correctly for signing type
