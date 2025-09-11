@@ -144,7 +144,7 @@ Reach out to the maintainer at one of the following places:
 
 # To do list
 
-- [ ] Cleanup for classes and methods
+- [x] Cleanup for classes and methods
 
 # License
 This project is licensed under the **MIT License** - see the LICENSE file for details.
