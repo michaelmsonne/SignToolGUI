@@ -56,6 +56,8 @@ Main tool GUI
 
 ![Menu GUI](/docs/pictures/mainform-menu.png)
 
+![Server manager GUI](/docs/pictures/servermanager.png)
+
 <details>
   <summary>About the tool GUI</summary>
   
