@@ -19,7 +19,57 @@ namespace SignToolGUI.Forms
         private void PopulateChangelog()
         {
             // Changelog content
-            var changelogContent = " Version 1.4.0.0 (17-03-2025):\n" +
+            var changelogContent = " Version 2.0.0.0 (11-09-2025):\n\n" +
+                                   " New Features\n" +
+                                   " - Added certificate monitoring functionality with new CertificateMonitor class and CertificateStatus Form\n" +
+                                   " - Introduced comprehensive timestamp server management system\n" +
+                                   "   - New TimestampServerEditForm for adding and editing individual timestamp servers\n" +
+                                   "   - New TimestampServerManagementForm for centralized server configuration management\n" +
+                                   "   - Added TimestampServer and TimestampManager classes for server handling and orchestration\n" +
+                                   "   - Dynamic interface adaptation: \"Timestamp Servers\" for PFX/Certificate Store and \"Endpoints\" for Trusted Signing\n" +
+                                   " - Built-in timestamp server availability testing and health monitoring\n" +
+                                   " - Support for server prioritization, enabling/disabling, and timeout configuration\n" +
+                                   " - Added certificate type persistence - application now remembers your preferred signing method (Windows Certificate Store, PFX Certificate, or Trusted Signing)\n\n" +
+                                   " User Interface Enhancements\n" +
+                                   " - Enhanced MainForm UI with new menu options for certificate monitoring and timestamp server management\n" +
+                                   " - Introduced color-coded alerts for certificate expiry in both Windows Certificate Store and PFX scenarios\n" +
+                                   " - Improved certificate information display with better visual feedback\n" +
+                                   " - Added intuitive forms for managing timestamp server configurations\n" +
+                                   " - Context-aware UI labels that change based on signing type (Trusted Signing vs. traditional methods)\n\n" +
+                                   " Security Improvements\n" +
+                                   " - Major Security Enhancement: Completely redesigned password encryption system\n" +
+                                   "   - Replaced hardcoded encryption keys with machine-specific key derivation\n" +
+                                   "   - Upgraded from basic encryption to AES-256 with PBKDF2 key derivation (100,000 iterations)\n" +
+                                   "   - Implemented automatic migration from old encryption format to new secure method\n" +
+                                   "   - Added machine-specific entropy sources (hardware identifiers, system properties)\n" +
+                                   "   - Passwords encrypted on one machine cannot be decrypted on another (intentional security feature)\n" +
+                                   " - Enhanced certificate validation and password security handling\n\n" +
+                                   " Architecture Improvements\n" +
+                                   " - Refactored signing classes (SignerPfx, SignerThumbprint, SignerTrustedSigning) to inherit from new SignerBase abstract class\n" +
+                                   " - Centralized common signing logic, reducing code redundancy and improving maintainability\n" +
+                                   " - Added new SecurePasswordManager class for robust password encryption/decryption\n" +
+                                   " - Enhanced certificate validation and monitoring capabilities\n" +
+                                   " - Improved error handling and validation for certificate paths and passwords\n" +
+                                   " - Better separation of concerns with dedicated security and configuration management classes\n\n" +
+                                   " Performance & Reliability\n" +
+                                   " - Implemented asynchronous operations for better application responsiveness\n" +
+                                   " - Enhanced logging system for improved troubleshooting and debugging\n" +
+                                   " - Added automatic failover to backup timestamp servers when primary servers are unavailable\n" +
+                                   " - Improved stability when handling certificate operations and network-related timestamp failures\n" +
+                                   " - Better configuration persistence and loading mechanisms\n\n" +
+                                   " Bug Fixes\n" +
+                                   " - Better error recovery for network-related timestamp failures\n" +
+                                   " - Enhanced validation for certificate operations\n" +
+                                   " - Improved stability in certificate monitoring scenarios\n" +
+                                   " - Fixed configuration loading order to prevent UI overrides\n" +
+                                   " - Better handling of corrupted or incompatible password data\n\n" +
+                                   " Technical Details\n" +
+                                   " - Enhanced compatibility with .NET Framework 4.8\n" +
+                                   " - Improved machine-specific key generation using multiple entropy sources\n" +
+                                   " - Added comprehensive error handling and logging for security operations\n" +
+                                   " - Backward compatibility maintained through automatic password migration system\n\n" +
+                                   "This release represents a major milestone in security and usability, significantly enhancing the reliability, user experience, and enterprise-readiness of the SignTool GUI. The new security architecture ensures that sensitive certificate passwords are protected with industry-standard encryption while maintaining seamless user experience through automatic migration and intelligent configuration management.\n\n" +
+                                   " Version 1.4.0.0 (17-03-2025):\n" +
                                    " - Updated Trusted Signing from v0.1.103.0 to the latest v0.1.108.0\n" +
                                    " - The tool now only displays Code Signing certificates with a private key for selection\n" +
                                    " - Added a direct link to the Azure Portal to help you find your Trusted Signing accounts\n" +

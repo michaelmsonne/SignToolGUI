@@ -37,7 +37,7 @@
             this.richTextBoxChangelog.Location = new System.Drawing.Point(1, 0);
             this.richTextBoxChangelog.Name = "richTextBoxChangelog";
             this.richTextBoxChangelog.ReadOnly = true;
-            this.richTextBoxChangelog.Size = new System.Drawing.Size(469, 341);
+            this.richTextBoxChangelog.Size = new System.Drawing.Size(661, 485);
             this.richTextBoxChangelog.TabIndex = 0;
             this.richTextBoxChangelog.Text = "";
             // 
@@ -46,7 +46,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(472, 342);
+            this.ClientSize = new System.Drawing.Size(663, 486);
             this.Controls.Add(this.richTextBoxChangelog);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

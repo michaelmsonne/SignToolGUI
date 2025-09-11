@@ -1,3 +1,70 @@
+﻿## Version 2.0.0.0 (11-09-2025)
+
+### 🆕 New Features
+- Added certificate monitoring functionality with new `CertificateMonitor` class and `CertificateStatus` Form
+- Introduced comprehensive timestamp server management system
+  - New `TimestampServerEditForm` for adding and editing individual timestamp servers
+  - New `TimestampServerManagementForm` for centralized server configuration management
+  - Added `TimestampServer` and `TimestampManager` classes for server handling and orchestration
+  - Dynamic interface adaptation: "Timestamp Servers" for PFX/Certificate Store and "Endpoints" for Trusted Signing
+- Built-in timestamp server availability testing and health monitoring
+- Support for server prioritization, enabling/disabling, and timeout configuration
+- Added certificate type persistence - application now remembers your preferred signing method (Windows Certificate Store, PFX Certificate, or Trusted Signing)
+
+### 🎨 User Interface Enhancements
+- Enhanced MainForm UI with new menu options for certificate monitoring and timestamp server management
+- Introduced color-coded alerts for certificate expiry in both Windows Certificate Store and PFX scenarios
+- Improved certificate information display with better visual feedback
+- Added intuitive forms for managing timestamp server configurations
+- Context-aware UI labels that change based on signing type (Trusted Signing vs. traditional methods)
+- Added search functionality for certificates (Windows Certificate Store) for name, thumbprint and issuer in the list
+
+### 🔒 Security Improvements
+- **Major Security Enhancement**: Completely redesigned password encryption system
+  - Replaced hardcoded encryption keys with machine-specific key derivation
+  - Upgraded from basic encryption to AES-256 with PBKDF2 key derivation (100,000 iterations)
+  - Implemented automatic migration from old encryption format to new secure method
+  - Added machine-specific entropy sources (hardware identifiers, system properties)
+  - Passwords encrypted on one machine cannot be decrypted on another (intentional security feature)
+- Enhanced certificate validation and password security handling
+
+### 🏗️ Architecture Improvements
+- Refactored signing classes (`SignerPfx`, `SignerThumbprint`, `SignerTrustedSigning`) to inherit from new `SignerBase` abstract class
+- Centralized common signing logic, reducing code redundancy and improving maintainability
+- Added new `SecurePasswordManager` class for robust password encryption/decryption
+- Enhanced certificate validation and monitoring capabilities
+- Improved error handling and validation for certificate paths and passwords
+- Better separation of concerns with dedicated security and configuration management classes
+
+### ⚡ Performance & Reliability
+- Implemented asynchronous operations for better application responsiveness
+- Enhanced logging system for improved troubleshooting and debugging
+- Added automatic failover to backup timestamp servers when primary servers are unavailable
+- Improved stability when handling certificate operations and network-related timestamp failures
+- Better configuration persistence and loading mechanisms
+
+### 🐛 Bug Fixes
+- Better error recovery for network-related timestamp failures
+- Enhanced validation for certificate operations
+- Improved stability in certificate monitoring scenarios
+- Fixed configuration loading order to prevent UI overrides
+- Better handling of corrupted or incompatible password data
+
+### 🔧 Technical Details
+- Enhanced compatibility with .NET Framework 4.8
+- Improved machine-specific key generation using multiple entropy sources
+- Added comprehensive error handling and logging for security operations
+- Backward compatibility maintained through automatic password migration system
+- Changed configuration file name to `Config.ini` for clarity (previously `Data.ini`)
+
+Think I have it all now, but can be I forgot something - a lot of work went into this release, so please test it thoroughly and report any issues you find 😉
+
+---
+
+*This release represents a major milestone in security and usability, significantly enhancing the reliability, user experience, and enterprise-readiness of the SignTool GUI. The new security architecture ensures that sensitive certificate passwords are protected with industry-standard encryption while maintaining seamless user experience through automatic migration and intelligent configuration management.*
+
+---
+
 ## Version 1.4.0.0 (17-03-2025):
 
 - Updated Trusted Signing from v0.1.103.0 to the latest v0.1.108.0

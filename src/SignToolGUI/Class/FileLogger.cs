@@ -27,7 +27,7 @@ namespace SignToolGUI.Class
         // Get logfile path
         public static string GetLogPath(string df)
         {
-            return Files.LogFilePath + @"\" + Globals.ToolName.SignToolGui + " Log " + df + ".log";
+            return FileManager.LogFilePath + @"\" + Globals.ToolName.SignToolGui + " Log " + df + ".log";
         }
 
         // Get datetime
@@ -77,9 +77,9 @@ namespace SignToolGUI.Class
                 // Check if file exists else create it
                 try
                 {
-                    if (!Directory.Exists(Files.LogFilePath))
+                    if (!Directory.Exists(FileManager.LogFilePath))
                     {
-                        Directory.CreateDirectory(Files.LogFilePath);
+                        Directory.CreateDirectory(FileManager.LogFilePath);
                         //Console.WriteLine("Directory to log files created: " + Files.LogFilePath);
                     }
                 }
@@ -97,7 +97,7 @@ namespace SignToolGUI.Class
                 }
 
                 // Check if we have write access to the directory
-                if (!HasWriteAccessToDirectory(Files.LogFilePath))
+                if (!HasWriteAccessToDirectory(FileManager.LogFilePath))
                 {
                     if (WriteToEventLog)
                     {

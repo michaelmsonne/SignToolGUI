@@ -191,6 +191,21 @@
         14hr+W/EM5ynIWocnmb2Vet5ef8Hh9UeUgw97mgAAAAASUVORK5CYII=
 </value>
   </data>
+  <data name="textBoxDescription.Text" xml:space="preserve">
+    <value>Graphical user interface for Microsoft’s signtool.exe supporting .pfx files, Windows Certificate Store, and Microsoft Trusted Signing.
+
+Features include:
+
+• Batch signing of multiple files (.exe, .dll, .sys, .ocx, .ps1, etc.)
+• Integrated certificate selection, expiry monitoring, and status alerts
+• Configurable timestamp server management (Sectigo, DigiCert, custom, Azure endpoints)
+• Secure handling of encrypted certificate passwords
+• Real-time signing progress, output filtering, and detailed logging
+• Signature verification and reporting (CSV, TXT, HTML export)
+• Persistent configuration for certificate, timestamp, and tool paths
+• User-friendly error handling and tooltips
+• Support for both local and Azure Trusted Signing</value>
+  </data>
   <data name="pictureBoxBuyMeACoffee.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAiEAAACZCAYAAAD5Eeq2AAAABGdBTUEAALGPC/xhBQAAIVpJREFUeF7t

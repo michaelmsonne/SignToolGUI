@@ -32,6 +32,12 @@ namespace SignToolGUI.Class
             internal static string MichaelCodeSignThumbprintOffline = "D6A630B8F65C473C19F8B694491130073FCCDB32";
         }
 
+        internal class ToolStings
+        {
+            internal static string URLAzurePortalTrustedSigning = @"https://portal.azure.com/#browse/Microsoft.CodeSigning%2Fcodesigningaccounts";
+        }
+
+
         internal static async Task<string> FetchCurrentCertificateThumbprintAsync()
         {
             const string url = "https://raw.githubusercontent.com/michaelmsonne/michaelmsonne/main/Trusted_Publisher_Certificate/CurrentCertificateThumbprint.txt";

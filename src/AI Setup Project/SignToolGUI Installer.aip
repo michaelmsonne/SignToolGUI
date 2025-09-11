@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT Type="Advanced Installer" CreateVersion="21.9" version="22.5" PreviousModules="simple" Modules="professional" RootPath="." Language="en" Id="{C91F2B90-326D-4B52-99AE-6996B4FA77F1}">
+<DOCUMENT Type="Advanced Installer" CreateVersion="21.9" version="23.0" PreviousModules="simple" Modules="professional" RootPath="." Language="en" Id="{C91F2B90-326D-4B52-99AE-6996B4FA77F1}">
   <COMPONENT cid="caphyon.advinst.msicomp.ProjectOptionsComponent">
     <ROW Name="HiddenItems" Value="ActSyncAppComponent;CPLAppletComponent;AutorunComponent;GameUxComponent;SilverlightSlnComponent;SharePointSlnComponent"/>
   </COMPONENT>
@@ -13,23 +13,23 @@
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Azure.Identity.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Ijwhost.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" Value="..\..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\18\Preview\Common7\IDE\PublicAssemblies"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.IdentityModel.Abstractions.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_SignToolGUI.exe" Value="..\SignToolGUI\bin\Release"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_SplitButton.dll" Value="..\SignToolGUI\lib"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Buffers.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Buffers.dll" Value="..\..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\18\Preview\Common7\IDE\PublicAssemblies"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.ClientModel.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.IO.Pipelines.dll" Value="..\..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\18\Preview\Common7\IDE\PublicAssemblies"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Memory.Data.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Memory.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Numerics.Vectors.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Memory.dll" Value="..\..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\18\Preview\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Numerics.Vectors.dll" Value="..\..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\18\Preview\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll" Value="..\..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\18\Preview\Common7\IDE\PublicAssemblies"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Security.Cryptography.ProtectedData.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Text.Encodings.Web.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Text.Json.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Threading.Tasks.Extensions.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.ValueTuple.dll" Value="..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Text.Encodings.Web.dll" Value="..\..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\18\Preview\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Text.Json.dll" Value="..\..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\18\Preview\Common7\IDE\PublicAssemblies"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Threading.Tasks.Extensions.dll" Value="..\..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\18\Preview\Common7\IDE\PublicAssemblies"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_concrt140.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_mfc140chs.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
@@ -73,6 +73,7 @@
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_SplitButton.dll" Value="SplitButton.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Buffers.dll" Value="System.Buffers.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.ClientModel.dll" Value="System.ClientModel.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.IO.Pipelines.dll" Value="System.IO.Pipelines.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Memory.Data.dll" Value="System.Memory.Data.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Memory.dll" Value="System.Memory.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Numerics.Vectors.dll" Value="System.Numerics.Vectors.dll"/>
@@ -81,7 +82,6 @@
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Text.Encodings.Web.dll" Value="System.Text.Encodings.Web.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Text.Json.dll" Value="System.Text.Json.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Threading.Tasks.Extensions.dll" Value="System.Threading.Tasks.Extensions.dll"/>
-    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.ValueTuple.dll" Value="System.ValueTuple.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_concrt140.dll" Value="concrt140.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140.dll" Value="mfc140.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_mfc140chs.dll" Value="mfc140chs.dll"/>
@@ -115,7 +115,7 @@
     <ROW Property="ProductCode" Value="1033:{A10A6963-84C3-4F8B-8613-555A8C2409C1} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="SignToolGUI"/>
-    <ROW Property="ProductVersion" Value="1.4.0.0" Options="32"/>
+    <ROW Property="ProductVersion" Value="2.0.0.0" Options="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{6F8F60D8-0325-4FA9-B18A-9EE2702C1232}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -199,13 +199,13 @@
     <ROW File="SplitButton.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SPLITB~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_SplitButton.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_SplitButton.dll&gt;" SelfReg="false"/>
     <ROW File="System.Text.Json.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_System.Text.Json.dll" FileName="SYSTEM~6.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Text.Json.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Text.Json.dll&gt;" SelfReg="false"/>
     <ROW File="System.Memory.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SYSTEM~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Memory.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Memory.dll&gt;" SelfReg="false"/>
-    <ROW File="System.ValueTuple.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SYSTEM~8.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.ValueTuple.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.ValueTuple.dll&gt;" SelfReg="false"/>
     <ROW File="System.Text.Encodings.Web.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SYSTEM~5.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Text.Encodings.Web.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Text.Encodings.Web.dll&gt;" SelfReg="false"/>
     <ROW File="System.Numerics.Vectors.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SYSTEM~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Numerics.Vectors.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Numerics.Vectors.dll&gt;" SelfReg="false"/>
     <ROW File="System.Threading.Tasks.Extensions.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SYSTEM~7.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Threading.Tasks.Extensions.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Threading.Tasks.Extensions.dll&gt;" SelfReg="false"/>
     <ROW File="Microsoft.Bcl.AsyncInterfaces.dll_1" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="MICROS~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1&gt;" SelfReg="false"/>
     <ROW File="System.Buffers.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SYSTEM~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Buffers.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Buffers.dll&gt;" SelfReg="false"/>
     <ROW File="System.Runtime.CompilerServices.Unsafe.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll" FileName="SYSTEM~4.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll&gt;" SelfReg="false"/>
+    <ROW File="System.IO.Pipelines.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SYSTEM~9.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.IO.Pipelines.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.IO.Pipelines.dll&gt;" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.AppPathsComponent">
     <ROW Name="AI_APPPATH_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.Dlib.Core.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll]" Type="2" Content="0"/>
@@ -224,6 +224,7 @@
     <ROW Name="AI_APPPATH_PERBUILD_SplitButton.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_SplitButton.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_SplitButton.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_System.Buffers.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Buffers.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Buffers.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_System.ClientModel.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.ClientModel.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.ClientModel.dll]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_System.IO.Pipelines.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.IO.Pipelines.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.IO.Pipelines.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_System.Memory.Data.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Memory.Data.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Memory.Data.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_System.Memory.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Memory.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Memory.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_System.Numerics.Vectors.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Numerics.Vectors.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Numerics.Vectors.dll]" Type="2" Content="0"/>
@@ -232,7 +233,6 @@
     <ROW Name="AI_APPPATH_PERBUILD_System.Text.Encodings.Web.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Text.Encodings.Web.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Text.Encodings.Web.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_System.Text.Json.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Text.Json.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Text.Json.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_System.Threading.Tasks.Extensions.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Threading.Tasks.Extensions.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Threading.Tasks.Extensions.dll]" Type="2" Content="0"/>
-    <ROW Name="AI_APPPATH_PERBUILD_System.ValueTuple.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.ValueTuple.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.ValueTuple.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_concrt140.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_concrt140.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_concrt140.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_mfc140.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_mfc140chs.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_mfc140chs.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_mfc140chs.dll]" Type="2" Content="0"/>
@@ -430,12 +430,12 @@
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="SplitButton.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Text.Json.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Memory.dll"/>
-    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.ValueTuple.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Text.Encodings.Web.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Numerics.Vectors.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Threading.Tasks.Extensions.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="Microsoft.Bcl.AsyncInterfaces.dll_1"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Buffers.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Runtime.CompilerServices.Unsafe.dll"/>
+    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.IO.Pipelines.dll"/>
   </COMPONENT>
 </DOCUMENT>

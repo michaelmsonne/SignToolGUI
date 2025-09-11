@@ -1,43 +1,46 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 
 namespace SignToolGUI.Class
 {
-    internal sealed class SignerTrustedSigning
+    internal sealed class SignerTrustedSigning : SignerBase
     {
-        public string SignToolExe { get; set; }
         public string DlibPath { get; set; }
         public string DmdfPath { get; set; }
-        public bool Verbose { get; set; }
-        public bool Debug { get; set; }
-        public bool Timestamp { get; set; }
 
-        public delegate void StatusReport(string message);
-        public event StatusReport OnSignToolOutput;
-
-        private readonly string _timestampServer;
+        private readonly string _timestampServer; // Always "http://timestamp.acs.microsoft.com"
         private readonly string _codeSigningAccountName;
         private readonly string _certificateProfileName;
         private readonly string _correlationIdData;
-        private readonly string _endpointServer;
+        private readonly string _endpointServer; // Regional Azure endpoint for signing
 
-        private bool VerifyFileExists()
+        public SignerTrustedSigning(string executable, string timestampServer, string dlibPath, string codeSigningAccountName, string certificateProfileName, string correlationIdData, string endpointServer, TimestampManager timestampManager = null)
+            : base(executable, timestampManager)
         {
-            return File.Exists(SignToolExe);
-        }
-
-        public SignerTrustedSigning(string executable, string timestampServer, string dlibPath, string codeSigningAccountName, string certificateProfileName, string correlationIdData, string endpointServer)
-        {
-            SignToolExe = executable;
-            _timestampServer = timestampServer;
+            _timestampServer = timestampServer; // Should always be "http://timestamp.acs.microsoft.com"
             DlibPath = dlibPath;
             _codeSigningAccountName = codeSigningAccountName;
             _certificateProfileName = certificateProfileName;
             _correlationIdData = correlationIdData;
-            _endpointServer = endpointServer;
+            _endpointServer = endpointServer; // Regional endpoint from TimestampManager
             DmdfPath = CreateTempJsonFile();
+        }
+
+        // Destructor to clean up the temporary JSON file
+        ~SignerTrustedSigning()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(DmdfPath) && File.Exists(DmdfPath))
+                {
+                    File.Delete(DmdfPath);
+                }
+            }
+            catch (Exception)
+            {
+                // Ignore exceptions during cleanup
+            }
         }
 
         private string CreateTempJsonFile()
@@ -45,7 +48,7 @@ namespace SignToolGUI.Class
             // Create a JSON file with the required parameters
             var jsonContent = new
             {
-                Endpoint = _endpointServer,
+                Endpoint = _endpointServer, // Use the regional endpoint here
                 CodeSigningAccountName = _codeSigningAccountName,
                 CertificateProfileName = _certificateProfileName,
                 CorrelationIdData = _correlationIdData
@@ -69,90 +72,68 @@ namespace SignToolGUI.Class
             return jsonFilePath;
         }
 
-        public void Sign(string targetAssembly)
+        protected override string BuildSigningArguments(string targetAssembly, string timestampUrl = null)
         {
-            // Sign the target assembly asynchronously
-            SignAsync(targetAssembly);
-        }
-        
-        private void SignAsync(object targetAssembly)
-        {
-            // Check if the SignTool.exe exists
-            if (!VerifyFileExists())
-            {
-                OnSignToolOutput?.Invoke(@"SignTool.exe can't be found!");
-                return;
-            }
-            // Check if the timestamp server URL is set
-            if (string.IsNullOrEmpty(_timestampServer))
-            {
-                OnSignToolOutput?.Invoke("Timestamp server URL is not set!");
-                return;
-            }
             // Check if the Dlib path is set
             if (string.IsNullOrEmpty(DlibPath))
             {
-                OnSignToolOutput?.Invoke("Dlib path is not set!");
-                return;
+                throw new InvalidOperationException("Dlib path is not set!");
             }
+
+            // Check if the Dlib file exists
+            if (!File.Exists(DlibPath))
+            {
+                throw new InvalidOperationException($"Dlib file not found at: {DlibPath}");
+            }
+
             // Check if the Dmdf path is set
             if (string.IsNullOrEmpty(DmdfPath))
             {
-                OnSignToolOutput?.Invoke("Dmdf path is not set!");
-                return;
+                throw new InvalidOperationException("Dmdf path is not set!");
             }
-            
-            // Parse data needed to sign the target assembly
-            var processSha256 = new Process
-            {
-                StartInfo = new ProcessStartInfo(SignToolExe)
-                {
-                    Arguments = $@"sign {GlobalOptionSwitches()} /fd sha256 /tr ""{_timestampServer}"" /td sha256 /dlib ""{DlibPath}"" /dmdf ""{DmdfPath}"" ""{targetAssembly}""",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true
-                }
-            };
-            // Handle the output and error data received from the process
-            processSha256.OutputDataReceived += (sender, e) =>
-            {
-                OnSignToolOutput?.Invoke(e.Data);
-            };
-            processSha256.ErrorDataReceived += (sender, e) =>
-            {
-                OnSignToolOutput?.Invoke(e.Data);
-            };
-            processSha256.Exited += (sender, e) =>
-            {
-                OnSignToolOutput?.Invoke("Exited: " + e);
-            };
 
-            // Start the process and begin reading the output and error streams
-            try
+            // Check if the Dmdf file exists
+            if (!File.Exists(DmdfPath))
             {
-                processSha256.Start();
-                processSha256.BeginOutputReadLine();
-                processSha256.BeginErrorReadLine();
+                throw new InvalidOperationException($"Dmdf file not found at: {DmdfPath}");
             }
-            catch (Exception ex)
-            {
-                OnSignToolOutput?.Invoke(ex.Message);
-            }
+
+            // For Trusted Signing, always use the fixed timestamp server
+            // The timestampUrl parameter is ignored because Trusted Signing uses a fixed timestamp URL
+            var arguments = $@"sign {GlobalOptionSwitches()} /fd sha256 /tr ""{_timestampServer}"" /td sha256 /dlib ""{DlibPath}"" /dmdf ""{DmdfPath}"" ""{targetAssembly}""";
+
+            return arguments;
         }
 
-        private string GlobalOptionSwitches()
+        // Override the base method to handle endpoint switching for Trusted Signing
+        public void UpdateEndpoint(string newEndpoint)
         {
-            switch (Verbose)
+            // Recreate the JSON file with the new endpoint
+            var jsonContent = new
             {
-                case true when Debug:
-                    return "/v /debug";
-                case true:
-                    return "/v";
-                default:
-                    return Debug ? "/debug" : string.Empty;
+                Endpoint = newEndpoint,
+                CodeSigningAccountName = _codeSigningAccountName,
+                CertificateProfileName = _certificateProfileName,
+                CorrelationIdData = _correlationIdData
+            };
+
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+
+            // Delete old file if it exists
+            if (!string.IsNullOrEmpty(DmdfPath) && File.Exists(DmdfPath))
+            {
+                File.Delete(DmdfPath);
             }
+
+            // Create new JSON file with updated endpoint
+            string tempFilePath = Path.GetTempFileName();
+            string jsonFilePath = Path.ChangeExtension(tempFilePath, ".json");
+            File.WriteAllText(jsonFilePath, JsonSerializer.Serialize(jsonContent, options));
+
+            DmdfPath = jsonFilePath;
         }
     }
 }
