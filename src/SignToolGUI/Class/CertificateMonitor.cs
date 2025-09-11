@@ -9,6 +9,9 @@ namespace SignToolGUI.Class
 {
     public class CertificateMonitor
     {
+        private readonly int _warningThresholdDays;
+        private readonly int _criticalThresholdDays;
+
         public enum AlertLevel
         {
             None,
@@ -24,10 +27,7 @@ namespace SignToolGUI.Class
             public int DaysUntilExpiry { get; set; }
             public string Message { get; set; }
             public string CertificateName { get; set; }
-        }
-
-        private readonly int _warningThresholdDays;
-        private readonly int _criticalThresholdDays;
+        }        
 
         public CertificateMonitor(int warningThresholdDays = 90, int criticalThresholdDays = 30)
         {

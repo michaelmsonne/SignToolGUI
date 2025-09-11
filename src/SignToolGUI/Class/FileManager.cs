@@ -2,14 +2,14 @@
 
 namespace SignToolGUI.Class
 {
-    class Files
+    class FileManager
     {
         public static string ConfigIniPath
         {
             get
             {
                 // Path to the configuration file
-                var configIniPathvar = ProgramDataFilePath + @"\Data.ini";
+                var configIniPathvar = ProgramDataFilePath + @"\Config.ini";
                 return configIniPathvar;
             }
         }

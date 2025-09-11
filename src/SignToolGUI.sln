@@ -16,15 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "SignToolGUI Installer", "AI Setup Project\SignToolGUI Installer.aiproj", "{EED69928-407C-4C65-89A8-56244E46764D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items (2)", "Solution Items (2)", "{17D2B0EB-13B6-4E9E-BEF2-4D99470588B4}"
-	ProjectSection(SolutionItems) = preProject
-		..\CHANGELOG.MD = ..\CHANGELOG.MD
-		..\LICENSE.md = ..\LICENSE.md
-		..\Notes.md = ..\Notes.md
-		..\README.md = ..\README.md
-		..\SECURITY.md = ..\SECURITY.md
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		All|Any CPU = All|Any CPU

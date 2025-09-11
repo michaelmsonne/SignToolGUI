@@ -39,6 +39,7 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.labelTimeStampServer = new System.Windows.Forms.Label();
             this.groupBoxFiles = new System.Windows.Forms.GroupBox();
+            this.buttonVerifySignatures = new System.Windows.Forms.Button();
             this.ResetJob = new System.Windows.Forms.Button();
             this.checkBoxShowOutput = new System.Windows.Forms.CheckBox();
             this.checkBoxAll = new System.Windows.Forms.CheckBox();
@@ -56,13 +57,18 @@
             this.textBoxSignToolPath = new System.Windows.Forms.TextBox();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manageTimestampServersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.certificateMonitoringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkCertificateExpiryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showCertificateStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportSigningReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportReportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportReportTXTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportReportHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openTodaysLogfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.certificateMonitoringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkCertificateExpiryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showCertificateStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelCertificateInformation = new System.Windows.Forms.Label();
             this.comboBoxCertificateStore = new System.Windows.Forms.ComboBox();
@@ -81,6 +87,9 @@
             this.groupBoxPFXCertificate = new System.Windows.Forms.GroupBox();
             this.buttonShowSigninigCertificatePFX = new System.Windows.Forms.Button();
             this.groupBoxWindowsCertificateStore = new System.Windows.Forms.GroupBox();
+            this.lableSelectedCertificate = new System.Windows.Forms.Label();
+            this.labelFilterCerts = new System.Windows.Forms.Label();
+            this.textBoxCertificateSearch = new System.Windows.Forms.TextBox();
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -104,7 +113,7 @@
             this.labelSignedBuildState = new System.Windows.Forms.Label();
             this.linkLabelOpenTrustedSigningPortal = new System.Windows.Forms.LinkLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.manageTimestampServersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBoxValidatePasswordOnSave = new System.Windows.Forms.CheckBox();
             this.groupBoxFiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxCertificateInformation.SuspendLayout();
@@ -119,7 +128,7 @@
             // buttonBrowseSignTool
             // 
             this.buttonBrowseSignTool.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonBrowseSignTool.Location = new System.Drawing.Point(306, 16);
+            this.buttonBrowseSignTool.Location = new System.Drawing.Point(221, 17);
             this.buttonBrowseSignTool.Name = "buttonBrowseSignTool";
             this.buttonBrowseSignTool.Size = new System.Drawing.Size(61, 22);
             this.buttonBrowseSignTool.TabIndex = 2;
@@ -145,6 +154,7 @@
             // 
             this.groupBoxFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxFiles.Controls.Add(this.buttonVerifySignatures);
             this.groupBoxFiles.Controls.Add(this.ResetJob);
             this.groupBoxFiles.Controls.Add(this.checkBoxShowOutput);
             this.groupBoxFiles.Controls.Add(this.checkBoxAll);
@@ -159,6 +169,18 @@
             this.groupBoxFiles.TabIndex = 1;
             this.groupBoxFiles.TabStop = false;
             this.groupBoxFiles.Text = "File(s) to digital signing";
+            // 
+            // buttonVerifySignatures
+            // 
+            this.buttonVerifySignatures.Location = new System.Drawing.Point(344, 190);
+            this.buttonVerifySignatures.Name = "buttonVerifySignatures";
+            this.buttonVerifySignatures.Size = new System.Drawing.Size(143, 23);
+            this.buttonVerifySignatures.TabIndex = 10;
+            this.buttonVerifySignatures.Text = "Verify Signatures for files";
+            this.toolTip.SetToolTip(this.buttonVerifySignatures, "For the files selected in \"File(s) to digital signing\" (the files itself) - not t" +
+        "he same data for the report");
+            this.buttonVerifySignatures.UseVisualStyleBackColor = true;
+            this.buttonVerifySignatures.Click += new System.EventHandler(this.buttonVerifySignatures_Click);
             // 
             // ResetJob
             // 
@@ -281,6 +303,8 @@
             this.splitButtonSign.SplitMenu = this.contextMenuSignSwitches;
             this.splitButtonSign.TabIndex = 3;
             this.splitButtonSign.Text = "Sign...";
+            this.toolTip.SetToolTip(this.splitButtonSign, "Sign files selected - will also validate them on signing for Signing Report (opti" +
+        "onal)");
             this.splitButtonSign.UseVisualStyleBackColor = true;
             this.splitButtonSign.Click += new System.EventHandler(this.SplitButtonSign_Click);
             // 
@@ -309,9 +333,9 @@
             // textBoxSignToolPath
             // 
             this.textBoxSignToolPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxSignToolPath.Location = new System.Drawing.Point(127, 17);
+            this.textBoxSignToolPath.Location = new System.Drawing.Point(64, 19);
             this.textBoxSignToolPath.Name = "textBoxSignToolPath";
-            this.textBoxSignToolPath.Size = new System.Drawing.Size(173, 20);
+            this.textBoxSignToolPath.Size = new System.Drawing.Size(151, 20);
             this.textBoxSignToolPath.TabIndex = 5;
             // 
             // menuStrip
@@ -330,6 +354,7 @@
             this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.manageTimestampServersToolStripMenuItem,
             this.certificateMonitoringToolStripMenuItem,
+            this.exportSigningReportToolStripMenuItem,
             this.logsToolStripMenuItem,
             this.changelogToolStripMenuItem,
             this.aboutToolStripMenuItem});
@@ -337,39 +362,13 @@
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.menuToolStripMenuItem.Text = "Menu";
             // 
-            // logsToolStripMenuItem
+            // manageTimestampServersToolStripMenuItem
             // 
-            this.logsToolStripMenuItem.BackColor = System.Drawing.Color.White;
-            this.logsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openTodaysLogfileToolStripMenuItem,
-            this.openLogFolderToolStripMenuItem});
-            this.logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            this.logsToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.logsToolStripMenuItem.Text = "Logs";
-            // 
-            // openTodaysLogfileToolStripMenuItem
-            // 
-            this.openTodaysLogfileToolStripMenuItem.BackColor = System.Drawing.Color.White;
-            this.openTodaysLogfileToolStripMenuItem.Name = "openTodaysLogfileToolStripMenuItem";
-            this.openTodaysLogfileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openTodaysLogfileToolStripMenuItem.Text = "Open todays logfile";
-            this.openTodaysLogfileToolStripMenuItem.Click += new System.EventHandler(this.OpenTodaysLogfileToolStripMenuItem_Click);
-            // 
-            // openLogFolderToolStripMenuItem
-            // 
-            this.openLogFolderToolStripMenuItem.BackColor = System.Drawing.Color.White;
-            this.openLogFolderToolStripMenuItem.Name = "openLogFolderToolStripMenuItem";
-            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openLogFolderToolStripMenuItem.Text = "Open log folder";
-            this.openLogFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenLogfolderToolStripMenuItem_Click);
-            // 
-            // changelogToolStripMenuItem
-            // 
-            this.changelogToolStripMenuItem.BackColor = System.Drawing.Color.White;
-            this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
-            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.changelogToolStripMenuItem.Text = "Changelog";
-            this.changelogToolStripMenuItem.Click += new System.EventHandler(this.changelogToolStripMenuItem_Click);
+            this.manageTimestampServersToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.manageTimestampServersToolStripMenuItem.Name = "manageTimestampServersToolStripMenuItem";
+            this.manageTimestampServersToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.manageTimestampServersToolStripMenuItem.Text = "Manage Timestamp Servers";
+            this.manageTimestampServersToolStripMenuItem.Click += new System.EventHandler(this.manageTimestampServersToolStripMenuItem_Click);
             // 
             // certificateMonitoringToolStripMenuItem
             // 
@@ -378,14 +377,14 @@
             this.checkCertificateExpiryToolStripMenuItem,
             this.showCertificateStatusToolStripMenuItem});
             this.certificateMonitoringToolStripMenuItem.Name = "certificateMonitoringToolStripMenuItem";
-            this.certificateMonitoringToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.certificateMonitoringToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.certificateMonitoringToolStripMenuItem.Text = "Certificate Monitoring";
             // 
             // checkCertificateExpiryToolStripMenuItem
             // 
             this.checkCertificateExpiryToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.checkCertificateExpiryToolStripMenuItem.Name = "checkCertificateExpiryToolStripMenuItem";
-            this.checkCertificateExpiryToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.checkCertificateExpiryToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.checkCertificateExpiryToolStripMenuItem.Text = "Check Certificate Expiry";
             this.checkCertificateExpiryToolStripMenuItem.Click += new System.EventHandler(this.checkCertificateExpiryToolStripMenuItem_Click);
             // 
@@ -393,15 +392,84 @@
             // 
             this.showCertificateStatusToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.showCertificateStatusToolStripMenuItem.Name = "showCertificateStatusToolStripMenuItem";
-            this.showCertificateStatusToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.showCertificateStatusToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.showCertificateStatusToolStripMenuItem.Text = "Show Certificate Status";
             this.showCertificateStatusToolStripMenuItem.Click += new System.EventHandler(this.showCertificateStatusToolStripMenuItem_Click);
+            // 
+            // exportSigningReportToolStripMenuItem
+            // 
+            this.exportSigningReportToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.exportSigningReportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportReportCSVToolStripMenuItem,
+            this.exportReportTXTToolStripMenuItem,
+            this.exportReportHTMLToolStripMenuItem});
+            this.exportSigningReportToolStripMenuItem.Name = "exportSigningReportToolStripMenuItem";
+            this.exportSigningReportToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.exportSigningReportToolStripMenuItem.Text = "Export signing report";
+            // 
+            // exportReportCSVToolStripMenuItem
+            // 
+            this.exportReportCSVToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.exportReportCSVToolStripMenuItem.Name = "exportReportCSVToolStripMenuItem";
+            this.exportReportCSVToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.exportReportCSVToolStripMenuItem.Text = "Export Report (CSV)";
+            this.exportReportCSVToolStripMenuItem.Click += new System.EventHandler(this.exportReportCSVToolStripMenuItem_Click);
+            // 
+            // exportReportTXTToolStripMenuItem
+            // 
+            this.exportReportTXTToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.exportReportTXTToolStripMenuItem.Name = "exportReportTXTToolStripMenuItem";
+            this.exportReportTXTToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.exportReportTXTToolStripMenuItem.Text = "Export Report (TXT)";
+            this.exportReportTXTToolStripMenuItem.Click += new System.EventHandler(this.exportReportTXTToolStripMenuItem_Click);
+            // 
+            // exportReportHTMLToolStripMenuItem
+            // 
+            this.exportReportHTMLToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.exportReportHTMLToolStripMenuItem.Name = "exportReportHTMLToolStripMenuItem";
+            this.exportReportHTMLToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.exportReportHTMLToolStripMenuItem.Text = "Export Report (HTML)";
+            this.exportReportHTMLToolStripMenuItem.Click += new System.EventHandler(this.exportReportHTMLToolStripMenuItem_Click);
+            // 
+            // logsToolStripMenuItem
+            // 
+            this.logsToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.logsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openTodaysLogfileToolStripMenuItem,
+            this.openLogFolderToolStripMenuItem});
+            this.logsToolStripMenuItem.Name = "logsToolStripMenuItem";
+            this.logsToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.logsToolStripMenuItem.Text = "Logs";
+            // 
+            // openTodaysLogfileToolStripMenuItem
+            // 
+            this.openTodaysLogfileToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.openTodaysLogfileToolStripMenuItem.Name = "openTodaysLogfileToolStripMenuItem";
+            this.openTodaysLogfileToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.openTodaysLogfileToolStripMenuItem.Text = "Open todays logfile";
+            this.openTodaysLogfileToolStripMenuItem.Click += new System.EventHandler(this.OpenTodaysLogfileToolStripMenuItem_Click);
+            // 
+            // openLogFolderToolStripMenuItem
+            // 
+            this.openLogFolderToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.openLogFolderToolStripMenuItem.Name = "openLogFolderToolStripMenuItem";
+            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.openLogFolderToolStripMenuItem.Text = "Open log folder";
+            this.openLogFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenLogfolderToolStripMenuItem_Click);
+            // 
+            // changelogToolStripMenuItem
+            // 
+            this.changelogToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
+            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.changelogToolStripMenuItem.Text = "Changelog";
+            this.changelogToolStripMenuItem.Click += new System.EventHandler(this.changelogToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -421,16 +489,16 @@
             this.comboBoxCertificateStore.Items.AddRange(new object[] {
             "Current User",
             "Local Machine"});
-            this.comboBoxCertificateStore.Location = new System.Drawing.Point(100, 22);
+            this.comboBoxCertificateStore.Location = new System.Drawing.Point(113, 22);
             this.comboBoxCertificateStore.Name = "comboBoxCertificateStore";
-            this.comboBoxCertificateStore.Size = new System.Drawing.Size(113, 21);
+            this.comboBoxCertificateStore.Size = new System.Drawing.Size(100, 21);
             this.comboBoxCertificateStore.TabIndex = 1;
             this.comboBoxCertificateStore.SelectedIndexChanged += new System.EventHandler(this.ComboBoxCertificateStore_SelectedIndexChanged);
             // 
             // labelCertificateStore
             // 
             this.labelCertificateStore.AutoSize = true;
-            this.labelCertificateStore.Location = new System.Drawing.Point(9, 25);
+            this.labelCertificateStore.Location = new System.Drawing.Point(6, 26);
             this.labelCertificateStore.Name = "labelCertificateStore";
             this.labelCertificateStore.Size = new System.Drawing.Size(85, 13);
             this.labelCertificateStore.TabIndex = 0;
@@ -451,16 +519,16 @@
             // 
             this.comboBoxCertificatesInStore.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxCertificatesInStore.FormattingEnabled = true;
-            this.comboBoxCertificatesInStore.Location = new System.Drawing.Point(9, 52);
+            this.comboBoxCertificatesInStore.Location = new System.Drawing.Point(113, 76);
             this.comboBoxCertificatesInStore.Name = "comboBoxCertificatesInStore";
-            this.comboBoxCertificatesInStore.Size = new System.Drawing.Size(291, 21);
+            this.comboBoxCertificatesInStore.Size = new System.Drawing.Size(187, 21);
             this.comboBoxCertificatesInStore.TabIndex = 3;
             this.comboBoxCertificatesInStore.SelectedIndexChanged += new System.EventHandler(this.ComboBoxCertificates_SelectedIndexChanged);
             // 
             // buttonShowSigninigCertificateStore
             // 
             this.buttonShowSigninigCertificateStore.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonShowSigninigCertificateStore.Location = new System.Drawing.Point(306, 50);
+            this.buttonShowSigninigCertificateStore.Location = new System.Drawing.Point(306, 75);
             this.buttonShowSigninigCertificateStore.Name = "buttonShowSigninigCertificateStore";
             this.buttonShowSigninigCertificateStore.Size = new System.Drawing.Size(61, 23);
             this.buttonShowSigninigCertificateStore.TabIndex = 4;
@@ -512,7 +580,7 @@
             this.textBoxPFXPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxPFXPassword.Location = new System.Drawing.Point(70, 52);
             this.textBoxPFXPassword.Name = "textBoxPFXPassword";
-            this.textBoxPFXPassword.Size = new System.Drawing.Size(163, 20);
+            this.textBoxPFXPassword.Size = new System.Drawing.Size(296, 20);
             this.textBoxPFXPassword.TabIndex = 3;
             this.textBoxPFXPassword.UseSystemPasswordChar = true;
             this.textBoxPFXPassword.TextChanged += new System.EventHandler(this.textBoxPFXPassword_TextChanged);
@@ -543,7 +611,7 @@
             this.radioButtonWindowsCertificateStore.AutoSize = true;
             this.radioButtonWindowsCertificateStore.Checked = true;
             this.radioButtonWindowsCertificateStore.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonWindowsCertificateStore.Location = new System.Drawing.Point(15, 143);
+            this.radioButtonWindowsCertificateStore.Location = new System.Drawing.Point(15, 170);
             this.radioButtonWindowsCertificateStore.Name = "radioButtonWindowsCertificateStore";
             this.radioButtonWindowsCertificateStore.Size = new System.Drawing.Size(172, 17);
             this.radioButtonWindowsCertificateStore.TabIndex = 10;
@@ -554,6 +622,7 @@
             // 
             // groupBoxPFXCertificate
             // 
+            this.groupBoxPFXCertificate.Controls.Add(this.checkBoxValidatePasswordOnSave);
             this.groupBoxPFXCertificate.Controls.Add(this.PFXFilePassword);
             this.groupBoxPFXCertificate.Controls.Add(this.buttonSelectPFXCertificate);
             this.groupBoxPFXCertificate.Controls.Add(this.textBoxPFXPassword);
@@ -562,7 +631,7 @@
             this.groupBoxPFXCertificate.Enabled = false;
             this.groupBoxPFXCertificate.Location = new System.Drawing.Point(7, 55);
             this.groupBoxPFXCertificate.Name = "groupBoxPFXCertificate";
-            this.groupBoxPFXCertificate.Size = new System.Drawing.Size(373, 82);
+            this.groupBoxPFXCertificate.Size = new System.Drawing.Size(373, 109);
             this.groupBoxPFXCertificate.TabIndex = 13;
             this.groupBoxPFXCertificate.TabStop = false;
             this.groupBoxPFXCertificate.Text = "Certificate File";
@@ -570,7 +639,7 @@
             // buttonShowSigninigCertificatePFX
             // 
             this.buttonShowSigninigCertificatePFX.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonShowSigninigCertificatePFX.Location = new System.Drawing.Point(241, 50);
+            this.buttonShowSigninigCertificatePFX.Location = new System.Drawing.Point(241, 78);
             this.buttonShowSigninigCertificatePFX.Name = "buttonShowSigninigCertificatePFX";
             this.buttonShowSigninigCertificatePFX.Size = new System.Drawing.Size(126, 23);
             this.buttonShowSigninigCertificatePFX.TabIndex = 4;
@@ -580,17 +649,47 @@
             // 
             // groupBoxWindowsCertificateStore
             // 
+            this.groupBoxWindowsCertificateStore.Controls.Add(this.lableSelectedCertificate);
+            this.groupBoxWindowsCertificateStore.Controls.Add(this.labelFilterCerts);
+            this.groupBoxWindowsCertificateStore.Controls.Add(this.textBoxCertificateSearch);
             this.groupBoxWindowsCertificateStore.Controls.Add(this.comboBoxCertificateStore);
             this.groupBoxWindowsCertificateStore.Controls.Add(this.labelCertificateStore);
             this.groupBoxWindowsCertificateStore.Controls.Add(this.checkBoxShowExpiredCertificates);
             this.groupBoxWindowsCertificateStore.Controls.Add(this.comboBoxCertificatesInStore);
             this.groupBoxWindowsCertificateStore.Controls.Add(this.buttonShowSigninigCertificateStore);
-            this.groupBoxWindowsCertificateStore.Location = new System.Drawing.Point(7, 168);
+            this.groupBoxWindowsCertificateStore.Location = new System.Drawing.Point(7, 195);
             this.groupBoxWindowsCertificateStore.Name = "groupBoxWindowsCertificateStore";
-            this.groupBoxWindowsCertificateStore.Size = new System.Drawing.Size(373, 82);
+            this.groupBoxWindowsCertificateStore.Size = new System.Drawing.Size(373, 109);
             this.groupBoxWindowsCertificateStore.TabIndex = 11;
             this.groupBoxWindowsCertificateStore.TabStop = false;
             this.groupBoxWindowsCertificateStore.Text = "Code Sign certificates available in Windows Certificate Store";
+            // 
+            // lableSelectedCertificate
+            // 
+            this.lableSelectedCertificate.AutoSize = true;
+            this.lableSelectedCertificate.Location = new System.Drawing.Point(6, 80);
+            this.lableSelectedCertificate.Name = "lableSelectedCertificate";
+            this.lableSelectedCertificate.Size = new System.Drawing.Size(101, 13);
+            this.lableSelectedCertificate.TabIndex = 7;
+            this.lableSelectedCertificate.Text = "Selected certificate:";
+            // 
+            // labelFilterCerts
+            // 
+            this.labelFilterCerts.AutoSize = true;
+            this.labelFilterCerts.Location = new System.Drawing.Point(6, 52);
+            this.labelFilterCerts.Name = "labelFilterCerts";
+            this.labelFilterCerts.Size = new System.Drawing.Size(81, 13);
+            this.labelFilterCerts.TabIndex = 6;
+            this.labelFilterCerts.Text = "Search or Filter:";
+            // 
+            // textBoxCertificateSearch
+            // 
+            this.textBoxCertificateSearch.Location = new System.Drawing.Point(113, 50);
+            this.textBoxCertificateSearch.Name = "textBoxCertificateSearch";
+            this.textBoxCertificateSearch.Size = new System.Drawing.Size(254, 20);
+            this.textBoxCertificateSearch.TabIndex = 5;
+            this.toolTip.SetToolTip(this.textBoxCertificateSearch, "Type part of the certificate name, issuer, or thumbprint to filter the list.");
+            this.textBoxCertificateSearch.TextChanged += new System.EventHandler(this.textBoxCertificateSearch_TextChanged);
             // 
             // statusBar
             // 
@@ -710,9 +809,9 @@
             this.groupBoxSignTool.Controls.Add(this.buttonBrowseSignTool);
             this.groupBoxSignTool.Controls.Add(this.textBoxSignToolPath);
             this.groupBoxSignTool.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxSignTool.Location = new System.Drawing.Point(7, 385);
+            this.groupBoxSignTool.Location = new System.Drawing.Point(386, 387);
             this.groupBoxSignTool.Name = "groupBoxSignTool";
-            this.groupBoxSignTool.Size = new System.Drawing.Size(373, 45);
+            this.groupBoxSignTool.Size = new System.Drawing.Size(288, 45);
             this.groupBoxSignTool.TabIndex = 20;
             this.groupBoxSignTool.TabStop = false;
             this.groupBoxSignTool.Text = "Signtool";
@@ -721,11 +820,11 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(6, 20);
+            this.label1.Location = new System.Drawing.Point(7, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(108, 13);
+            this.label1.Size = new System.Drawing.Size(51, 13);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Signtool.exe location:";
+            this.label1.Text = "Location:";
             // 
             // groupBoxTrustedSigningMetadata
             // 
@@ -736,7 +835,7 @@
             this.groupBoxTrustedSigningMetadata.Controls.Add(this.textBoxCertificateProfileName);
             this.groupBoxTrustedSigningMetadata.Controls.Add(this.textBoxCodeSigningAccountName);
             this.groupBoxTrustedSigningMetadata.Enabled = false;
-            this.groupBoxTrustedSigningMetadata.Location = new System.Drawing.Point(7, 284);
+            this.groupBoxTrustedSigningMetadata.Location = new System.Drawing.Point(7, 335);
             this.groupBoxTrustedSigningMetadata.Name = "groupBoxTrustedSigningMetadata";
             this.groupBoxTrustedSigningMetadata.Size = new System.Drawing.Size(373, 97);
             this.groupBoxTrustedSigningMetadata.TabIndex = 23;
@@ -799,7 +898,7 @@
             // 
             this.radioButtonTrustedSigning.AutoSize = true;
             this.radioButtonTrustedSigning.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonTrustedSigning.Location = new System.Drawing.Point(15, 258);
+            this.radioButtonTrustedSigning.Location = new System.Drawing.Point(13, 309);
             this.radioButtonTrustedSigning.Name = "radioButtonTrustedSigning";
             this.radioButtonTrustedSigning.Size = new System.Drawing.Size(114, 17);
             this.radioButtonTrustedSigning.TabIndex = 24;
@@ -820,7 +919,7 @@
             // 
             this.linkLabelOpenTrustedSigningPortal.AutoSize = true;
             this.linkLabelOpenTrustedSigningPortal.Enabled = false;
-            this.linkLabelOpenTrustedSigningPortal.Location = new System.Drawing.Point(135, 262);
+            this.linkLabelOpenTrustedSigningPortal.Location = new System.Drawing.Point(133, 313);
             this.linkLabelOpenTrustedSigningPortal.Name = "linkLabelOpenTrustedSigningPortal";
             this.linkLabelOpenTrustedSigningPortal.Size = new System.Drawing.Size(176, 13);
             this.linkLabelOpenTrustedSigningPortal.TabIndex = 27;
@@ -830,13 +929,15 @@
         "ng accounts in your tenant you have.");
             this.linkLabelOpenTrustedSigningPortal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelOpenTrustedSigningPortal_LinkClicked);
             // 
-            // manageTimestampServersToolStripMenuItem
+            // checkBoxValidatePasswordOnSave
             // 
-            this.manageTimestampServersToolStripMenuItem.BackColor = System.Drawing.Color.White;
-            this.manageTimestampServersToolStripMenuItem.Name = "manageTimestampServersToolStripMenuItem";
-            this.manageTimestampServersToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.manageTimestampServersToolStripMenuItem.Text = "Manage Timestamp Servers";
-            this.manageTimestampServersToolStripMenuItem.Click += new System.EventHandler(this.manageTimestampServersToolStripMenuItem_Click);
+            this.checkBoxValidatePasswordOnSave.AutoSize = true;
+            this.checkBoxValidatePasswordOnSave.Location = new System.Drawing.Point(9, 83);
+            this.checkBoxValidatePasswordOnSave.Name = "checkBoxValidatePasswordOnSave";
+            this.checkBoxValidatePasswordOnSave.Size = new System.Drawing.Size(183, 17);
+            this.checkBoxValidatePasswordOnSave.TabIndex = 5;
+            this.checkBoxValidatePasswordOnSave.Text = "Validate password on save/close";
+            this.checkBoxValidatePasswordOnSave.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -965,6 +1066,15 @@
         private System.Windows.Forms.ToolStripMenuItem checkCertificateExpiryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showCertificateStatusToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manageTimestampServersToolStripMenuItem;
+        private System.Windows.Forms.Label labelFilterCerts;
+        private System.Windows.Forms.TextBox textBoxCertificateSearch;
+        private System.Windows.Forms.Label lableSelectedCertificate;
+        private System.Windows.Forms.ToolStripMenuItem exportSigningReportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportReportCSVToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportReportTXTToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportReportHTMLToolStripMenuItem;
+        private System.Windows.Forms.Button buttonVerifySignatures;
+        private System.Windows.Forms.CheckBox checkBoxValidatePasswordOnSave;
     }
 }
 

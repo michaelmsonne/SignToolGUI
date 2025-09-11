@@ -11,7 +11,7 @@ namespace SignToolGUI.Forms
     public partial class TimestampServerManagementForm : Form
     {
         private TimestampManager _timestampManager;
-        private List<TimestampServer> _currentServers;
+        private List<TimestampServerManager> _currentServers;
         private bool _isModified = false;
         private string _configIniPath;
         private bool _isTrustedSigning;
@@ -21,7 +21,7 @@ namespace SignToolGUI.Forms
             _timestampManager = timestampManager;
             _configIniPath = configIniPath; // Store the config path
             _isTrustedSigning = isTrustedSigning;
-            _currentServers = new List<TimestampServer>();
+            _currentServers = new List<TimestampServerManager>();
             InitializeComponent();
             UpdateGroupBoxTitle();
             LoadServers();
@@ -109,7 +109,7 @@ namespace SignToolGUI.Forms
         {
             if (listViewServers.SelectedItems.Count == 0) return;
 
-            var selectedServer = (TimestampServer)listViewServers.SelectedItems[0].Tag;
+            var selectedServer = (TimestampServerManager)listViewServers.SelectedItems[0].Tag;
             using (var dialog = new TimestampServerEditForm(selectedServer))
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
@@ -132,7 +132,7 @@ namespace SignToolGUI.Forms
         {
             if (listViewServers.SelectedItems.Count == 0) return;
 
-            var selectedServer = (TimestampServer)listViewServers.SelectedItems[0].Tag;
+            var selectedServer = (TimestampServerManager)listViewServers.SelectedItems[0].Tag;
             var result = MessageBox.Show(
                 $"Are you sure you want to remove '{selectedServer.DisplayName}'?",
                 "Confirm Removal",
@@ -188,7 +188,7 @@ namespace SignToolGUI.Forms
         {
             if (listViewServers.SelectedItems.Count == 0) return;
 
-            var selectedServer = (TimestampServer)listViewServers.SelectedItems[0].Tag;
+            var selectedServer = (TimestampServerManager)listViewServers.SelectedItems[0].Tag;
             buttonTest.Enabled = false;
             progressBar.Visible = true;
             progressBar.Style = ProgressBarStyle.Marquee;

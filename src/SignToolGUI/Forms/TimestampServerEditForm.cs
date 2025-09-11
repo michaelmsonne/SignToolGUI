@@ -13,9 +13,9 @@ namespace SignToolGUI.Forms
 {
     public partial class TimestampServerEditForm : Form
     {
-        private TimestampServer _originalServer;
+        private TimestampServerManager _originalServer;
 
-        public TimestampServerEditForm(TimestampServer server = null)
+        public TimestampServerEditForm(TimestampServerManager server = null)
         {
             _originalServer = server;
             InitializeComponent();
@@ -31,7 +31,7 @@ namespace SignToolGUI.Forms
             }
         }
 
-        private void LoadServerData(TimestampServer server)
+        private void LoadServerData(TimestampServerManager server)
         {
             textBoxDisplayName.Text = server.DisplayName;
             textBoxUrl.Text = server.Url;
@@ -64,9 +64,9 @@ namespace SignToolGUI.Forms
             }
         }
 
-        public TimestampServer GetTimestampServer()
+        public TimestampServerManager GetTimestampServer()
         {
-            return new TimestampServer(
+            return new TimestampServerManager(
                 textBoxDisplayName.Text.Trim(),
                 textBoxUrl.Text.Trim(),
                 checkBoxEnabled.Checked,

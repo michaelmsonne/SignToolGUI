@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using static SignToolGUI.Class.FileLogger;
@@ -80,6 +79,7 @@ namespace SignToolGUI.Class
         /// <returns>Base64 encoded encrypted password with metadata</returns>
         public static string EncryptPassword(string plainText)
         {
+            // Check for null or empty input
             if (string.IsNullOrEmpty(plainText))
                 return string.Empty;
 
