@@ -203,6 +203,7 @@
     <ROW File="System.Buffers.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SYSTEM~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Buffers.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Buffers.dll&gt;" SelfReg="false"/>
     <ROW File="System.Runtime.CompilerServices.Unsafe.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SYSTEM~5.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll&gt;" SelfReg="false"/>
     <ROW File="System.IO.Pipelines.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_System.IO.Pipelines.dll" FileName="SYSTEM~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.IO.Pipelines.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.IO.Pipelines.dll&gt;" SelfReg="false"/>
+    <ROW File="SignToolGUI.exe.config" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SIGNTO~1.CON|SignToolGUI.exe.config" Attributes="0" SourcePath="..\SignToolGUI\bin\Release\SignToolGUI.exe.config" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.AppPathsComponent">
     <ROW Name="AI_APPPATH_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.Dlib.Core.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll]" Type="2" Content="0"/>
