@@ -15,7 +15,6 @@
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.IdentityModel.Abstractions.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_SignToolGUI.exe" Value="..\SignToolGUI\bin\Release"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_SignToolGUI.exe.config" Value="..\SignToolGUI\bin\Release"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_SplitButton.dll" Value="..\SignToolGUI\lib"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.Buffers.dll" Value="..\..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\18\Insiders\Common7\IDE\PublicAssemblies"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_System.ClientModel.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
@@ -68,7 +67,6 @@
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.dll" Value="Microsoft.Identity.Client.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.IdentityModel.Abstractions.dll" Value="Microsoft.IdentityModel.Abstractions.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe" Value="SignToolGUI.exe"/>
-    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe.config" Value="SignToolGUI.exe.config"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_SplitButton.dll" Value="SplitButton.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.Buffers.dll" Value="System.Buffers.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_System.ClientModel.dll" Value="System.ClientModel.dll"/>
@@ -205,7 +203,6 @@
     <ROW File="System.Buffers.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SYSTEM~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Buffers.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Buffers.dll&gt;" SelfReg="false"/>
     <ROW File="System.Runtime.CompilerServices.Unsafe.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SYSTEM~5.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.Runtime.CompilerServices.Unsafe.dll&gt;" SelfReg="false"/>
     <ROW File="System.IO.Pipelines.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_System.IO.Pipelines.dll" FileName="SYSTEM~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_System.IO.Pipelines.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_System.IO.Pipelines.dll&gt;" SelfReg="false"/>
-    <ROW File="SignToolGUI.exe.config" Component_="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" FileName="SIGNTO~1.CON|[|AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe.config]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_SignToolGUI.exe.config&gt;" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.AppPathsComponent">
     <ROW Name="AI_APPPATH_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.Dlib.Core.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll]" Type="2" Content="0"/>
@@ -221,7 +218,6 @@
     <ROW Name="AI_APPPATH_PERBUILD_Microsoft.Identity.Client.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_Microsoft.IdentityModel.Abstractions.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Microsoft.IdentityModel.Abstractions.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.IdentityModel.Abstractions.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_SignToolGUI.exe" Path="[|AI_PROPPATH_DIR_PERBUILD_SignToolGUI.exe]\[|AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe]" Type="2" Content="0"/>
-    <ROW Name="AI_APPPATH_PERBUILD_SignToolGUI.exe.config" Path="[|AI_PROPPATH_DIR_PERBUILD_SignToolGUI.exe.config]\[|AI_PROPPATH_FILENAME_PERBUILD_SignToolGUI.exe.config]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_SplitButton.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_SplitButton.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_SplitButton.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_System.Buffers.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.Buffers.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.Buffers.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_System.ClientModel.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_System.ClientModel.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_System.ClientModel.dll]" Type="2" Content="0"/>
@@ -435,6 +431,5 @@
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Buffers.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.Runtime.CompilerServices.Unsafe.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="References" OutputFile="System.IO.Pipelines.dll"/>
-    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="SignToolGUI.exe.config"/>
   </COMPONENT>
 </DOCUMENT>
