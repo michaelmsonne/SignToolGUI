@@ -27,7 +27,7 @@
       <Name>SignToolGUI</Name>
       <Project>{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}</Project>
       <Private>True</Private>
-      <OutputsToImport>PrimaryOutput;ContentOutput;References;LocalizedResourcesOutput;DocumentationOutput;ComTypeLibraryOutput</OutputsToImport>
+      <OutputsToImport>PrimaryOutput;ContentOutput;References;LocalizedResourcesOutput;DocumentationOutput;ComTypeLibraryOutput;SymbolsOutput</OutputsToImport>
     </ProjectReference>
   </ItemGroup>
   <Target Name="Build">
