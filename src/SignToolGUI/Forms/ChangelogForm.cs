@@ -24,6 +24,7 @@ namespace SignToolGUI.Forms
                                    " Improvements\n" +
                                    " - Persist Trusted Signing options (Code Signing Account Name and Certificate Profile) between sessions\n" +
                                    " - Restore last 'Files to Sign' list on startup\n" +
+                                   " - Added support for exporting the tools config for signing to .ps1 script format\n" +
                                    " - Add detailed Trusted Signing diagnostics in logs:\n" +
                                    "   - Log exact SignTool arguments used for the call\n" +
                                    "   - Log resolved and better check for absolute paths for DLIB and DMDF and the current working directory\n\n" +

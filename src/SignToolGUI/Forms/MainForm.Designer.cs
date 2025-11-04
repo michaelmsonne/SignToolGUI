@@ -85,6 +85,7 @@
             this.radioButtonPFXCertificate = new System.Windows.Forms.RadioButton();
             this.radioButtonWindowsCertificateStore = new System.Windows.Forms.RadioButton();
             this.groupBoxPFXCertificate = new System.Windows.Forms.GroupBox();
+            this.checkBoxValidatePasswordOnSave = new System.Windows.Forms.CheckBox();
             this.buttonShowSigninigCertificatePFX = new System.Windows.Forms.Button();
             this.groupBoxWindowsCertificateStore = new System.Windows.Forms.GroupBox();
             this.lableSelectedCertificate = new System.Windows.Forms.Label();
@@ -113,7 +114,7 @@
             this.labelSignedBuildState = new System.Windows.Forms.Label();
             this.linkLabelOpenTrustedSigningPortal = new System.Windows.Forms.LinkLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBoxValidatePasswordOnSave = new System.Windows.Forms.CheckBox();
+            this.buttonExportAsScript = new System.Windows.Forms.Button();
             this.groupBoxFiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxCertificateInformation.SuspendLayout();
@@ -366,7 +367,7 @@
             // 
             this.manageTimestampServersToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.manageTimestampServersToolStripMenuItem.Name = "manageTimestampServersToolStripMenuItem";
-            this.manageTimestampServersToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.manageTimestampServersToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.manageTimestampServersToolStripMenuItem.Text = "Manage Timestamp Servers";
             this.manageTimestampServersToolStripMenuItem.Click += new System.EventHandler(this.manageTimestampServersToolStripMenuItem_Click);
             // 
@@ -377,14 +378,14 @@
             this.checkCertificateExpiryToolStripMenuItem,
             this.showCertificateStatusToolStripMenuItem});
             this.certificateMonitoringToolStripMenuItem.Name = "certificateMonitoringToolStripMenuItem";
-            this.certificateMonitoringToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.certificateMonitoringToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.certificateMonitoringToolStripMenuItem.Text = "Certificate Monitoring";
             // 
             // checkCertificateExpiryToolStripMenuItem
             // 
             this.checkCertificateExpiryToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.checkCertificateExpiryToolStripMenuItem.Name = "checkCertificateExpiryToolStripMenuItem";
-            this.checkCertificateExpiryToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.checkCertificateExpiryToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
             this.checkCertificateExpiryToolStripMenuItem.Text = "Check Certificate Expiry";
             this.checkCertificateExpiryToolStripMenuItem.Click += new System.EventHandler(this.checkCertificateExpiryToolStripMenuItem_Click);
             // 
@@ -392,7 +393,7 @@
             // 
             this.showCertificateStatusToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.showCertificateStatusToolStripMenuItem.Name = "showCertificateStatusToolStripMenuItem";
-            this.showCertificateStatusToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.showCertificateStatusToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
             this.showCertificateStatusToolStripMenuItem.Text = "Show Certificate Status";
             this.showCertificateStatusToolStripMenuItem.Click += new System.EventHandler(this.showCertificateStatusToolStripMenuItem_Click);
             // 
@@ -404,7 +405,7 @@
             this.exportReportTXTToolStripMenuItem,
             this.exportReportHTMLToolStripMenuItem});
             this.exportSigningReportToolStripMenuItem.Name = "exportSigningReportToolStripMenuItem";
-            this.exportSigningReportToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.exportSigningReportToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.exportSigningReportToolStripMenuItem.Text = "Export signing report";
             // 
             // exportReportCSVToolStripMenuItem
@@ -438,7 +439,7 @@
             this.openTodaysLogfileToolStripMenuItem,
             this.openLogFolderToolStripMenuItem});
             this.logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            this.logsToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.logsToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.logsToolStripMenuItem.Text = "Logs";
             // 
             // openTodaysLogfileToolStripMenuItem
@@ -461,7 +462,7 @@
             // 
             this.changelogToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
-            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.changelogToolStripMenuItem.Text = "Changelog";
             this.changelogToolStripMenuItem.Click += new System.EventHandler(this.changelogToolStripMenuItem_Click);
             // 
@@ -469,7 +470,7 @@
             // 
             this.aboutToolStripMenuItem.BackColor = System.Drawing.Color.White;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -635,6 +636,16 @@
             this.groupBoxPFXCertificate.TabIndex = 13;
             this.groupBoxPFXCertificate.TabStop = false;
             this.groupBoxPFXCertificate.Text = "Certificate File";
+            // 
+            // checkBoxValidatePasswordOnSave
+            // 
+            this.checkBoxValidatePasswordOnSave.AutoSize = true;
+            this.checkBoxValidatePasswordOnSave.Location = new System.Drawing.Point(9, 83);
+            this.checkBoxValidatePasswordOnSave.Name = "checkBoxValidatePasswordOnSave";
+            this.checkBoxValidatePasswordOnSave.Size = new System.Drawing.Size(183, 17);
+            this.checkBoxValidatePasswordOnSave.TabIndex = 5;
+            this.checkBoxValidatePasswordOnSave.Text = "Validate password on save/close";
+            this.checkBoxValidatePasswordOnSave.UseVisualStyleBackColor = true;
             // 
             // buttonShowSigninigCertificatePFX
             // 
@@ -929,15 +940,15 @@
         "ng accounts in your tenant you have.");
             this.linkLabelOpenTrustedSigningPortal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelOpenTrustedSigningPortal_LinkClicked);
             // 
-            // checkBoxValidatePasswordOnSave
+            // buttonExportAsScript
             // 
-            this.checkBoxValidatePasswordOnSave.AutoSize = true;
-            this.checkBoxValidatePasswordOnSave.Location = new System.Drawing.Point(9, 83);
-            this.checkBoxValidatePasswordOnSave.Name = "checkBoxValidatePasswordOnSave";
-            this.checkBoxValidatePasswordOnSave.Size = new System.Drawing.Size(183, 17);
-            this.checkBoxValidatePasswordOnSave.TabIndex = 5;
-            this.checkBoxValidatePasswordOnSave.Text = "Validate password on save/close";
-            this.checkBoxValidatePasswordOnSave.UseVisualStyleBackColor = true;
+            this.buttonExportAsScript.Location = new System.Drawing.Point(356, 830);
+            this.buttonExportAsScript.Name = "buttonExportAsScript";
+            this.buttonExportAsScript.Size = new System.Drawing.Size(126, 23);
+            this.buttonExportAsScript.TabIndex = 28;
+            this.buttonExportAsScript.Text = "Export as script (.ps1)";
+            this.buttonExportAsScript.UseVisualStyleBackColor = true;
+            this.buttonExportAsScript.Click += new System.EventHandler(this.buttonExportAsScript_Click);
             // 
             // MainForm
             // 
@@ -945,6 +956,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(680, 859);
+            this.Controls.Add(this.buttonExportAsScript);
             this.Controls.Add(this.linkLabelOpenTrustedSigningPortal);
             this.Controls.Add(this.labelSignedBuildState);
             this.Controls.Add(this.radioButtonTrustedSigning);
@@ -1075,6 +1087,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportReportHTMLToolStripMenuItem;
         private System.Windows.Forms.Button buttonVerifySignatures;
         private System.Windows.Forms.CheckBox checkBoxValidatePasswordOnSave;
+        private System.Windows.Forms.Button buttonExportAsScript;
     }
 }
 
