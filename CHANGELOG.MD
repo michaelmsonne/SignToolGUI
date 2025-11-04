@@ -5,7 +5,8 @@
 - Restore last "Files to Sign" list on startup
 - Add detailed Trusted Signing diagnostics in logs:
   - Log exact SignTool arguments used for the call
-  - Log resolved and better check for absolute paths for DLIB and DMDF and the current working directory
+  - Log resolved absolute paths for DLIB and DMDF and the current working directory
+- New feature: Export current GUI configuration and selected files to a PowerShell command script (.ps1) for offline/CI signing (Windows Store, PFX, and Trusted Signing supported)
 
 ## Version 2.0.0.0 (11-09-2025)
 
