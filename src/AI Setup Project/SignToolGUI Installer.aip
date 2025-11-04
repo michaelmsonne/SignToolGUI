@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT Type="Advanced Installer" CreateVersion="21.9" version="23.1" PreviousModules="simple" Modules="professional" RootPath="." Language="en" Id="{C91F2B90-326D-4B52-99AE-6996B4FA77F1}">
+<DOCUMENT Type="Advanced Installer" CreateVersion="21.9" version="23.2" PreviousModules="simple" Modules="professional" RootPath="." Language="en" Id="{C91F2B90-326D-4B52-99AE-6996B4FA77F1}">
   <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
     <ROW Property="AI_BITMAP_DISPLAY_MODE" Value="0"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
@@ -109,10 +109,10 @@
     <ROW Property="ALLUSERS" Value="1"/>
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName] v. [|ProductVersion]" ValueLocId="*"/>
     <ROW Property="Manufacturer" Value="Michael Morten Sonne"/>
-    <ROW Property="ProductCode" Value="1033:{540EE35F-296E-4010-821A-EA2FF8FD849E} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{6ECC2200-B6C0-4ADD-8BE8-ED3FEE8F2E44} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="SignToolGUI"/>
-    <ROW Property="ProductVersion" Value="2.0.0.0" Options="32"/>
+    <ROW Property="ProductVersion" Value="2.1.0.0" Options="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{6F8F60D8-0325-4FA9-B18A-9EE2702C1232}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>

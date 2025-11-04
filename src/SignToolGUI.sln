@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.10828.68 main
+VisualStudioVersion = 18.0.10828.68
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignToolGUI", "SignToolGUI\SignToolGUI.csproj", "{5E3E0028-03EE-4FE0-9A52-4A5AE04B5E0B}"
 EndProject
@@ -35,7 +35,6 @@ Global
 		{EED69928-407C-4C65-89A8-56244E46764D}.All|Any CPU.ActiveCfg = DefaultBuild
 		{EED69928-407C-4C65-89A8-56244E46764D}.All|Any CPU.Build.0 = DefaultBuild
 		{EED69928-407C-4C65-89A8-56244E46764D}.Debug|Any CPU.ActiveCfg = DefaultBuild
-		{EED69928-407C-4C65-89A8-56244E46764D}.Debug|Any CPU.Build.0 = DefaultBuild
 		{EED69928-407C-4C65-89A8-56244E46764D}.DefaultBuild|Any CPU.ActiveCfg = DefaultBuild
 		{EED69928-407C-4C65-89A8-56244E46764D}.DefaultBuild|Any CPU.Build.0 = DefaultBuild
 		{EED69928-407C-4C65-89A8-56244E46764D}.Release|Any CPU.ActiveCfg = DefaultBuild

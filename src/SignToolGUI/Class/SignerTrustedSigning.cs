@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
+using static SignToolGUI.Class.FileLogger;
 
 namespace SignToolGUI.Class
 {
@@ -98,9 +99,21 @@ namespace SignToolGUI.Class
                 throw new InvalidOperationException($"Dmdf file not found at: {DmdfPath}");
             }
 
+            // Resolve absolute paths for logging
+            string dlibFullPath = Path.GetFullPath(DlibPath);
+            string dmdfFullPath = Path.GetFullPath(DmdfPath);
+            string cwd = Directory.GetCurrentDirectory();
+
             // For Trusted Signing, always use the fixed timestamp server
             // The timestampUrl parameter is ignored because Trusted Signing uses a fixed timestamp URL
-            var arguments = $@"sign {GlobalOptionSwitches()} /fd sha256 /tr ""{_timestampServer}"" /td sha256 /dlib ""{DlibPath}"" /dmdf ""{DmdfPath}"" ""{targetAssembly}""";
+            var arguments = $@"sign {GlobalOptionSwitches()} /fd sha256 /tr ""{_timestampServer}"" /td sha256 /dlib ""{dlibFullPath}"" /dmdf ""{dmdfFullPath}"" ""{targetAssembly}""";
+
+            // Keep exact call for traceability
+            Message($"Calling Trusted Signing via arguments: '{arguments}'", EventType.Information, 3032);
+
+            // Log resolved locations for clarity
+            Message($"Resolved DLIB location: '{dlibFullPath}'", EventType.Information, 3033);
+            Message($"Resolved DMDF location: '{dmdfFullPath}' | Working directory: '{cwd}'", EventType.Information, 3033);
 
             return arguments;
         }

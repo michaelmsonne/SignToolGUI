@@ -1,4 +1,13 @@
-﻿## Version 2.0.0.0 (11-09-2025)
+﻿## Version 2.1.0.0 (04-11-2025)
+
+### 🔧 Improvements
+- Persist Trusted Signing options (Code Signing Account Name and Certificate Profile) between sessions
+- Restore last "Files to Sign" list on startup
+- Add detailed Trusted Signing diagnostics in logs:
+  - Log exact SignTool arguments used for the call
+  - Log resolved and better check for absolute paths for DLIB and DMDF and the current working directory
+
+## Version 2.0.0.0 (11-09-2025)
 
 ### 🆕 New Features
 - Added certificate monitoring functionality with new `CertificateMonitor` class and `CertificateStatus` Form

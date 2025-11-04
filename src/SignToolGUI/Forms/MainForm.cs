@@ -322,6 +322,79 @@ namespace SignToolGUI.Forms
                     textBoxPFXPassword.Text = "";
                 }
 
+                // Load last used Trusted Signing options
+                try
+                {
+                    var savedAccount = iniFile.GetString("TrustedSigning", "AccountName", "");
+                    if (!string.IsNullOrWhiteSpace(savedAccount))
+                        textBoxCodeSigningAccountName.Text = savedAccount;
+
+                    var savedProfile = iniFile.GetString("TrustedSigning", "CertificateProfile", "");
+                    if (!string.IsNullOrWhiteSpace(savedProfile))
+                        textBoxCertificateProfileName.Text = savedProfile;
+                }
+                catch (Exception ex)
+                {
+                    Message($"Error loading Trusted Signing options: {ex.Message}", EventType.Error, 3050);
+                }
+
+                // Load last file list to sign
+                try
+                {
+                    var filesJson = iniFile.GetString("Files", "ToSign", "");
+                    if (!string.IsNullOrEmpty(filesJson))
+                    {
+                        // Prefer robust parse to handle both JSON array and single string fallback
+                        List<string> files = null;
+                        try
+                        {
+                            files = System.Text.Json.JsonSerializer.Deserialize<List<string>>(filesJson);
+                        }
+                        catch
+                        {
+                            // Try parse using JsonDocument in case of formatting issues
+                            using (var doc = System.Text.Json.JsonDocument.Parse(filesJson))
+                            {
+                                if (doc.RootElement.ValueKind == System.Text.Json.JsonValueKind.Array)
+                                {
+                                    files = new List<string>();
+                                    foreach (var el in doc.RootElement.EnumerateArray())
+                                    {
+                                        if (el.ValueKind == System.Text.Json.JsonValueKind.String)
+                                            files.Add(el.GetString());
+                                    }
+                                }
+                            }
+                        }
+
+                        if (files != null)
+                        {
+                            foreach (var path in files)
+                            {
+                                try
+                                {
+                                    var cleaned = System.Text.RegularExpressions.Regex.Replace(path ?? string.Empty, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                    if (!string.IsNullOrWhiteSpace(cleaned) && File.Exists(cleaned))
+                                    {
+                                        checkedListBoxFiles?.Items.Add(cleaned, true);
+                                    }
+                                }
+                                catch { /* ignore per-entry errors */ }
+                            }
+
+                            if (checkedListBoxFiles?.Items != null && checkedListBoxFiles.Items.Count > 0)
+                            {
+                                // Inform user via status bar
+                                statusLabel.Text = @"[INFO] " + checkedListBoxFiles.Items.Count + @" file(s) restored to File List";
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Message($"Error loading file list from configuration: {ex.Message}", EventType.Error, 3051);
+                }
+
                 // Initialize _previousSignToolPath with the current text box value or a default path
                 _previousSignToolPath = textBoxSignToolPath.Text;
             }
@@ -386,6 +459,41 @@ namespace SignToolGUI.Forms
 
                 // Save encrypted password (or empty if not saving)
                 iniFile.WriteValue("Program", "CertificatePassword", encryptedPassword ?? "");
+
+                // Save last used Trusted Signing options
+                try
+                {
+                    iniFile.WriteValue("TrustedSigning", "AccountName", textBoxCodeSigningAccountName.Text ?? string.Empty);
+                    iniFile.WriteValue("TrustedSigning", "CertificateProfile", textBoxCertificateProfileName.Text ?? string.Empty);
+                }
+                catch (Exception ex)
+                {
+                    Message($"Error saving Trusted Signing options: {ex.Message}", EventType.Error, 3052);
+                }
+
+                // Save file list to sign (as JSON array)
+                try
+                {
+                    var files = new List<string>();
+                    if (checkedListBoxFiles?.Items != null)
+                    {
+                        foreach (var item in checkedListBoxFiles.Items)
+                        {
+                            var s = item?.ToString() ?? string.Empty;
+                            // Remove any [Valid]/[Invalid] tags before saving
+                            var cleaned = System.Text.RegularExpressions.Regex.Replace(s, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                            if (!string.IsNullOrWhiteSpace(cleaned))
+                                files.Add(cleaned);
+                        }
+                    }
+
+                    var json = System.Text.Json.JsonSerializer.Serialize(files);
+                    iniFile.WriteValue("Files", "ToSign", json);
+                }
+                catch (Exception ex)
+                {
+                    Message($"Error saving file list to configuration: {ex.Message}", EventType.Error, 3053);
+                }
 
                 // Save timestamp and certificate type configuration
                 try { SaveTimestampConfiguration(); } catch (Exception ex) { Message($"Error saving timestamp configuration: {ex.Message}", EventType.Error, 3013); }
@@ -1147,7 +1255,7 @@ namespace SignToolGUI.Forms
             {
                 if (string.IsNullOrEmpty(message)) return;
                 // Filter out non-essential messages if the output checkbox is not checked.
-                if (!checkBoxShowOutput.Checked && new[]
+                if (!checkBoxShowOutput.Checked && new[] 
                 {
             "Number of", "Done Adding Additional Store", "The following certificate was selected:",
             "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
@@ -1278,7 +1386,7 @@ namespace SignToolGUI.Forms
             {
                 if (string.IsNullOrEmpty(message)) return;
                 // Filter out non-essential messages if the output checkbox is not checked.
-                if (!checkBoxShowOutput.Checked && new[]
+                if (!checkBoxShowOutput.Checked && new[] 
                 {
             "Number of", "Done Adding Additional Store", "The following certificate was selected:",
             "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
@@ -1888,6 +1996,7 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                 if (radioButtonPFXCertificate.Checked)
                 {
                     // If the label for certificate information is not null, update it with the certificate info.
+                    // If no certificate is selected, set the label to indicate that certificate info is not available.
                     if (labelCertificateInformation != null)
                         labelCertificateInformation.Text = GetCertificateInfo(GetCertificateFromPfx());
 

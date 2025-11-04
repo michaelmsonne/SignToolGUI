@@ -19,7 +19,15 @@ namespace SignToolGUI.Forms
         private void PopulateChangelog()
         {
             // Changelog content
-            var changelogContent = " Version 2.0.0.0 (11-09-2025):\n\n" +
+            var changelogContent =
+                                   " Version 2.1.0.0 (04-11-2025):\n" +
+                                   " Improvements\n" +
+                                   " - Persist Trusted Signing options (Code Signing Account Name and Certificate Profile) between sessions\n" +
+                                   " - Restore last 'Files to Sign' list on startup\n" +
+                                   " - Add detailed Trusted Signing diagnostics in logs:\n" +
+                                   "   - Log exact SignTool arguments used for the call\n" +
+                                   "   - Log resolved and better check for absolute paths for DLIB and DMDF and the current working directory\n\n" +
+                                   " Version 2.0.0.0 (11-09-2025):\n" +
                                    " New Features\n" +
                                    " - Added certificate monitoring functionality with new CertificateMonitor class and CertificateStatus Form\n" +
                                    " - Introduced comprehensive timestamp server management system\n" +
