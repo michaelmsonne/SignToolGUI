@@ -21,13 +21,24 @@ namespace SignToolGUI.Forms
             // Changelog content
             var changelogContent =
                                    " Version 2.1.0.0 (04-11-2025):\n" +
+                                   " New Features\n" +
+                                   " - Export command script (.ps1) feature:\n" +
+                                   "   - Supports Windows Certificate Store, PFX, and Azure Trusted Signing modes with per-file signing and exit code checks\n" +
+                                   "   - Optional BatchMode for Trusted Signing (single signtool call for multiple files)\n" +
+                                   " - Pre-flight validation in exported scripts:\n" +
+                                   "   - Verifies paths (SignTool, PFX, DLIB) and normalizes input files with Resolve-Path\n" +
+                                   "   - Aggregates failures and reports a single error summary\n\n" +
                                    " Improvements\n" +
                                    " - Persist Trusted Signing options (Code Signing Account Name and Certificate Profile) between sessions\n" +
-                                   " - Restore last 'Files to Sign' list on startup\n" +
-                                   " - Added support for exporting the tools config for signing to .ps1 script format\n" +
+                                   " - Restore last \"Files to Sign\" list on startup (from tool config)\n" +
+                                   " - Improved error handling and logging for Trusted Signing operations\n" +
                                    " - Add detailed Trusted Signing diagnostics in logs:\n" +
                                    "   - Log exact SignTool arguments used for the call\n" +
                                    "   - Log resolved and better check for absolute paths for DLIB and DMDF and the current working directory\n\n" +
+                                   " Changed\n" +
+                                   " - Trusted Signing export now creates DMDF JSON on-the-fly and removes it in a finally block\n" +
+                                   " - Exported script header timestamp format changed to \"HH:mm:ss dd-MM-yyyy\"\n" +
+                                   " - Exported scripts now emit absolute file paths for reliability\n\n" +
                                    " Version 2.0.0.0 (11-09-2025):\n" +
                                    " New Features\n" +
                                    " - Added certificate monitoring functionality with new CertificateMonitor class and CertificateStatus Form\n" +
@@ -92,10 +103,8 @@ namespace SignToolGUI.Forms
                                    " - Add support for Microsoft Trusted Signing\n" +
                                    " - Add check for if tool is code signed (via Windows API, valid or valid with my Code Signing\n" +
                                    "   Certificate via Thumbprint hosted on GitHub)\n" +
-                                   " - Add multiple timestamp servers" +
-                                   " - Add save to logfile\n" +
-                                   " - Bug fixes\n" + 
-                                   "   > Like Certificate Store certs will reset on every sign\n\n" +
+                                   " - Add multiple timestamp servers - Add save to logfile\n" +
+                                   " - Bug fixes (e.g. Certificate Store certs reset on every sign)\n\n" +
                                    " Version 1.2.2.0 (04-07-2024):\n" +
                                    " - Add code to DPI aware and SignTool via API\n" +
                                    " - Add more status messages to statusstrip for file operations\n" +
@@ -112,7 +121,7 @@ namespace SignToolGUI.Forms
                                    " - Bug fixes like certificate information not showing up if saved cert at startup\n" +
                                    " - Minor changes\n" +
                                    " - Update shipped signtool.exe to last v.\n" +
-                                   " - Updated to.net 4.8\n\n" +
+                                   " - Updated to .NET 4.8\n\n" +
                                    " Version 1.2.0.0 (30-06-2022):\n" +
                                    " - Feature additions\n" +
                                    " - Addressed issues\n\n" +
