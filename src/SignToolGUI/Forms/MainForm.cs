@@ -1364,7 +1364,7 @@ namespace SignToolGUI.Forms
                 }
             }
 
-            var dlibPath = @".\Tools\Azure.CodeSigning.Dlib.dll";
+            var dlibPath = AppDomain.CurrentDomain.BaseDirectory + "Tools\\Azure.CodeSigning.Dlib.dll";
             var codeSigningAccountName = textBoxCodeSigningAccountName.Text;
             var certificateProfileName = textBoxCertificateProfileName.Text;
             var correlationIdData = textBoxCorrelationId.Text;
