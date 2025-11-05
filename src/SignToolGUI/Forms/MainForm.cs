@@ -2998,6 +2998,11 @@ Use the ... button above and select the code signing certificate to use!", @"No 
 
         private void buttonExportAsScript_Click(object sender, EventArgs e)
         {
+            ExportCommandScript();
+        }
+
+        private void ExportCommandScript()
+        {
             try
             {
                 // Collect files: prefer checked items, else all items
@@ -3007,7 +3012,8 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                     foreach (var item in checkedListBoxFiles.CheckedItems)
                     {
                         var s = item?.ToString() ?? string.Empty;
-                        var cleaned = System.Text.RegularExpressions.Regex.Replace(s, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                        var cleaned = System.Text.RegularExpressions.Regex.Replace(
+                            s, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
                         files.Add(cleaned);
                     }
                 }
@@ -3016,14 +3022,16 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                     foreach (var item in checkedListBoxFiles.Items)
                     {
                         var s = item?.ToString() ?? string.Empty;
-                        var cleaned = System.Text.RegularExpressions.Regex.Replace(s, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                        var cleaned = System.Text.RegularExpressions.Regex.Replace(
+                            s, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
                         files.Add(cleaned);
                     }
                 }
 
                 if (files.Count == 0)
                 {
-                    MessageBox.Show("No files available to export.", "Export Command Script", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("No files available to export.", "Export Command Script",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -3044,10 +3052,12 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                     sb.AppendLine();
 
                     // Base vars
-                    var signToolFullPath = Path.GetFullPath(textBoxSignToolPath.Text);
+                    var signToolFullPath = Path.GetFullPath(textBoxSignToolPath.Text ?? string.Empty);
                     sb.AppendLine("$SignTool = '" + EscapePS(signToolFullPath) + "'");
                     sb.AppendLine("$VerboseSwitch = " + (menuItemSignVerbose.Checked ? "$true" : "$false"));
                     sb.AppendLine("$DebugSwitch   = " + (menuItemSignDebug.Checked ? "$true" : "$false"));
+                    // Optional: toggle batch mode from a checkbox if you add one (e.g., checkBoxBatchMode.Checked). Default false.
+                    sb.AppendLine("$BatchMode     = $false");
                     if (!radioButtonTrustedSigning.Checked)
                     {
                         // Only used by Windows Store and PFX modes
@@ -3084,13 +3094,25 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                         sb.AppendLine("# Windows Certificate Store signing");
                         sb.AppendLine("$Thumbprint = '" + EscapePS(thumbprint ?? string.Empty) + "'");
                         sb.AppendLine();
-                        sb.AppendLine("foreach ($f in $files) {");
+
+                        // Pre-flight + file normalization
+                        sb.AppendLine("if (!(Test-Path -LiteralPath $SignTool)) { throw \"SignTool not found: $SignTool\" }");
+                        sb.AppendLine("$targetFiles = @()");
+                        sb.AppendLine("foreach ($f in $files) { if (Test-Path -LiteralPath $f) { $targetFiles += (Resolve-Path -LiteralPath $f).Path } else { Write-Warning \"File not found, skipping: $f\" } }");
+                        sb.AppendLine("if ($targetFiles.Count -eq 0) { throw 'No input files to sign.' }");
+                        sb.AppendLine("$failures = @()");
+                        sb.AppendLine();
+
+                        // Per-file signing with exit code checks
+                        sb.AppendLine("foreach ($f in $targetFiles) {");
                         sb.AppendLine("  $sigArgs = @('sign')");
                         sb.AppendLine("  Add-GlobalSwitches ([ref]$sigArgs)");
                         sb.AppendLine("  if ($UseTimestamp -and $TimestampUrl) { $sigArgs += '/fd'; $sigArgs += 'sha256'; $sigArgs += '/tr'; $sigArgs += $TimestampUrl; $sigArgs += '/td'; $sigArgs += 'sha256' } else { $sigArgs += '/fd'; $sigArgs += 'sha256' }");
                         sb.AppendLine("  $sigArgs += '/sha1'; $sigArgs += $Thumbprint; $sigArgs += $f");
                         sb.AppendLine("  & $SignTool @sigArgs");
+                        sb.AppendLine("  if ($LASTEXITCODE -ne 0) { Write-Warning \"Signing failed (exit $LASTEXITCODE): $f\"; $failures += $f } else { Write-Host \"Signed: $f\" }");
                         sb.AppendLine("}");
+                        sb.AppendLine("if ($failures.Count -gt 0) { throw (\"One or more files failed to sign:`n - \" + ($failures -join \"`n - \")) }");
                     }
                     else if (radioButtonPFXCertificate.Checked)
                     {
@@ -3103,13 +3125,28 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                         sb.AppendLine("$bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec)");
                         sb.AppendLine("try { $PfxPassword = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr) } finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }");
                         sb.AppendLine();
-                        sb.AppendLine("foreach ($f in $files) {");
-                        sb.AppendLine("  $sigArgs = @('sign')");
-                        sb.AppendLine("  Add-GlobalSwitches ([ref]$sigArgs)");
-                        sb.AppendLine("  if ($UseTimestamp -and $TimestampUrl) { $sigArgs += '/fd'; $sigArgs += 'sha256'; $sigArgs += '/tr'; $sigArgs += $TimestampUrl; $sigArgs += '/td'; $sigArgs += 'sha256' } else { $sigArgs += '/fd'; $sigArgs += 'sha256' }");
-                        sb.AppendLine("  $sigArgs += '/f'; $sigArgs += $PfxPath; $sigArgs += '/p'; $sigArgs += $PfxPassword; $sigArgs += '/a'; $sigArgs += $f");
-                        sb.AppendLine("  & $SignTool @sigArgs");
-                        sb.AppendLine("}");
+
+                        // Pre-flight + file normalization
+                        sb.AppendLine("if (!(Test-Path -LiteralPath $SignTool)) { throw \"SignTool not found: $SignTool\" }");
+                        sb.AppendLine("if (!(Test-Path -LiteralPath $PfxPath)) { throw \"PFX file not found: $PfxPath\" }");
+                        sb.AppendLine("$targetFiles = @()");
+                        sb.AppendLine("foreach ($f in $files) { if (Test-Path -LiteralPath $f) { $targetFiles += (Resolve-Path -LiteralPath $f).Path } else { Write-Warning \"File not found, skipping: $f\" } }");
+                        sb.AppendLine("if ($targetFiles.Count -eq 0) { throw 'No input files to sign.' }");
+                        sb.AppendLine("$failures = @()");
+                        sb.AppendLine();
+
+                        // Per-file signing with exit code checks
+                        sb.AppendLine("try {");
+                        sb.AppendLine("  foreach ($f in $targetFiles) {");
+                        sb.AppendLine("    $sigArgs = @('sign')");
+                        sb.AppendLine("    Add-GlobalSwitches ([ref]$sigArgs)");
+                        sb.AppendLine("    if ($UseTimestamp -and $TimestampUrl) { $sigArgs += '/fd'; $sigArgs += 'sha256'; $sigArgs += '/tr'; $sigArgs += $TimestampUrl; $sigArgs += '/td'; $sigArgs += 'sha256' } else { $sigArgs += '/fd'; $sigArgs += 'sha256' }");
+                        sb.AppendLine("    $sigArgs += '/f'; $sigArgs += $PfxPath; $sigArgs += '/p'; $sigArgs += $PfxPassword; $sigArgs += '/a'; $sigArgs += $f");
+                        sb.AppendLine("    & $SignTool @sigArgs");
+                        sb.AppendLine("    if ($LASTEXITCODE -ne 0) { Write-Warning \"Signing failed (exit $LASTEXITCODE): $f\"; $failures += $f } else { Write-Host \"Signed: $f\" }");
+                        sb.AppendLine("  }");
+                        sb.AppendLine("  if ($failures.Count -gt 0) { throw (\"One or more files failed to sign:`n - \" + ($failures -join \"`n - \")) }");
+                        sb.AppendLine("} finally { $PfxPassword = $null }");
                     }
                     else if (radioButtonTrustedSigning.Checked)
                     {
@@ -3123,9 +3160,13 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                             endpointUrl = tp.Url;
                         else
                         {
-                            var enabled = _timestampManager.GetEnabledServers();
-                            if (enabled.Count > 0)
-                                endpointUrl = enabled.First().Url;
+                            try
+                            {
+                                var enabled = _timestampManager.GetEnabledServers();
+                                if (enabled.Count > 0)
+                                    endpointUrl = enabled.First().Url;
+                            }
+                            catch { /* ignore */ }
                         }
 
                         sb.AppendLine("# Trusted Signing");
@@ -3136,17 +3177,32 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                         sb.AppendLine("$CorrelationIdData = '" + EscapePS(textBoxCorrelationId.Text) + "'");
                         sb.AppendLine("$TimestampUrl = '" + EscapePS(tsTimestampUrl) + "'");
                         sb.AppendLine();
-                        sb.AppendLine("# Create temporary DMDF JSON file");
-                        sb.AppendLine("$dmdfPath = Join-Path $env:TEMP (('signtoolgui_' + [guid]::NewGuid().ToString()) + '.json')");
-                        sb.AppendLine("$dmdfContent = @{ Endpoint = $Endpoint; CodeSigningAccountName = $AccountName; CertificateProfileName = $CertificateProfileName; CorrelationIdData = $CorrelationIdData } | ConvertTo-Json -Depth 3");
-                        sb.AppendLine("$dmdfContent | Out-File -FilePath $dmdfPath -Encoding utf8");
+
+                        // Pre-flight + file normalization
+                        sb.AppendLine("if (!(Test-Path -LiteralPath $SignTool)) { throw \"SignTool not found: $SignTool\" }");
+                        sb.AppendLine("if (!(Test-Path -LiteralPath $DlibPath)) { throw \"Dlib not found: $DlibPath\" }");
+                        sb.AppendLine("$targetFiles = @()");
+                        sb.AppendLine("foreach ($f in $files) { if (Test-Path -LiteralPath $f) { $targetFiles += (Resolve-Path -LiteralPath $f).Path } else { Write-Warning \"File not found, skipping: $f\" } }");
+                        sb.AppendLine("if ($targetFiles.Count -eq 0) { throw 'No input files to sign.' }");
                         sb.AppendLine();
+
+                        // DMDF payload
+                        sb.AppendLine("if ([string]::IsNullOrWhiteSpace($CorrelationIdData)) { $CorrelationIdData = [guid]::NewGuid().ToString() }");
+                        sb.AppendLine("$dmdf = @{ Endpoint = $Endpoint; CodeSigningAccountName = $AccountName; CertificateProfileName = $CertificateProfileName; CorrelationIdData = $CorrelationIdData }");
+                        sb.AppendLine("$dmdfPath = Join-Path $env:TEMP (\"signtoolgui_{0}.json\" -f ([guid]::NewGuid()))");
+                        sb.AppendLine("$dmdf | ConvertTo-Json -Depth 3 | Out-File -FilePath $dmdfPath -Encoding utf8");
+                        sb.AppendLine();
+
+                        // Common args and signing
+                        sb.AppendLine("$commonArgs = @('/fd','sha256','/tr',$TimestampUrl,'/td','sha256','/dlib',$DlibPath,'/dmdf',$dmdfPath)");
+                        sb.AppendLine("$failures = @()");
                         sb.AppendLine("try {");
-                        sb.AppendLine("  foreach ($f in $files) {");
-                        sb.AppendLine("    $sigArgs = @('sign')");
-                        sb.AppendLine("    Add-GlobalSwitches ([ref]$sigArgs)");
-                        sb.AppendLine("    $sigArgs += '/fd'; $sigArgs += 'sha256'; $sigArgs += '/tr'; $sigArgs += $TimestampUrl; $sigArgs += '/td'; $sigArgs += 'sha256'; $sigArgs += '/dlib'; $sigArgs += $DlibPath; $sigArgs += '/dmdf'; $sigArgs += $dmdfPath; $sigArgs += $f");
-                        sb.AppendLine("    & $SignTool @sigArgs");
+                        sb.AppendLine("  if ($BatchMode) {");
+                        sb.AppendLine("    $sigArgs = @('sign'); Add-GlobalSwitches ([ref]$sigArgs); $sigArgs += $commonArgs; $sigArgs += $targetFiles; & $SignTool @sigArgs");
+                        sb.AppendLine("    if ($LASTEXITCODE -ne 0) { $failures = $targetFiles; throw \"signtool exited with code $LASTEXITCODE in batch mode.\" } else { Write-Host (\"Signed {0} file(s) in batch.\" -f $targetFiles.Count) }");
+                        sb.AppendLine("  } else {");
+                        sb.AppendLine("    foreach ($f in $targetFiles) { $sigArgs = @('sign'); Add-GlobalSwitches ([ref]$sigArgs); $sigArgs += $commonArgs; $sigArgs += $f; & $SignTool @sigArgs; if ($LASTEXITCODE -ne 0) { Write-Warning \"Signing failed (exit $LASTEXITCODE): $f\"; $failures += $f } else { Write-Host \"Signed: $f\" } }");
+                        sb.AppendLine("    if ($failures.Count -gt 0) { throw (\"One or more files failed to sign:`n - \" + ($failures -join \"`n - \")) }");
                         sb.AppendLine("  }");
                         sb.AppendLine("}");
                         sb.AppendLine("finally { Remove-Item -Path $dmdfPath -Force -ErrorAction Ignore }");
@@ -3160,12 +3216,14 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                     File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.UTF8);
 
                     Message("Command script exported: '" + sfd.FileName + "'", EventType.Information, 20100);
-                    MessageBox.Show("Command script exported:\n" + sfd.FileName, "Export Command Script", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Command script exported:\n" + sfd.FileName, "Export Command Script",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Failed to export command script: " + ex.Message, "Export Command Script", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Failed to export command script: " + ex.Message, "Export Command Script",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Message("Failed to export command script: " + ex.Message, EventType.Error, 20101);
             }
         }
