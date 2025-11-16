@@ -9,7 +9,6 @@
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Azure.Core.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Azure.Identity.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Ijwhost.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" Value="..\..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\18\Insiders\Common7\IDE\PublicAssemblies"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.dll" Value="..\SignToolGUI\bin\Release\Tools"/>
@@ -61,7 +60,6 @@
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Azure.Core.dll" Value="Azure.Core.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Azure.Identity.dll" Value="Azure.Identity.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Ijwhost.dll" Value="Ijwhost.dll"/>
-    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll" Value="Microsoft.Bcl.AsyncInterfaces.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" Value="Microsoft.Bcl.AsyncInterfaces.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll" Value="Microsoft.Identity.Client.Extensions.Msal.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.dll" Value="Microsoft.Identity.Client.dll"/>
@@ -174,7 +172,6 @@
     <ROW File="mfc140u.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_mfc140u.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfc140u.dll&gt;" SelfReg="false"/>
     <ROW File="mfcm140.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_mfcm140.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfcm140.dll&gt;" SelfReg="false"/>
     <ROW File="mfcm140u.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_mfcm140u.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_mfcm140u.dll&gt;" SelfReg="false"/>
-    <ROW File="Microsoft.Bcl.AsyncInterfaces.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" FileName="MICROS~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll&gt;" SelfReg="false"/>
     <ROW File="Microsoft.Identity.Client.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" FileName="MICROS~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Microsoft.Identity.Client.dll&gt;" SelfReg="false"/>
     <ROW File="Microsoft.Identity.Client.Extensions.Msal.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" FileName="MICROS~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll&gt;" SelfReg="false"/>
     <ROW File="Microsoft.IdentityModel.Abstractions.dll" Component_="AI_PROPPATH_FILENAME_PERBUILD_Azure.CodeSigning.Dlib.Core.dll" FileName="MICROS~4.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.IdentityModel.Abstractions.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Microsoft.IdentityModel.Abstractions.dll&gt;" SelfReg="false"/>
@@ -213,7 +210,6 @@
     <ROW Name="AI_APPPATH_PERBUILD_Azure.Core.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Azure.Core.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Azure.Core.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_Azure.Identity.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Azure.Identity.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Azure.Identity.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_Ijwhost.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Ijwhost.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Ijwhost.dll]" Type="2" Content="0"/>
-    <ROW Name="AI_APPPATH_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Bcl.AsyncInterfaces.dll_1]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.Extensions.Msal.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_Microsoft.Identity.Client.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Microsoft.Identity.Client.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Identity.Client.dll]" Type="2" Content="0"/>
@@ -403,7 +399,6 @@
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfc140u.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfcm140.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="mfcm140u.dll"/>
-    <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Microsoft.Bcl.AsyncInterfaces.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Microsoft.Identity.Client.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Microsoft.Identity.Client.Extensions.Msal.dll"/>
     <ROW ProjectId="{5e3e0028-03ee-4fe0-9a52-4a5ae04b5e0b}" ProjectName="SignToolGUI" OutputGroup="ContentOutput" OutputFile="Microsoft.IdentityModel.Abstractions.dll"/>

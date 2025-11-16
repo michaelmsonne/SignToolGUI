@@ -15,12 +15,16 @@ namespace SignToolGUI.Forms
             PopulateChangelog();
         }
 
-        // Populate the changelog in the RichTextBox
+        // Pseudocode:
+        // - Update the 2.1.0.0 section to mirror the content from the other changelog file:
+        //   - Use "### 🆕 Added", "### 🔧 Improvements", "### 🔄 Changed" headings
+        //   - Include bullets for tool updates/migration and performance improvements
+        // - Keep all other historical entries unchanged
         private void PopulateChangelog()
         {
             // Changelog content
             var changelogContent =
-                                   " Version 2.1.0.0 (04-11-2025):\n" +
+                                   " Version 2.1.0.0 (xx-11-2025):\n" +
                                    " New Features\n" +
                                    " - Export command script (.ps1) feature:\n" +
                                    "   - Supports Windows Certificate Store, PFX, and Azure Trusted Signing modes with per-file signing and exit code checks\n" +
@@ -34,7 +38,10 @@ namespace SignToolGUI.Forms
                                    " - Improved error handling and logging for Trusted Signing operations\n" +
                                    " - Add detailed Trusted Signing diagnostics in logs:\n" +
                                    "   - Log exact SignTool arguments used for the call\n" +
-                                   "   - Log resolved and better check for absolute paths for DLIB and DMDF and the current working directory\n\n" +
+                                   "   - Log resolved and better check for absolute paths for DLIB and DMDF and the current working directory\n" +
+                                   " - Update Trusted Signing tools from 1.0.68 to 1.0.95 and migrate to .NET 8.0 and modernize codebase\n" +
+                                   "   - Removed .NET 6.0 dependencies and updated runtime to .NET 8.0 and removed unused assemblies and legacy runtime features.\n" +
+                                   " - Improved performance with optimizations in string and buffer handling\n\n" +
                                    " Changed\n" +
                                    " - Trusted Signing export now creates DMDF JSON on-the-fly and removes it in a finally block\n" +
                                    " - Exported script header timestamp format changed to \"HH:mm:ss dd-MM-yyyy\"\n" +

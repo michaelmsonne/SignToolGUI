@@ -1,6 +1,6 @@
-﻿## Version 2.1.0.0 (04-11-2025)
+﻿## Version 2.1.0.0 (xx-11-2025)
 
-### 🆕 Added
+### 🆕 New Features
 - Export command script (.ps1) feature:
   - Supports Windows Certificate Store, PFX, and Azure Trusted Signing modes with per-file signing and exit code checks
   - Optional BatchMode for Trusted Signing (single signtool call for multiple files)
@@ -15,6 +15,9 @@
 - Add detailed Trusted Signing diagnostics in logs:
   - Log exact SignTool arguments used for the call
   - Log resolved and better check for absolute paths for DLIB and DMDF and the current working directory
+- Update Trusted Signing tools from 1.0.68 to 1.0.95 and migrate to .NET 8.0 and modernize codebase
+  - Removed .NET 6.0 dependencies and updated runtime to .NET 8.0 and removed unused assemblies and legacy runtime features.
+- Improved performance with optimizations in string and buffer handling
 
 ### 🔄 Changed
 - Trusted Signing export now creates DMDF JSON on-the-fly and removes it in a finally block
