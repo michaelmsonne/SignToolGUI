@@ -2156,7 +2156,7 @@ Please select one or more binaries into the list above to proceed!", @"No files 
         {
             try
             {
-                Process.Start(Globals.ToolStings.URLAzurePortalTrustedSigning);
+                Process.Start(Globals.ToolStings.URLMicrosoftLearnTrustedSigning);
 
                 // Log the opening of the URL message
                 Message("User clicked the 'Read more' link for Trusted Signing to open the URL: '" + Globals.ToolStings.URLMicrosoftLearnTrustedSigning + "'", EventType.Information, 1052);
@@ -2164,7 +2164,7 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             catch (Exception ex)
             {
                 // Show an error message if the URL could not be opened
-                MessageBox.Show(@"Failed to open the URL '" + Globals.ToolStings.URLAzurePortalTrustedSigning + "'. Error: " + ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Failed to open the URL '" + Globals.ToolStings.URLMicrosoftLearnTrustedSigning + "'. Error: " + ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 // Log the error message
                 Message("Failed to open the URL: " + ex.Message, EventType.Error, 1041);
