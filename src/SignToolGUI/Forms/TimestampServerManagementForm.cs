@@ -78,7 +78,20 @@ namespace SignToolGUI.Forms
 
             buttonEdit.Enabled = hasSelection;
             buttonRemove.Enabled = hasSelection;
-            buttonTest.Enabled = hasSelection;
+
+            // Disable testing if in Trusted Signing mode
+            if (_isTrustedSigning)
+            {
+                buttonTestAll.Enabled = false;
+                buttonTest.Enabled = false;
+            }
+            else
+            {
+                buttonTestAll.Enabled = hasSelection;
+                buttonTest.Enabled = hasSelection;
+            }
+
+            //buttonTest.Enabled = hasSelection;
             buttonMoveUp.Enabled = hasSelection && selectedIndex > 0;
             buttonMoveDown.Enabled = hasSelection && selectedIndex < listViewServers.Items.Count - 1;
             buttonApply.Enabled = _isModified; // This should enable/disable based on modifications
