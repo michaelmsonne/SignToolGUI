@@ -2152,6 +2152,25 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             }
         }
 
+        private void linkLabelReadMoreTrustedSigning_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                Process.Start(Globals.ToolStings.URLAzurePortalTrustedSigning);
+
+                // Log the opening of the URL message
+                Message("User clicked the 'Read more' link for Trusted Signing to open the URL: '" + Globals.ToolStings.URLMicrosoftLearnTrustedSigning + "'", EventType.Information, 1052);
+            }
+            catch (Exception ex)
+            {
+                // Show an error message if the URL could not be opened
+                MessageBox.Show(@"Failed to open the URL '" + Globals.ToolStings.URLAzurePortalTrustedSigning + "'. Error: " + ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                // Log the error message
+                Message("Failed to open the URL: " + ex.Message, EventType.Error, 1041);
+            }
+        }
+
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Log the user's action to open the About form
@@ -3238,25 +3257,6 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                 MessageBox.Show("Failed to export command script: " + ex.Message, "Export Command Script",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Message("Failed to export command script: " + ex.Message, EventType.Error, 20101);
-            }
-        }
-
-        private void linkLabelReadMoreTrustedSigning_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            try
-            {
-                Process.Start(Globals.ToolStings.URLAzurePortalTrustedSigning);
-
-                // Log the opening of the URL message
-                Message("User clicked the 'Read more' link for Trusted Signing to open the URL: '" + Globals.ToolStings.URLMicrosoftLearnTrustedSigning + "'", EventType.Information, 1052);
-            }
-            catch (Exception ex)
-            {
-                // Show an error message if the URL could not be opened
-                MessageBox.Show(@"Failed to open the URL '" + Globals.ToolStings.URLAzurePortalTrustedSigning + "'. Error: " + ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                // Log the error message
-                Message("Failed to open the URL: " + ex.Message, EventType.Error, 1041);
             }
         }
     }
