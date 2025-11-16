@@ -15,11 +15,6 @@ namespace SignToolGUI.Forms
             PopulateChangelog();
         }
 
-        // Pseudocode:
-        // - Update the 2.1.0.0 section to mirror the content from the other changelog file:
-        //   - Use "### 🆕 Added", "### 🔧 Improvements", "### 🔄 Changed" headings
-        //   - Include bullets for tool updates/migration and performance improvements
-        // - Keep all other historical entries unchanged
         private void PopulateChangelog()
         {
             // Changelog content
