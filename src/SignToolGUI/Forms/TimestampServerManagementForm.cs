@@ -32,12 +32,12 @@ namespace SignToolGUI.Forms
             if (_isTrustedSigning)
             {
                 groupBoxServers.Text = "Endpoints";
-                this.Text = "Trusted Signing Endpoint Management";
+                Text = "Trusted Signing Endpoint Management";
             }
             else
             {
                 groupBoxServers.Text = "Timestamp Servers";
-                this.Text = "Timestamp Server Management";
+                Text = "Timestamp Server Management";
             }
         }
 
