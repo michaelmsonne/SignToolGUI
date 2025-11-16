@@ -50,6 +50,7 @@ namespace SignToolGUI.Class
         private static readonly HttpClient HttpClient = new HttpClient();
 
         public delegate void TimestampStatusHandler(string message);
+
         public event TimestampStatusHandler OnTimestampStatus;
 
         public TimestampManager(int maxRetryAttempts = 3, int retryDelayMs = 1000)

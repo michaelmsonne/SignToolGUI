@@ -23,6 +23,7 @@ namespace SignToolGUI.Forms
     public partial class MainForm : Form
     {
         #region Fields
+
         // All fields and properties
 
         public static string ConfigIniPath = FileManager.ConfigIniPath; // Path to the configuration file
@@ -34,14 +35,17 @@ namespace SignToolGUI.Forms
         private int _jobSigned; //number of files in job signed
         public int Signerrors; //number of errors to sign
         public string SignToolExe; //path to signtool.exe
+
         //private bool _isSignErrorShowed;
         private CertificateMonitor _certificateMonitor; // Certificate monitor for checking certificate expiry
+
         private Timer _pfxValidationTimer; // Timer for debouncing PFX certificate validation
         private TimestampManager _timestampManager; // Timestamp manager for handling timestamping operations
 
-        #endregion
+        #endregion Fields
 
         #region Constructor & Initialization
+
         // MainForm(), InitializeComponent(), and setup
 
         public MainForm()
@@ -616,9 +620,10 @@ namespace SignToolGUI.Forms
             }
         }
 
-        #endregion
+        #endregion Constructor & Initialization
 
         #region Certificate Management
+
         // Certificate-related methods
 
         public async void InitializeAsyncCertificateCheck()
@@ -872,7 +877,6 @@ namespace SignToolGUI.Forms
 
             // Return the provider name or an empty string if an exception was caught.
             return str;
-
         }
 
         private string GetCertificateInfo(X509Certificate2 cert)
@@ -1068,10 +1072,11 @@ namespace SignToolGUI.Forms
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-                
-        #endregion
+
+        #endregion Certificate Management
 
         #region Timestamp Management
+
         // Timestamp-related methods
 
         public class TimestampProvider
@@ -1109,9 +1114,10 @@ namespace SignToolGUI.Forms
             Message("Timestamp manager initialized", EventType.Information, 3000);
         }
 
-        #endregion
+        #endregion Timestamp Management
 
         #region File Management
+
         // File add/remove, directory logic
 
         public void CheckAllFiles()
@@ -1129,9 +1135,10 @@ namespace SignToolGUI.Forms
             return filters.Split(';').SelectMany(filter => Directory.GetFiles(sourceFolder, filter, searchOption)).ToArray();
         }
 
-        #endregion
+        #endregion File Management
 
         #region Signing Logic
+
         // SignWithWindowsCertificateStoreAsync, SignWithPfxCertificateAsync, etc.
 
         /// <summary>
@@ -1256,7 +1263,7 @@ namespace SignToolGUI.Forms
             {
                 if (string.IsNullOrEmpty(message)) return;
                 // Filter out non-essential messages if the output checkbox is not checked.
-                if (!checkBoxShowOutput.Checked && new[] 
+                if (!checkBoxShowOutput.Checked && new[]
                 {
             "Number of", "Done Adding Additional Store", "The following certificate was selected:",
             "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
@@ -1387,7 +1394,7 @@ namespace SignToolGUI.Forms
             {
                 if (string.IsNullOrEmpty(message)) return;
                 // Filter out non-essential messages if the output checkbox is not checked.
-                if (!checkBoxShowOutput.Checked && new[] 
+                if (!checkBoxShowOutput.Checked && new[]
                 {
             "Number of", "Done Adding Additional Store", "The following certificate was selected:",
             "Signing file", "hash:", "Issued to:", "Issued by:", "Expires:",
@@ -1467,9 +1474,10 @@ namespace SignToolGUI.Forms
             Message("Signing process completed for Trusted Signing Certificate", EventType.Information, 1050);
         }
 
-        #endregion
+        #endregion Signing Logic
 
         #region Configuration Management
+
         // Save/Load config methods
 
         private void SaveTimestampConfiguration()
@@ -1578,11 +1586,13 @@ namespace SignToolGUI.Forms
                         radioButtonWindowsCertificateStore.Checked = false;
                         radioButtonTrustedSigning.Checked = false;
                         break;
+
                     case "TrustedSigning":
                         radioButtonTrustedSigning.Checked = true;
                         radioButtonWindowsCertificateStore.Checked = false;
                         radioButtonPFXCertificate.Checked = false;
                         break;
+
                     case "WindowsCertificateStore":
                     default:
                         radioButtonWindowsCertificateStore.Checked = true;
@@ -1603,9 +1613,10 @@ namespace SignToolGUI.Forms
             }
         }
 
-        #endregion
+        #endregion Configuration Management
 
         #region UI Logic
+
         // InterfaceCheck, PopulateComboBox, etc.
 
         private void PopulateComboBox()
@@ -1803,9 +1814,10 @@ namespace SignToolGUI.Forms
             Message("User have " + (isChecked ? "checked" : "unchecked") + " the 'Select All' checkbox for file(s) to sign", EventType.Information, 1042);
         }
 
-        #endregion
+        #endregion UI Logic
 
         #region Event Handlers
+
         // All event handlers
 
         private void buttonBrowseSignTool_Click(object sender, EventArgs e)
@@ -2707,9 +2719,10 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             }
         }
 
-        #endregion
+        #endregion Event Handlers
 
         #region Helper Methods
+
         // Utility methods
 
         private void ExportSigningReportToCsv()
@@ -2927,7 +2940,7 @@ Use the ... button above and select the code signing certificate to use!", @"No 
 
             // Define the versions and architectures to search
             var versions = new[]
-            { 
+            {
                 // Add other versions as needed...
                 "10.0.26100.0",
                 "10.0.22621.0",
@@ -2994,7 +3007,7 @@ Use the ... button above and select the code signing certificate to use!", @"No 
             return !string.IsNullOrEmpty(SignToolExe) && File.Exists(SignToolExe);
         }
 
-        #endregion
+        #endregion Helper Methods
 
         private void buttonExportAsScript_Click(object sender, EventArgs e)
         {
