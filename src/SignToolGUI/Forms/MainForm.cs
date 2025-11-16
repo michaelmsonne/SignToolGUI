@@ -3240,5 +3240,24 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                 Message("Failed to export command script: " + ex.Message, EventType.Error, 20101);
             }
         }
+
+        private void linkLabelReadMoreTrustedSigning_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                Process.Start(Globals.ToolStings.URLAzurePortalTrustedSigning);
+
+                // Log the opening of the URL message
+                Message("User clicked the 'Read more' link for Trusted Signing to open the URL: '" + Globals.ToolStings.URLMicrosoftLearnTrustedSigning + "'", EventType.Information, 1052);
+            }
+            catch (Exception ex)
+            {
+                // Show an error message if the URL could not be opened
+                MessageBox.Show(@"Failed to open the URL '" + Globals.ToolStings.URLAzurePortalTrustedSigning + "'. Error: " + ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                // Log the error message
+                Message("Failed to open the URL: " + ex.Message, EventType.Error, 1041);
+            }
+        }
     }
 }

@@ -115,6 +115,7 @@
             this.linkLabelOpenTrustedSigningPortal = new System.Windows.Forms.LinkLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.buttonExportAsScript = new System.Windows.Forms.Button();
+            this.linkLabelReadMoreTrustedSigning = new System.Windows.Forms.LinkLabel();
             this.groupBoxFiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxCertificateInformation.SuspendLayout();
@@ -950,12 +951,25 @@
             this.buttonExportAsScript.UseVisualStyleBackColor = true;
             this.buttonExportAsScript.Click += new System.EventHandler(this.buttonExportAsScript_Click);
             // 
+            // linkLabelReadMoreTrustedSigning
+            // 
+            this.linkLabelReadMoreTrustedSigning.AutoSize = true;
+            this.linkLabelReadMoreTrustedSigning.Location = new System.Drawing.Point(315, 313);
+            this.linkLabelReadMoreTrustedSigning.Name = "linkLabelReadMoreTrustedSigning";
+            this.linkLabelReadMoreTrustedSigning.Size = new System.Drawing.Size(59, 13);
+            this.linkLabelReadMoreTrustedSigning.TabIndex = 29;
+            this.linkLabelReadMoreTrustedSigning.TabStop = true;
+            this.linkLabelReadMoreTrustedSigning.Text = "Read more";
+            this.toolTip.SetToolTip(this.linkLabelReadMoreTrustedSigning, "Learn more about Trusted Signing here.");
+            this.linkLabelReadMoreTrustedSigning.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelReadMoreTrustedSigning_LinkClicked);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(680, 859);
+            this.Controls.Add(this.linkLabelReadMoreTrustedSigning);
             this.Controls.Add(this.buttonExportAsScript);
             this.Controls.Add(this.linkLabelOpenTrustedSigningPortal);
             this.Controls.Add(this.labelSignedBuildState);
@@ -1088,6 +1102,7 @@
         private System.Windows.Forms.Button buttonVerifySignatures;
         private System.Windows.Forms.CheckBox checkBoxValidatePasswordOnSave;
         private System.Windows.Forms.Button buttonExportAsScript;
+        private System.Windows.Forms.LinkLabel linkLabelReadMoreTrustedSigning;
     }
 }
 
