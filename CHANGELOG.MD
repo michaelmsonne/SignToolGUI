@@ -4,9 +4,6 @@
 - Export command script (.ps1) feature:
   - Supports Windows Certificate Store, PFX, and Azure Trusted Signing modes with per-file signing and exit code checks
   - Optional BatchMode for Trusted Signing (single signtool call for multiple files)
-- Pre-flight validation in exported scripts:
-  - Verifies paths (SignTool, PFX, DLIB) and normalizes input files with Resolve-Path
-  - Aggregates failures and reports a single error summary
 
 ### 🔧 Improvements
 - Persist Trusted Signing options (Code Signing Account Name and Certificate Profile) between sessions
@@ -18,6 +15,9 @@
 - Update Trusted Signing tools from 1.0.68 to 1.0.95 and migrate to .NET 8.0 and modernize codebase
   - Removed .NET 6.0 dependencies and updated runtime to .NET 8.0 and removed unused assemblies and legacy runtime features.
 - Improved performance with optimizations in string and buffer handling
+- Pre-flight validation in exported scripts:
+  - Verifies paths (SignTool, PFX, DLIB) and normalizes input files with Resolve-Path
+  - Aggregates failures and reports a single error summary
 
 ### 🔄 Changed
 - Trusted Signing export now creates DMDF JSON on-the-fly and removes it in a finally block

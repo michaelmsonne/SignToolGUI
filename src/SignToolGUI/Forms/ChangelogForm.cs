@@ -28,10 +28,7 @@ namespace SignToolGUI.Forms
                                    " New Features\n" +
                                    " - Export command script (.ps1) feature:\n" +
                                    "   - Supports Windows Certificate Store, PFX, and Azure Trusted Signing modes with per-file signing and exit code checks\n" +
-                                   "   - Optional BatchMode for Trusted Signing (single signtool call for multiple files)\n" +
-                                   " - Pre-flight validation in exported scripts:\n" +
-                                   "   - Verifies paths (SignTool, PFX, DLIB) and normalizes input files with Resolve-Path\n" +
-                                   "   - Aggregates failures and reports a single error summary\n\n" +
+                                   "   - Optional BatchMode for Trusted Signing (single signtool call for multiple files)\n\n" +
                                    " Improvements\n" +
                                    " - Persist Trusted Signing options (Code Signing Account Name and Certificate Profile) between sessions\n" +
                                    " - Restore last \"Files to Sign\" list on startup (from tool config)\n" +
@@ -41,7 +38,10 @@ namespace SignToolGUI.Forms
                                    "   - Log resolved and better check for absolute paths for DLIB and DMDF and the current working directory\n" +
                                    " - Update Trusted Signing tools from 1.0.68 to 1.0.95 and migrate to .NET 8.0 and modernize codebase\n" +
                                    "   - Removed .NET 6.0 dependencies and updated runtime to .NET 8.0 and removed unused assemblies and legacy runtime features.\n" +
-                                   " - Improved performance with optimizations in string and buffer handling\n\n" +
+                                   " - Improved performance with optimizations in string and buffer handling\n" +
+                                   " - Pre-flight validation in exported scripts:\n" +
+                                   "   - Verifies paths (SignTool, PFX, DLIB) and normalizes input files with Resolve-Path\n" +
+                                   "   - Aggregates failures and reports a single error summary\n\n" +
                                    " Changed\n" +
                                    " - Trusted Signing export now creates DMDF JSON on-the-fly and removes it in a finally block\n" +
                                    " - Exported script header timestamp format changed to \"HH:mm:ss dd-MM-yyyy\"\n" +
