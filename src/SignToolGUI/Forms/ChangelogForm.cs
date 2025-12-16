@@ -19,12 +19,13 @@ namespace SignToolGUI.Forms
         {
             // Changelog content
             var changelogContent =
-                                   " Version 2.1.0.0 (xx-11-2025):\n" +
+                                   " Version 2.1.0.0 (16-12-2025):\n" +
                                    " New Features\n" +
                                    " - Export command script (.ps1) feature:\n" +
                                    "   - Supports Windows Certificate Store, PFX, and Azure Trusted Signing modes with per-file signing and exit code checks\n" +
                                    "   - Optional BatchMode for Trusted Signing (single signtool call for multiple files)\n\n" +
                                    " Improvements\n" +
+                                   " - Smaller UI updates for better user experience\n" +
                                    " - Persist Trusted Signing options (Code Signing Account Name and Certificate Profile) between sessions\n" +
                                    " - Restore last \"Files to Sign\" list on startup (from tool config)\n" +
                                    " - Improved error handling and logging for Trusted Signing operations\n" +

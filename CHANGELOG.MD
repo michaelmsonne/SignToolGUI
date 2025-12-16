@@ -1,4 +1,4 @@
-﻿## Version 2.1.0.0 (xx-11-2025)
+﻿## Version 2.1.0.0 (16-12-2025)
 
 ### 🆕 New Features
 - Export command script (.ps1) feature:
@@ -6,6 +6,7 @@
   - Optional BatchMode for Trusted Signing (single signtool call for multiple files)
 
 ### 🔧 Improvements
+- Smaller UI updates for better user experience
 - Persist Trusted Signing options (Code Signing Account Name and Certificate Profile) between sessions
 - Restore last "Files to Sign" list on startup (from tool config)
 - Improved error handling and logging for Trusted Signing operations
