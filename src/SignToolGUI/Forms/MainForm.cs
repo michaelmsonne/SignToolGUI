@@ -127,6 +127,7 @@ namespace SignToolGUI.Forms
             Text = Application.ProductName + @" v." + Application.ProductVersion;
 
             toolTip.SetToolTip(checkBoxTimestamp, "Check this box to timestamp the signed file(s).");
+            toolTip.SetToolTip(labelTimestampProvider, "Select a timestamp provider/endpoint. Click here to manage providers/endpoints.");
 
             // Load type of certificate configuration
             try
@@ -1680,7 +1681,7 @@ namespace SignToolGUI.Forms
                 // Add custom provider option
                 comboBoxTimestampProviders.Items.Add(new TimestampProvider("Custom Provider", "N/A"));
 
-                groupBoxTimestamp.Text = @"Timestamp";
+                groupBoxTimestamp.Text = @"Timestamp server";
                 labelTimestampProvider.Text = @"Provider:";
                 labelTimeStampServer.Text = @"Timestamp URL:";
 
@@ -2268,7 +2269,7 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             }
         }
 
-        private void manageTimestampServersToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenTimestampManagement()
         {
             try
             {
@@ -2290,6 +2291,11 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                 MessageBox.Show($"Error opening {(radioButtonTrustedSigning.Checked ? "endpoint" : "timestamp server")} management: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Message($"Error opening {(radioButtonTrustedSigning.Checked ? "endpoint" : "timestamp server")} management: {ex.Message}", EventType.Error, 3016);
             }
+        }
+
+        private void manageTimestampServersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenTimestampManagement();
         }
 
         private void exportReportCSVToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3258,6 +3264,12 @@ Use the ... button above and select the code signing certificate to use!", @"No 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Message("Failed to export command script: " + ex.Message, EventType.Error, 20101);
             }
+        }
+
+        private void labelTimestampProvider_Click(object sender, EventArgs e)
+        {
+            // Open the timestamp server/endpoint management form when double-clicking the combo box
+            OpenTimestampManagement();
         }
     }
 }

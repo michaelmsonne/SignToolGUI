@@ -114,8 +114,8 @@
             this.labelSignedBuildState = new System.Windows.Forms.Label();
             this.linkLabelOpenTrustedSigningPortal = new System.Windows.Forms.LinkLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.buttonExportAsScript = new System.Windows.Forms.Button();
             this.linkLabelReadMoreTrustedSigning = new System.Windows.Forms.LinkLabel();
+            this.buttonExportAsScript = new System.Windows.Forms.Button();
             this.groupBoxFiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxCertificateInformation.SuspendLayout();
@@ -795,6 +795,7 @@
             this.labelTimestampProvider.Size = new System.Drawing.Size(49, 13);
             this.labelTimestampProvider.TabIndex = 21;
             this.labelTimestampProvider.Text = "Provider:";
+            this.labelTimestampProvider.Click += new System.EventHandler(this.labelTimestampProvider_Click);
             // 
             // comboBoxTimestampProviders
             // 
@@ -941,16 +942,6 @@
         "ng accounts in your tenant you have.");
             this.linkLabelOpenTrustedSigningPortal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelOpenTrustedSigningPortal_LinkClicked);
             // 
-            // buttonExportAsScript
-            // 
-            this.buttonExportAsScript.Location = new System.Drawing.Point(356, 830);
-            this.buttonExportAsScript.Name = "buttonExportAsScript";
-            this.buttonExportAsScript.Size = new System.Drawing.Size(126, 23);
-            this.buttonExportAsScript.TabIndex = 28;
-            this.buttonExportAsScript.Text = "Export as script (.ps1)";
-            this.buttonExportAsScript.UseVisualStyleBackColor = true;
-            this.buttonExportAsScript.Click += new System.EventHandler(this.buttonExportAsScript_Click);
-            // 
             // linkLabelReadMoreTrustedSigning
             // 
             this.linkLabelReadMoreTrustedSigning.AutoSize = true;
@@ -962,6 +953,16 @@
             this.linkLabelReadMoreTrustedSigning.Text = "Read more";
             this.toolTip.SetToolTip(this.linkLabelReadMoreTrustedSigning, "Learn more about Trusted Signing here.");
             this.linkLabelReadMoreTrustedSigning.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelReadMoreTrustedSigning_LinkClicked);
+            // 
+            // buttonExportAsScript
+            // 
+            this.buttonExportAsScript.Location = new System.Drawing.Point(356, 830);
+            this.buttonExportAsScript.Name = "buttonExportAsScript";
+            this.buttonExportAsScript.Size = new System.Drawing.Size(126, 23);
+            this.buttonExportAsScript.TabIndex = 28;
+            this.buttonExportAsScript.Text = "Export as script (.ps1)";
+            this.buttonExportAsScript.UseVisualStyleBackColor = true;
+            this.buttonExportAsScript.Click += new System.EventHandler(this.buttonExportAsScript_Click);
             // 
             // MainForm
             // 
