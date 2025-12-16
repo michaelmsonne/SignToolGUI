@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static SignToolGUI.Class.FileLogger;
@@ -22,6 +23,7 @@ namespace SignToolGUI.Forms
     public partial class MainForm : Form
     {
         #region Fields
+
         // All fields and properties
 
         public static string ConfigIniPath = FileManager.ConfigIniPath; // Path to the configuration file
@@ -33,14 +35,17 @@ namespace SignToolGUI.Forms
         private int _jobSigned; //number of files in job signed
         public int Signerrors; //number of errors to sign
         public string SignToolExe; //path to signtool.exe
+
         //private bool _isSignErrorShowed;
         private CertificateMonitor _certificateMonitor; // Certificate monitor for checking certificate expiry
+
         private Timer _pfxValidationTimer; // Timer for debouncing PFX certificate validation
         private TimestampManager _timestampManager; // Timestamp manager for handling timestamping operations
 
-        #endregion
+        #endregion Fields
 
         #region Constructor & Initialization
+
         // MainForm(), InitializeComponent(), and setup
 
         public MainForm()
@@ -122,6 +127,7 @@ namespace SignToolGUI.Forms
             Text = Application.ProductName + @" v." + Application.ProductVersion;
 
             toolTip.SetToolTip(checkBoxTimestamp, "Check this box to timestamp the signed file(s).");
+            toolTip.SetToolTip(labelTimestampProvider, "Select a timestamp provider/endpoint. Click here to manage providers/endpoints.");
 
             // Load type of certificate configuration
             try
@@ -322,6 +328,79 @@ namespace SignToolGUI.Forms
                     textBoxPFXPassword.Text = "";
                 }
 
+                // Load last used Trusted Signing options
+                try
+                {
+                    var savedAccount = iniFile.GetString("TrustedSigning", "AccountName", "");
+                    if (!string.IsNullOrWhiteSpace(savedAccount))
+                        textBoxCodeSigningAccountName.Text = savedAccount;
+
+                    var savedProfile = iniFile.GetString("TrustedSigning", "CertificateProfile", "");
+                    if (!string.IsNullOrWhiteSpace(savedProfile))
+                        textBoxCertificateProfileName.Text = savedProfile;
+                }
+                catch (Exception ex)
+                {
+                    Message($"Error loading Trusted Signing options: {ex.Message}", EventType.Error, 3050);
+                }
+
+                // Load last file list to sign
+                try
+                {
+                    var filesJson = iniFile.GetString("Files", "ToSign", "");
+                    if (!string.IsNullOrEmpty(filesJson))
+                    {
+                        // Prefer robust parse to handle both JSON array and single string fallback
+                        List<string> files = null;
+                        try
+                        {
+                            files = System.Text.Json.JsonSerializer.Deserialize<List<string>>(filesJson);
+                        }
+                        catch
+                        {
+                            // Try parse using JsonDocument in case of formatting issues
+                            using (var doc = System.Text.Json.JsonDocument.Parse(filesJson))
+                            {
+                                if (doc.RootElement.ValueKind == System.Text.Json.JsonValueKind.Array)
+                                {
+                                    files = new List<string>();
+                                    foreach (var el in doc.RootElement.EnumerateArray())
+                                    {
+                                        if (el.ValueKind == System.Text.Json.JsonValueKind.String)
+                                            files.Add(el.GetString());
+                                    }
+                                }
+                            }
+                        }
+
+                        if (files != null)
+                        {
+                            foreach (var path in files)
+                            {
+                                try
+                                {
+                                    var cleaned = System.Text.RegularExpressions.Regex.Replace(path ?? string.Empty, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                    if (!string.IsNullOrWhiteSpace(cleaned) && File.Exists(cleaned))
+                                    {
+                                        checkedListBoxFiles?.Items.Add(cleaned, true);
+                                    }
+                                }
+                                catch { /* ignore per-entry errors */ }
+                            }
+
+                            if (checkedListBoxFiles?.Items != null && checkedListBoxFiles.Items.Count > 0)
+                            {
+                                // Inform user via status bar
+                                statusLabel.Text = @"[INFO] " + checkedListBoxFiles.Items.Count + @" file(s) restored to File List";
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Message($"Error loading file list from configuration: {ex.Message}", EventType.Error, 3051);
+                }
+
                 // Initialize _previousSignToolPath with the current text box value or a default path
                 _previousSignToolPath = textBoxSignToolPath.Text;
             }
@@ -386,6 +465,41 @@ namespace SignToolGUI.Forms
 
                 // Save encrypted password (or empty if not saving)
                 iniFile.WriteValue("Program", "CertificatePassword", encryptedPassword ?? "");
+
+                // Save last used Trusted Signing options
+                try
+                {
+                    iniFile.WriteValue("TrustedSigning", "AccountName", textBoxCodeSigningAccountName.Text ?? string.Empty);
+                    iniFile.WriteValue("TrustedSigning", "CertificateProfile", textBoxCertificateProfileName.Text ?? string.Empty);
+                }
+                catch (Exception ex)
+                {
+                    Message($"Error saving Trusted Signing options: {ex.Message}", EventType.Error, 3052);
+                }
+
+                // Save file list to sign (as JSON array)
+                try
+                {
+                    var files = new List<string>();
+                    if (checkedListBoxFiles?.Items != null)
+                    {
+                        foreach (var item in checkedListBoxFiles.Items)
+                        {
+                            var s = item?.ToString() ?? string.Empty;
+                            // Remove any [Valid]/[Invalid] tags before saving
+                            var cleaned = System.Text.RegularExpressions.Regex.Replace(s, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                            if (!string.IsNullOrWhiteSpace(cleaned))
+                                files.Add(cleaned);
+                        }
+                    }
+
+                    var json = System.Text.Json.JsonSerializer.Serialize(files);
+                    iniFile.WriteValue("Files", "ToSign", json);
+                }
+                catch (Exception ex)
+                {
+                    Message($"Error saving file list to configuration: {ex.Message}", EventType.Error, 3053);
+                }
 
                 // Save timestamp and certificate type configuration
                 try { SaveTimestampConfiguration(); } catch (Exception ex) { Message($"Error saving timestamp configuration: {ex.Message}", EventType.Error, 3013); }
@@ -507,9 +621,10 @@ namespace SignToolGUI.Forms
             }
         }
 
-        #endregion
+        #endregion Constructor & Initialization
 
         #region Certificate Management
+
         // Certificate-related methods
 
         public async void InitializeAsyncCertificateCheck()
@@ -763,7 +878,6 @@ namespace SignToolGUI.Forms
 
             // Return the provider name or an empty string if an exception was caught.
             return str;
-
         }
 
         private string GetCertificateInfo(X509Certificate2 cert)
@@ -959,10 +1073,11 @@ namespace SignToolGUI.Forms
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-                
-        #endregion
+
+        #endregion Certificate Management
 
         #region Timestamp Management
+
         // Timestamp-related methods
 
         public class TimestampProvider
@@ -1000,9 +1115,10 @@ namespace SignToolGUI.Forms
             Message("Timestamp manager initialized", EventType.Information, 3000);
         }
 
-        #endregion
+        #endregion Timestamp Management
 
         #region File Management
+
         // File add/remove, directory logic
 
         public void CheckAllFiles()
@@ -1020,9 +1136,10 @@ namespace SignToolGUI.Forms
             return filters.Split(';').SelectMany(filter => Directory.GetFiles(sourceFolder, filter, searchOption)).ToArray();
         }
 
-        #endregion
+        #endregion File Management
 
         #region Signing Logic
+
         // SignWithWindowsCertificateStoreAsync, SignWithPfxCertificateAsync, etc.
 
         /// <summary>
@@ -1255,7 +1372,7 @@ namespace SignToolGUI.Forms
                 }
             }
 
-            var dlibPath = @".\Tools\Azure.CodeSigning.Dlib.dll";
+            var dlibPath = AppDomain.CurrentDomain.BaseDirectory + "Tools\\Azure.CodeSigning.Dlib.dll";
             var codeSigningAccountName = textBoxCodeSigningAccountName.Text;
             var certificateProfileName = textBoxCertificateProfileName.Text;
             var correlationIdData = textBoxCorrelationId.Text;
@@ -1358,9 +1475,10 @@ namespace SignToolGUI.Forms
             Message("Signing process completed for Trusted Signing Certificate", EventType.Information, 1050);
         }
 
-        #endregion
+        #endregion Signing Logic
 
         #region Configuration Management
+
         // Save/Load config methods
 
         private void SaveTimestampConfiguration()
@@ -1469,11 +1587,13 @@ namespace SignToolGUI.Forms
                         radioButtonWindowsCertificateStore.Checked = false;
                         radioButtonTrustedSigning.Checked = false;
                         break;
+
                     case "TrustedSigning":
                         radioButtonTrustedSigning.Checked = true;
                         radioButtonWindowsCertificateStore.Checked = false;
                         radioButtonPFXCertificate.Checked = false;
                         break;
+
                     case "WindowsCertificateStore":
                     default:
                         radioButtonWindowsCertificateStore.Checked = true;
@@ -1494,9 +1614,10 @@ namespace SignToolGUI.Forms
             }
         }
 
-        #endregion
+        #endregion Configuration Management
 
         #region UI Logic
+
         // InterfaceCheck, PopulateComboBox, etc.
 
         private void PopulateComboBox()
@@ -1560,7 +1681,7 @@ namespace SignToolGUI.Forms
                 // Add custom provider option
                 comboBoxTimestampProviders.Items.Add(new TimestampProvider("Custom Provider", "N/A"));
 
-                groupBoxTimestamp.Text = @"Timestamp";
+                groupBoxTimestamp.Text = @"Timestamp server";
                 labelTimestampProvider.Text = @"Provider:";
                 labelTimeStampServer.Text = @"Timestamp URL:";
 
@@ -1694,9 +1815,10 @@ namespace SignToolGUI.Forms
             Message("User have " + (isChecked ? "checked" : "unchecked") + " the 'Select All' checkbox for file(s) to sign", EventType.Information, 1042);
         }
 
-        #endregion
+        #endregion UI Logic
 
         #region Event Handlers
+
         // All event handlers
 
         private void buttonBrowseSignTool_Click(object sender, EventArgs e)
@@ -1888,6 +2010,7 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                 if (radioButtonPFXCertificate.Checked)
                 {
                     // If the label for certificate information is not null, update it with the certificate info.
+                    // If no certificate is selected, set the label to indicate that certificate info is not available.
                     if (labelCertificateInformation != null)
                         labelCertificateInformation.Text = GetCertificateInfo(GetCertificateFromPfx());
 
@@ -2030,6 +2153,25 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             }
         }
 
+        private void linkLabelReadMoreTrustedSigning_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                Process.Start(Globals.ToolStings.URLMicrosoftLearnTrustedSigning);
+
+                // Log the opening of the URL message
+                Message("User clicked the 'Read more' link for Trusted Signing to open the URL: '" + Globals.ToolStings.URLMicrosoftLearnTrustedSigning + "'", EventType.Information, 1052);
+            }
+            catch (Exception ex)
+            {
+                // Show an error message if the URL could not be opened
+                MessageBox.Show(@"Failed to open the URL '" + Globals.ToolStings.URLMicrosoftLearnTrustedSigning + "'. Error: " + ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                // Log the error message
+                Message("Failed to open the URL: " + ex.Message, EventType.Error, 1041);
+            }
+        }
+
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Log the user's action to open the About form
@@ -2127,7 +2269,7 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             }
         }
 
-        private void manageTimestampServersToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenTimestampManagement()
         {
             try
             {
@@ -2149,6 +2291,11 @@ Please select one or more binaries into the list above to proceed!", @"No files 
                 MessageBox.Show($"Error opening {(radioButtonTrustedSigning.Checked ? "endpoint" : "timestamp server")} management: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Message($"Error opening {(radioButtonTrustedSigning.Checked ? "endpoint" : "timestamp server")} management: {ex.Message}", EventType.Error, 3016);
             }
+        }
+
+        private void manageTimestampServersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenTimestampManagement();
         }
 
         private void exportReportCSVToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2597,9 +2744,10 @@ Please select one or more binaries into the list above to proceed!", @"No files 
             }
         }
 
-        #endregion
+        #endregion Event Handlers
 
         #region Helper Methods
+
         // Utility methods
 
         private void ExportSigningReportToCsv()
@@ -2817,7 +2965,7 @@ Use the ... button above and select the code signing certificate to use!", @"No 
 
             // Define the versions and architectures to search
             var versions = new[]
-            { 
+            {
                 // Add other versions as needed...
                 "10.0.26100.0",
                 "10.0.22621.0",
@@ -2884,6 +3032,244 @@ Use the ... button above and select the code signing certificate to use!", @"No 
             return !string.IsNullOrEmpty(SignToolExe) && File.Exists(SignToolExe);
         }
 
-        #endregion
+        #endregion Helper Methods
+
+        private void buttonExportAsScript_Click(object sender, EventArgs e)
+        {
+            ExportCommandScript();
+        }
+
+        private void ExportCommandScript()
+        {
+            try
+            {
+                // Collect files: prefer checked items, else all items
+                var files = new List<string>();
+                if (checkedListBoxFiles.CheckedItems.Count > 0)
+                {
+                    foreach (var item in checkedListBoxFiles.CheckedItems)
+                    {
+                        var s = item?.ToString() ?? string.Empty;
+                        var cleaned = System.Text.RegularExpressions.Regex.Replace(
+                            s, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                        files.Add(cleaned);
+                    }
+                }
+                else
+                {
+                    foreach (var item in checkedListBoxFiles.Items)
+                    {
+                        var s = item?.ToString() ?? string.Empty;
+                        var cleaned = System.Text.RegularExpressions.Regex.Replace(
+                            s, @"\s*\[(Valid|Invalid)\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                        files.Add(cleaned);
+                    }
+                }
+
+                if (files.Count == 0)
+                {
+                    MessageBox.Show("No files available to export.", "Export Command Script",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                using (var sfd = new SaveFileDialog { Filter = "PowerShell Script|*.ps1", Title = "Export command script" })
+                {
+                    sfd.FileName = "SignToolGUI_Commands.ps1";
+                    if (sfd.ShowDialog() != DialogResult.OK)
+                        return;
+
+                    string EscapePS(string value) => (value ?? string.Empty).Replace("'", "''");
+
+                    var sb = new StringBuilder();
+
+                    // Header
+                    sb.AppendLine("# Generated by SignTool GUI v." + Application.ProductVersion + " on " + DateTime.Now.ToString("HH:mm:ss dd-MM-yyyy"));
+                    sb.AppendLine("# This script signs the selected files using the current GUI configuration.");
+                    sb.AppendLine("$ErrorActionPreference = 'Stop'");
+                    sb.AppendLine();
+
+                    // Base vars
+                    var signToolFullPath = Path.GetFullPath(textBoxSignToolPath.Text ?? string.Empty);
+                    sb.AppendLine("$SignTool = '" + EscapePS(signToolFullPath) + "'");
+                    sb.AppendLine("$VerboseSwitch = " + (menuItemSignVerbose.Checked ? "$true" : "$false"));
+                    sb.AppendLine("$DebugSwitch   = " + (menuItemSignDebug.Checked ? "$true" : "$false"));
+                    // Optional: toggle batch mode from a checkbox if you add one (e.g., checkBoxBatchMode.Checked). Default false.
+                    sb.AppendLine("$BatchMode     = $false");
+                    if (!radioButtonTrustedSigning.Checked)
+                    {
+                        // Only used by Windows Store and PFX modes
+                        sb.AppendLine("$UseTimestamp  = " + (checkBoxTimestamp.Checked ? "$true" : "$false"));
+                        sb.AppendLine("$TimestampUrl  = '" + EscapePS(txtTimestampProviderURL.Text) + "'");
+                    }
+                    sb.AppendLine();
+
+                    // Files array
+                    sb.AppendLine("$files = @(");
+                    foreach (var f in files)
+                        sb.AppendLine("  '" + EscapePS(Path.GetFullPath(f)) + "'");
+                    sb.AppendLine(")");
+                    sb.AppendLine();
+
+                    // Helper for global switches (avoid $args automatic variable)
+                    sb.AppendLine("function Add-GlobalSwitches([ref]$sigArgs) {");
+                    sb.AppendLine("  if ($VerboseSwitch) { $sigArgs.Value += '/v' }");
+                    sb.AppendLine("  if ($DebugSwitch)   { $sigArgs.Value += '/debug' }");
+                    sb.AppendLine("}");
+                    sb.AppendLine();
+
+                    if (radioButtonWindowsCertificateStore.Checked)
+                    {
+                        // Determine thumbprint
+                        string thumbprint = ThumbprintFromCertToSign;
+                        try
+                        {
+                            if (comboBoxCertificatesInStore.SelectedIndex > 0)
+                                thumbprint = _signingCerts[comboBoxCertificatesInStore.SelectedIndex - 1]?.Thumbprint ?? thumbprint;
+                        }
+                        catch { /* ignore */ }
+
+                        sb.AppendLine("# Windows Certificate Store signing");
+                        sb.AppendLine("$Thumbprint = '" + EscapePS(thumbprint ?? string.Empty) + "'");
+                        sb.AppendLine();
+
+                        // Pre-flight + file normalization
+                        sb.AppendLine("if (!(Test-Path -LiteralPath $SignTool)) { throw \"SignTool not found: $SignTool\" }");
+                        sb.AppendLine("$targetFiles = @()");
+                        sb.AppendLine("foreach ($f in $files) { if (Test-Path -LiteralPath $f) { $targetFiles += (Resolve-Path -LiteralPath $f).Path } else { Write-Warning \"File not found, skipping: $f\" } }");
+                        sb.AppendLine("if ($targetFiles.Count -eq 0) { throw 'No input files to sign.' }");
+                        sb.AppendLine("$failures = @()");
+                        sb.AppendLine();
+
+                        // Per-file signing with exit code checks
+                        sb.AppendLine("foreach ($f in $targetFiles) {");
+                        sb.AppendLine("  $sigArgs = @('sign')");
+                        sb.AppendLine("  Add-GlobalSwitches ([ref]$sigArgs)");
+                        sb.AppendLine("  if ($UseTimestamp -and $TimestampUrl) { $sigArgs += '/fd'; $sigArgs += 'sha256'; $sigArgs += '/tr'; $sigArgs += $TimestampUrl; $sigArgs += '/td'; $sigArgs += 'sha256' } else { $sigArgs += '/fd'; $sigArgs += 'sha256' }");
+                        sb.AppendLine("  $sigArgs += '/sha1'; $sigArgs += $Thumbprint; $sigArgs += $f");
+                        sb.AppendLine("  & $SignTool @sigArgs");
+                        sb.AppendLine("  if ($LASTEXITCODE -ne 0) { Write-Warning \"Signing failed (exit $LASTEXITCODE): $f\"; $failures += $f } else { Write-Host \"Signed: $f\" }");
+                        sb.AppendLine("}");
+                        sb.AppendLine("if ($failures.Count -gt 0) { throw (\"One or more files failed to sign:`n - \" + ($failures -join \"`n - \")) }");
+                    }
+                    else if (radioButtonPFXCertificate.Checked)
+                    {
+                        var pfxPath = Path.GetFullPath(textBoxPFXFile.Text ?? string.Empty);
+
+                        sb.AppendLine("# PFX file signing");
+                        sb.AppendLine("$PfxPath = '" + EscapePS(pfxPath) + "'");
+                        sb.AppendLine("# Prompt for PFX password at runtime (not exported from GUI for security)");
+                        sb.AppendLine("$sec = Read-Host 'Enter PFX password' -AsSecureString");
+                        sb.AppendLine("$bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec)");
+                        sb.AppendLine("try { $PfxPassword = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr) } finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }");
+                        sb.AppendLine();
+
+                        // Pre-flight + file normalization
+                        sb.AppendLine("if (!(Test-Path -LiteralPath $SignTool)) { throw \"SignTool not found: $SignTool\" }");
+                        sb.AppendLine("if (!(Test-Path -LiteralPath $PfxPath)) { throw \"PFX file not found: $PfxPath\" }");
+                        sb.AppendLine("$targetFiles = @()");
+                        sb.AppendLine("foreach ($f in $files) { if (Test-Path -LiteralPath $f) { $targetFiles += (Resolve-Path -LiteralPath $f).Path } else { Write-Warning \"File not found, skipping: $f\" } }");
+                        sb.AppendLine("if ($targetFiles.Count -eq 0) { throw 'No input files to sign.' }");
+                        sb.AppendLine("$failures = @()");
+                        sb.AppendLine();
+
+                        // Per-file signing with exit code checks
+                        sb.AppendLine("try {");
+                        sb.AppendLine("  foreach ($f in $targetFiles) {");
+                        sb.AppendLine("    $sigArgs = @('sign')");
+                        sb.AppendLine("    Add-GlobalSwitches ([ref]$sigArgs)");
+                        sb.AppendLine("    if ($UseTimestamp -and $TimestampUrl) { $sigArgs += '/fd'; $sigArgs += 'sha256'; $sigArgs += '/tr'; $sigArgs += $TimestampUrl; $sigArgs += '/td'; $sigArgs += 'sha256' } else { $sigArgs += '/fd'; $sigArgs += 'sha256' }");
+                        sb.AppendLine("    $sigArgs += '/f'; $sigArgs += $PfxPath; $sigArgs += '/p'; $sigArgs += $PfxPassword; $sigArgs += '/a'; $sigArgs += $f");
+                        sb.AppendLine("    & $SignTool @sigArgs");
+                        sb.AppendLine("    if ($LASTEXITCODE -ne 0) { Write-Warning \"Signing failed (exit $LASTEXITCODE): $f\"; $failures += $f } else { Write-Host \"Signed: $f\" }");
+                        sb.AppendLine("  }");
+                        sb.AppendLine("  if ($failures.Count -gt 0) { throw (\"One or more files failed to sign:`n - \" + ($failures -join \"`n - \")) }");
+                        sb.AppendLine("} finally { $PfxPassword = $null }");
+                    }
+                    else if (radioButtonTrustedSigning.Checked)
+                    {
+                        // Trusted Signing constants/inputs
+                        var tsTimestampUrl = "http://timestamp.acs.microsoft.com";
+                        var dlibPath = Path.Combine(Application.StartupPath, "Tools", "Azure.CodeSigning.Dlib.dll");
+
+                        // Resolve endpoint
+                        string endpointUrl = null;
+                        if (comboBoxTimestampProviders.SelectedItem is TimestampProvider tp)
+                            endpointUrl = tp.Url;
+                        else
+                        {
+                            try
+                            {
+                                var enabled = _timestampManager.GetEnabledServers();
+                                if (enabled.Count > 0)
+                                    endpointUrl = enabled.First().Url;
+                            }
+                            catch { /* ignore */ }
+                        }
+
+                        sb.AppendLine("# Trusted Signing");
+                        sb.AppendLine("$DlibPath = '" + EscapePS(Path.GetFullPath(dlibPath)) + "'");
+                        sb.AppendLine("$Endpoint = '" + EscapePS(endpointUrl ?? string.Empty) + "'");
+                        sb.AppendLine("$AccountName = '" + EscapePS(textBoxCodeSigningAccountName.Text) + "'");
+                        sb.AppendLine("$CertificateProfileName = '" + EscapePS(textBoxCertificateProfileName.Text) + "'");
+                        sb.AppendLine("$CorrelationIdData = '" + EscapePS(textBoxCorrelationId.Text) + "'");
+                        sb.AppendLine("$TimestampUrl = '" + EscapePS(tsTimestampUrl) + "'");
+                        sb.AppendLine();
+
+                        // Pre-flight + file normalization
+                        sb.AppendLine("if (!(Test-Path -LiteralPath $SignTool)) { throw \"SignTool not found: $SignTool\" }");
+                        sb.AppendLine("if (!(Test-Path -LiteralPath $DlibPath)) { throw \"Dlib not found: $DlibPath\" }");
+                        sb.AppendLine("$targetFiles = @()");
+                        sb.AppendLine("foreach ($f in $files) { if (Test-Path -LiteralPath $f) { $targetFiles += (Resolve-Path -LiteralPath $f).Path } else { Write-Warning \"File not found, skipping: $f\" } }");
+                        sb.AppendLine("if ($targetFiles.Count -eq 0) { throw 'No input files to sign.' }");
+                        sb.AppendLine();
+
+                        // DMDF payload
+                        sb.AppendLine("if ([string]::IsNullOrWhiteSpace($CorrelationIdData)) { $CorrelationIdData = [guid]::NewGuid().ToString() }");
+                        sb.AppendLine("$dmdf = @{ Endpoint = $Endpoint; CodeSigningAccountName = $AccountName; CertificateProfileName = $CertificateProfileName; CorrelationIdData = $CorrelationIdData }");
+                        sb.AppendLine("$dmdfPath = Join-Path $env:TEMP (\"signtoolgui_{0}.json\" -f ([guid]::NewGuid()))");
+                        sb.AppendLine("$dmdf | ConvertTo-Json -Depth 3 | Out-File -FilePath $dmdfPath -Encoding utf8");
+                        sb.AppendLine();
+
+                        // Common args and signing
+                        sb.AppendLine("$commonArgs = @('/fd','sha256','/tr',$TimestampUrl,'/td','sha256','/dlib',$DlibPath,'/dmdf',$dmdfPath)");
+                        sb.AppendLine("$failures = @()");
+                        sb.AppendLine("try {");
+                        sb.AppendLine("  if ($BatchMode) {");
+                        sb.AppendLine("    $sigArgs = @('sign'); Add-GlobalSwitches ([ref]$sigArgs); $sigArgs += $commonArgs; $sigArgs += $targetFiles; & $SignTool @sigArgs");
+                        sb.AppendLine("    if ($LASTEXITCODE -ne 0) { $failures = $targetFiles; throw \"signtool exited with code $LASTEXITCODE in batch mode.\" } else { Write-Host (\"Signed {0} file(s) in batch.\" -f $targetFiles.Count) }");
+                        sb.AppendLine("  } else {");
+                        sb.AppendLine("    foreach ($f in $targetFiles) { $sigArgs = @('sign'); Add-GlobalSwitches ([ref]$sigArgs); $sigArgs += $commonArgs; $sigArgs += $f; & $SignTool @sigArgs; if ($LASTEXITCODE -ne 0) { Write-Warning \"Signing failed (exit $LASTEXITCODE): $f\"; $failures += $f } else { Write-Host \"Signed: $f\" } }");
+                        sb.AppendLine("    if ($failures.Count -gt 0) { throw (\"One or more files failed to sign:`n - \" + ($failures -join \"`n - \")) }");
+                        sb.AppendLine("  }");
+                        sb.AppendLine("}");
+                        sb.AppendLine("finally { Remove-Item -Path $dmdfPath -Force -ErrorAction Ignore }");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Unknown certificate type.", "Export Command Script", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.UTF8);
+
+                    Message("Command script exported: '" + sfd.FileName + "'", EventType.Information, 20100);
+                    MessageBox.Show("Command script exported:\n" + sfd.FileName, "Export Command Script",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to export command script: " + ex.Message, "Export Command Script",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Message("Failed to export command script: " + ex.Message, EventType.Error, 20101);
+            }
+        }
+
+        private void labelTimestampProvider_Click(object sender, EventArgs e)
+        {
+            // Open the timestamp server/endpoint management form when double-clicking the combo box
+            OpenTimestampManagement();
+        }
     }
 }

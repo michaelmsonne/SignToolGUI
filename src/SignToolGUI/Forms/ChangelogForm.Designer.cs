@@ -34,6 +34,7 @@
             // 
             // richTextBoxChangelog
             // 
+            this.richTextBoxChangelog.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBoxChangelog.Location = new System.Drawing.Point(1, 0);
             this.richTextBoxChangelog.Name = "richTextBoxChangelog";
             this.richTextBoxChangelog.ReadOnly = true;

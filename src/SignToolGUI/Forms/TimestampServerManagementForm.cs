@@ -32,12 +32,12 @@ namespace SignToolGUI.Forms
             if (_isTrustedSigning)
             {
                 groupBoxServers.Text = "Endpoints";
-                this.Text = "Trusted Signing Endpoint Management";
+                Text = "Trusted Signing Endpoint Management";
             }
             else
             {
                 groupBoxServers.Text = "Timestamp Servers";
-                this.Text = "Timestamp Server Management";
+                Text = "Timestamp Server Management";
             }
         }
 
@@ -78,7 +78,20 @@ namespace SignToolGUI.Forms
 
             buttonEdit.Enabled = hasSelection;
             buttonRemove.Enabled = hasSelection;
-            buttonTest.Enabled = hasSelection;
+
+            // Disable testing if in Trusted Signing mode
+            if (_isTrustedSigning)
+            {
+                buttonTestAll.Enabled = false;
+                buttonTest.Enabled = false;
+            }
+            else
+            {
+                buttonTestAll.Enabled = hasSelection;
+                buttonTest.Enabled = hasSelection;
+            }
+
+            //buttonTest.Enabled = hasSelection;
             buttonMoveUp.Enabled = hasSelection && selectedIndex > 0;
             buttonMoveDown.Enabled = hasSelection && selectedIndex < listViewServers.Items.Count - 1;
             buttonApply.Enabled = _isModified; // This should enable/disable based on modifications

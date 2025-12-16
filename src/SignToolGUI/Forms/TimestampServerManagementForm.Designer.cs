@@ -30,6 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TimestampServerManagementForm));
             this.listViewServers = new System.Windows.Forms.ListView();
+            this.columnPriority = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnDisplayName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnURL = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnEnabled = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnTimeout = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonEdit = new System.Windows.Forms.Button();
             this.buttonRemove = new System.Windows.Forms.Button();
@@ -45,11 +50,6 @@
             this.groupBoxActions = new System.Windows.Forms.GroupBox();
             this.labelInstructions = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.columnPriority = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnDisplayName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnURL = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnEnabled = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnTimeout = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBoxServers.SuspendLayout();
             this.groupBoxActions.SuspendLayout();
             this.SuspendLayout();
@@ -74,6 +74,29 @@
             this.listViewServers.View = System.Windows.Forms.View.Details;
             this.listViewServers.SelectedIndexChanged += new System.EventHandler(this.ListViewServers_SelectedIndexChanged);
             this.listViewServers.DoubleClick += new System.EventHandler(this.ButtonEdit_Click);
+            // 
+            // columnPriority
+            // 
+            this.columnPriority.Text = "Priority";
+            // 
+            // columnDisplayName
+            // 
+            this.columnDisplayName.Text = "Display name";
+            this.columnDisplayName.Width = 150;
+            // 
+            // columnURL
+            // 
+            this.columnURL.Text = "URL";
+            this.columnURL.Width = 200;
+            // 
+            // columnEnabled
+            // 
+            this.columnEnabled.Text = "Enabled";
+            // 
+            // columnTimeout
+            // 
+            this.columnTimeout.Text = "Timeout";
+            this.columnTimeout.Width = 70;
             // 
             // buttonAdd
             // 
@@ -220,43 +243,19 @@
             // labelInstructions
             // 
             this.labelInstructions.AutoSize = true;
-            this.labelInstructions.Location = new System.Drawing.Point(9, 410);
+            this.labelInstructions.Location = new System.Drawing.Point(6, 407);
             this.labelInstructions.Name = "labelInstructions";
-            this.labelInstructions.Size = new System.Drawing.Size(465, 13);
+            this.labelInstructions.Size = new System.Drawing.Size(481, 26);
             this.labelInstructions.TabIndex = 14;
-            this.labelInstructions.Text = "Manage timestamp servers and their priorities. Higher priority servers (lower num" +
-    "bers) are tried first.";
+            this.labelInstructions.Text = resources.GetString("labelInstructions.Text");
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(473, 407);
+            this.progressBar.Location = new System.Drawing.Point(485, 407);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(196, 20);
+            this.progressBar.Size = new System.Drawing.Size(184, 20);
             this.progressBar.TabIndex = 15;
             this.progressBar.Visible = false;
-            // 
-            // columnPriority
-            // 
-            this.columnPriority.Text = "Priority";
-            // 
-            // columnDisplayName
-            // 
-            this.columnDisplayName.Text = "Display name";
-            this.columnDisplayName.Width = 150;
-            // 
-            // columnURL
-            // 
-            this.columnURL.Text = "URL";
-            this.columnURL.Width = 200;
-            // 
-            // columnEnabled
-            // 
-            this.columnEnabled.Text = "Enabled";
-            // 
-            // columnTimeout
-            // 
-            this.columnTimeout.Text = "Timeout";
-            this.columnTimeout.Width = 70;
             // 
             // TimestampServerManagementForm
             // 

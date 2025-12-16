@@ -15,6 +15,7 @@ namespace SignToolGUI.Class
         public TimestampManager TimestampManager { get; set; }
 
         public delegate void StatusReport(string message);
+
         public event StatusReport OnSignToolOutput;
 
         protected SignerBase(string executable, TimestampManager timestampManager = null)
@@ -205,8 +206,10 @@ namespace SignToolGUI.Class
             {
                 case true when Debug:
                     return "/v /debug";
+
                 case true:
                     return "/v";
+
                 default:
                     return Debug ? "/debug" : string.Empty;
             }
